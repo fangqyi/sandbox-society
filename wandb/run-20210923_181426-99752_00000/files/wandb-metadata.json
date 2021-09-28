@@ -1,0 +1,25 @@
+{
+    "os": "macOS-10.15.7-x86_64-i386-64bit",
+    "python": "3.8.3",
+    "heartbeatAt": "2021-09-23T22:14:26.818451",
+    "startedAt": "2021-09-23T22:14:26.354648",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [
+        "render",
+        "--config=CompetitionRound1"
+    ],
+    "state": "running",
+    "program": "/Users/lorneez/Projects/390/project_Playground/Forge.py",
+    "codePath": "Forge.py",
+    "git": {
+        "remote": "git@coursework.cs.duke.edu:compsci390_2021fall/project_Playground.git",
+        "commit": "6253e1c6f7931b2ab9232036b62d9484d089f6a9"
+    },
+    "email": "lornz17@gmail.com",
+    "root": "/Users/lorneez/Projects/390/project_Playground",
+    "host": "Lornes-MacBook-Pro.local",
+    "username": "lorneez",
+    "executable": "/Users/lorneez/opt/anaconda3/bin/python"
+}
