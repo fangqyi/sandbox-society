@@ -7,12 +7,32 @@ class Inventory:
     def __init__(self):
         self.items = dict()
 
+        # SMALL_STICK = 5
+        # LARGE_BRANCH = 6
+        # SMALL_ROCK = 7
+        # LARGE_BOULDER = 8
+
+    def checkStoneTechnologyStatus(self):
+        small_rock_status = False
+        large_boulder_status = False
+        small_rock_amount = self.getItemAmount(ItemType.SMALL_STICK)
+        if small_rock_amount >= 10:
+            small_rock_status = True
+        large_boulder_amount = self.getItemAmount(ItemType.LARGE_BOULDER)
+        if large_boulder_amount >= 10:
+            large_boulder_status = True
+        return small_rock_status, large_boulder_status
+
     def checkWoodTechnologyStatus(self):
-        amount = self.getItemAmount(ItemType.SMALL_STICK)
-        if amount >= 10:
-            return True
-        else:
-            return False
+        small_stick_status = False
+        large_branch_status = False
+        small_stick_amount = self.getItemAmount(ItemType.SMALL_STICK)
+        if small_stick_amount >= 10:
+            small_stick_status = True
+        large_branch_amount = self.getItemAmount(ItemType.LARGE_BRANCH)
+        if large_branch_amount >= 10:
+            large_branch_status = True
+        return small_stick_status, large_branch_status
 
     def getItemAmount(self, item_type):
         if item_type not in self.items.keys():
@@ -79,6 +99,7 @@ def runInventoryTest():
     ])
     print("small stick amount:", test_inv.getItemAmount(ItemType.SMALL_STICK))
     print("wood tech status:", test_inv.checkWoodTechnologyStatus())
+    print("stone tech status:", test_inv.checkStoneTechnologyStatus())
 
 
 runInventoryTest()
