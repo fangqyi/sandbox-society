@@ -92,7 +92,7 @@ class Player(entity.Entity):
         self.resources.food.decrement(dmg)
         self.resources.water.decrement(dmg)
         self.skills.receiveDamage(dmg)
-        self.inv.removeItems(ItemType.COAL, 2)
+        self.inv.removeItems(ItemType.GOLD, 2)
 
     def receiveLoot(self, loadout):
         if loadout.chestplate.level > self.loadout.chestplate.level:
