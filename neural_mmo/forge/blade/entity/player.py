@@ -8,6 +8,8 @@ from neural_mmo.forge.blade.systems.skill import Skills
 from neural_mmo.forge.blade.systems.achievement import Diary
 from neural_mmo.forge.blade.entity import entity
 from neural_mmo.forge.blade.io.stimulus import Static
+from neural_mmo.forge.blade.systems.inventory import Inventory
+from neural_mmo.forge.blade.item.item import Item, ItemType
 
 
 class Player(entity.Entity):
@@ -15,6 +17,7 @@ class Player(entity.Entity):
         super().__init__(realm, pos, agent.iden, agent.name, agent.color, agent.pop)
         self.agent = agent
         self.pop = agent.pop
+        self.inv = Inventory()
 
         # Communication light
         self.communication_light = 0
@@ -68,12 +71,19 @@ class Player(entity.Entity):
             self.communication_light = 0
 
 
-    def applyDamage(self, dmg, style):
+    def applyDamage(self, dmg, style): # ADD INVENTORY INTERACTION
         self.resources.food.increment(dmg)
         self.resources.water.increment(dmg)
         self.skills.applyDamage(dmg, style)
+        self.inv.insertItems([
+            Item(ItemType.GOLD, "gold"),
+            Item(ItemType.GOLD, "gold"),
+            Item(ItemType.GOLD, "gold"),
+            Item(ItemType.GOLD, "gold"),
+            Item(ItemType.GOLD, "gold")
+        ])
 
-    def receiveDamage(self, source, dmg):
+    def receiveDamage(self, source, dmg): # ADD INVENTORY INTERACTION
         if not super().receiveDamage(source, dmg):
             if source:
                 source.history.playerKills += 1
@@ -82,6 +92,7 @@ class Player(entity.Entity):
         self.resources.food.decrement(dmg)
         self.resources.water.decrement(dmg)
         self.skills.receiveDamage(dmg)
+        self.inv.removeItems(ItemType.COAL, 2)
 
     def receiveLoot(self, loadout):
         if loadout.chestplate.level > self.loadout.chestplate.level:
