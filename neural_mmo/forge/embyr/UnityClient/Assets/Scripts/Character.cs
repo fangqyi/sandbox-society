@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using MonoBehavior; // ?
 using UnityEngine;
 
 public class Character: UnityModule 
@@ -19,6 +20,13 @@ public class Character: UnityModule
    public GameObject attack;
    public Vector3 forward;
    public Vector3 up;
+   
+   // light communication 
+   public Shader lightShader;
+   public bool commType;
+   private Dictionary<int, Color> commColor;
+   private Dictionary<int, Color> commMKGlowColor;
+   private Dictionary<int, Color> commMKGlowTexColor;
 
    public int rOld = 0;
    public int cOld = 0;
@@ -72,6 +80,22 @@ public class Character: UnityModule
 
       this.UpdatePlayer(players, npcs, packet);
       this.UpdatePos(false);
+
+      // light communication color
+      this.commColor = new Dictionary<int, Color>();
+      commColor.Add(1, hexToColor("D200FF"));
+      commColor.Add(2, hexToColor("FFF70D"));
+      commColor.Add(3, hexToColor("0100D9"));
+
+      this.commMKGlowColor = new Dictionary<int, Color>();
+      commMKGlowColor.Add(1, hexToColor("FF0000"));
+      commMKGlowColor.Add(2, hexToColor("F1EC03"));
+      commMKGlowColor.Add(3, hexToColor("11A7EE"));
+
+      this.commMKGlowTexColor = new Dictionary<int, Color>();
+      commMKGlowTexColor.Add(1, hexToColor("E75E10"));
+      commMKGlowTexColor.Add(2, hexToColor("FF9800"));
+      commMKGlowTexColor.Add(3, hexToColor("10E77A"));
    }
 
    public void UpdateUI()
@@ -201,12 +225,32 @@ public class Character: UnityModule
          return;
       }
 
-      GameObject prefab = Resources.Load("Prefabs/" + style) as GameObject;
+      GameObject attackPrefab = Resources.Load("Prefabs/" + style) as GameObject;
 
       this.attackPos    = this.transform.position + (
             this.transform.localScale.x * 6 * Vector3.up / 4);
       this.attack       = GameObject.Instantiate(
-            prefab, this.attackPos, this.AttackRotation());
+            attackPrefab, this.attackPos, this.AttackRotation());
+
+      // light-based communication
+      this.commType = Unpack("comm", ent);
+      updateCommunicationShader();
+   }
+
+   private void updateCommunicationShader(){
+      if (this.lightShader == null){
+         this.lightShader = Resources.Load("Assets/_MK/MKGlowLite/Shaders/VariantsSelective/Legacy/Transparent/MK_Transparent-Diffuse.shader") as Shader;
+      }
+      MeshRenderer nn = this.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
+      if (this.commType == 0){  // no light communication
+         nn.materials[0].shader == null;  // TODO: make it compatible with existing shader
+      }
+      else{
+         nn.materials[0].shader = this.lightShader;
+         nn.materials[0].SetColor("_Color", this.commColor[this.commType]);
+         nn.materials[0].SetColor("_MKGlowColor", this.commMKGlowColor[this.commType]);
+         nn.materials[0].SetColor("_MKGlowTexColor", this.commMKGlowTexColor[this.commType]);
+      }
    }
 
    
@@ -215,7 +259,7 @@ public class Character: UnityModule
             this.target.transform.position + (
             this.target.transform.localScale.x * 3 * Vector3.up / 4) - this.attackPos);
    }
-
+   
    public void Delete()
    {
       GameObject.Destroy(this.overheads.gameObject);
@@ -224,6 +268,10 @@ public class Character: UnityModule
       if (this.attack != null)
       {
          GameObject.Destroy(this.attack);
+      }
+
+      if (this.comm != null){
+         GameObject.Destroy(this.comm);
       }
    }
 
