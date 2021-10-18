@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using MonoBehavior; // ?
 using UnityEngine;
 
 public class Character: UnityModule 
@@ -23,7 +22,7 @@ public class Character: UnityModule
    
    // light communication 
    public Shader lightShader;
-   public bool commType;
+   public int commType;
    private Dictionary<int, Color> commColor;
    private Dictionary<int, Color> commMKGlowColor;
    private Dictionary<int, Color> commMKGlowTexColor;
@@ -233,7 +232,7 @@ public class Character: UnityModule
             attackPrefab, this.attackPos, this.AttackRotation());
 
       // light-based communication
-      this.commType = Unpack("comm", ent);
+      this.commType = (int) Unpack("comm", ent);
       updateCommunicationShader();
    }
 
@@ -243,7 +242,7 @@ public class Character: UnityModule
       }
       MeshRenderer nn = this.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
       if (this.commType == 0){  // no light communication
-         nn.materials[0].shader == null;  // TODO: make it compatible with existing shader
+         nn.materials[0].shader = null;  // TODO: make it compatible with existing shader
       }
       else{
          nn.materials[0].shader = this.lightShader;
@@ -268,10 +267,6 @@ public class Character: UnityModule
       if (this.attack != null)
       {
          GameObject.Destroy(this.attack);
-      }
-
-      if (this.comm != null){
-         GameObject.Destroy(this.comm);
       }
    }
 
