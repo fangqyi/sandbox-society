@@ -50,22 +50,22 @@ class Player(entity.Entity):
         if self.communication_light == 0:
             return "OFF"
         elif self.communication_light == 1:
-            return "RED"
+            return "PURPLE"
         elif self.communication_light == 2:
-            return "BLUE"
+            return "YELLOW"
         elif self.communication_light == 3:
-            return "GREEN"
+            return "BLUE"
         else:
             return "OFF"
 
     def setLight(self, color):
         if color == "OFF":
             self.communication_light = 0
-        elif color == "RED":
+        elif color == "PURPLE":
             self.communication_light = 1
-        elif color == "BLUE":
+        elif color == "YELLOW":
             self.communication_light = 2
-        elif color == "GREEN":
+        elif color == "BLUE":
             self.communication_light = 3
         else:
             self.communication_light = 0
