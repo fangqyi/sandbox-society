@@ -224,6 +224,39 @@ class Mage(Node):
    def skill(entity):
       return entity.skills.mage
 
+
+class Signal(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, light):
+      entity.setLight(light)
+      return light
+
+
+class Light(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges(self):
+      return ["OFF", "RED", "BLUE", "GREEN"]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
+
 #TODO: Add communication
 class Message:
    pass
