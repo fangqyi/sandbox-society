@@ -7,4 +7,5 @@ from neural_mmo.forge.trinity.scripted import io, utils
 
 
 def signal(config, actions, light):
-    actions["comm"] = {light}
+    # actions[Action.Signal] = {Action.Light: light}
+    actions["comm"] = light
