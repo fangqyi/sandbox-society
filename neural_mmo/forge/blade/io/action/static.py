@@ -242,7 +242,8 @@ class Signal(Node):
 
    def call(env, entity, light):
       entity.setLight(light)
-      entity.history.actions['color'] = entity.getLightNumeric()
+      entity.history.communication = {}
+      entity.history.communication['color'] = entity.getLightNumeric()
       return light
 
 
