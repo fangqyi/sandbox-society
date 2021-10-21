@@ -46,6 +46,9 @@ class Player(entity.Entity):
     def population(self):
         return self.pop
 
+    def getLightNumeric(self):
+        return self.communication_light
+
     def getLight(self):
         if self.communication_light == 0:
             return "OFF"
