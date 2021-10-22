@@ -42,7 +42,8 @@ class History:
    def __init__(self, ent):
       self.actions = None
       self.attack  = None
-  
+      self.communication = None
+
       self.origPos     = ent.pos
       self.exploration = 0
       self.playerKills = 0
