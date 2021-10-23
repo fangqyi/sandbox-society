@@ -23,9 +23,9 @@ public class Character: UnityModule
    // light communication 
    public Shader lightShader;
    public int commType;
-   private Dictionary<int, Color> commColor;
-   private Dictionary<int, Color> commMKGlowColor;
-   private Dictionary<int, Color> commMKGlowTexColor;
+   public Dictionary<int, Color> commColor;
+   public Dictionary<int, Color> commMKGlowColor;
+   public Dictionary<int, Color> commMKGlowTexColor;
 
    public int rOld = 0;
    public int cOld = 0;
@@ -81,20 +81,24 @@ public class Character: UnityModule
       this.UpdatePos(false);
 
       // light communication color
+      
+   }
+
+   public void SetColors() {
       this.commColor = new Dictionary<int, Color>();
-      commColor.Add(1, hexToColor("D200FF"));
-      commColor.Add(2, hexToColor("FFF70D"));
-      commColor.Add(3, hexToColor("0100D9"));
+      this.commColor.Add(1, hexToColor("D200FF"));
+      this.commColor.Add(2, hexToColor("FFF70D"));
+      this.commColor.Add(3, hexToColor("0100D9"));
 
       this.commMKGlowColor = new Dictionary<int, Color>();
-      commMKGlowColor.Add(1, hexToColor("FF0000"));
-      commMKGlowColor.Add(2, hexToColor("F1EC03"));
-      commMKGlowColor.Add(3, hexToColor("11A7EE"));
+      this.commMKGlowColor.Add(1, hexToColor("FF0000"));
+      this.commMKGlowColor.Add(2, hexToColor("F1EC03"));
+      this.commMKGlowColor.Add(3, hexToColor("11A7EE"));
 
       this.commMKGlowTexColor = new Dictionary<int, Color>();
-      commMKGlowTexColor.Add(1, hexToColor("E75E10"));
-      commMKGlowTexColor.Add(2, hexToColor("FF9800"));
-      commMKGlowTexColor.Add(3, hexToColor("10E77A"));
+      this.commMKGlowTexColor.Add(1, hexToColor("E75E10"));
+      this.commMKGlowTexColor.Add(2, hexToColor("FF9800"));
+      this.commMKGlowTexColor.Add(3, hexToColor("10E77A"));
    }
 
    public void UpdateUI()
@@ -204,51 +208,61 @@ public class Character: UnityModule
       this.overheads.UpdateOverheads(this);
 
       //Handle attacks
-      if (!hist.ContainsKey("attack"))
+      if (hist.ContainsKey("attack"))
       {
-         return;
+
+         object attk = Unpack("attack", hist);
+         string style = Unpack("style", attk) as string;
+         object targ = Unpack("target", attk);
+         int targs = Convert.ToInt32(targ);
+
+         //Handle targets
+         if (players.ContainsKey(targs))
+         {
+            this.target = players[targs];
+         } else if (npcs.ContainsKey(targs)) {
+            this.target = npcs[targs];
+         } else {
+            return;
+         }
+
+         GameObject attackPrefab = Resources.Load("Prefabs/" + style) as GameObject;
+
+         this.attackPos    = this.transform.position + (
+               this.transform.localScale.x * 6 * Vector3.up / 4);
+         this.attack       = GameObject.Instantiate(
+               attackPrefab, this.attackPos, this.AttackRotation());
       }
-
-      object attk = Unpack("attack", hist);
-      string style = Unpack("style", attk) as string;
-      object targ = Unpack("target", attk);
-      int targs = Convert.ToInt32(targ);
-
-      //Handle targets
-      if (players.ContainsKey(targs))
-      {
-         this.target = players[targs];
-      } else if (npcs.ContainsKey(targs)) {
-         this.target = npcs[targs];
-      } else {
-         return;
-      }
-
-      GameObject attackPrefab = Resources.Load("Prefabs/" + style) as GameObject;
-
-      this.attackPos    = this.transform.position + (
-            this.transform.localScale.x * 6 * Vector3.up / 4);
-      this.attack       = GameObject.Instantiate(
-            attackPrefab, this.attackPos, this.AttackRotation());
 
       // light-based communication
-      this.commType = (int) Unpack("comm", ent);
-      updateCommunicationShader();
+      if (hist.ContainsKey("light")){
+         object comm = Unpack("light", hist);
+         object type = Unpack("color", comm);
+         this.commType = Convert.ToInt32(type);
+         updateCommunicationShader();
+      }
    }
 
    private void updateCommunicationShader(){
       if (this.lightShader == null){
-         this.lightShader = Resources.Load("Assets/_MK/MKGlowLite/Shaders/VariantsSelective/Legacy/Transparent/MK_Transparent-Diffuse.shader") as Shader;
+         this.lightShader = Shader.Find("MK/Glow/Selective/Legacy/Transparent/Diffuse");
       }
       MeshRenderer nn = this.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
+      //this.commType = 3;
+
+      if (this.commColor == null) {  // initialize color dictionary
+         this.SetColors();
+      }
+
       if (this.commType == 0){  // no light communication
-         nn.materials[0].shader = null;  // TODO: make it compatible with existing shader
+          nn.materials[0].shader = null;  // TODO: make it compatible with existing shader
       }
       else{
          nn.materials[0].shader = this.lightShader;
          nn.materials[0].SetColor("_Color", this.commColor[this.commType]);
          nn.materials[0].SetColor("_MKGlowColor", this.commMKGlowColor[this.commType]);
          nn.materials[0].SetColor("_MKGlowTexColor", this.commMKGlowTexColor[this.commType]);
+         nn.materials[0].SetFloat("_MKGlowPower", (float) 4.0);
       }
    }
 
