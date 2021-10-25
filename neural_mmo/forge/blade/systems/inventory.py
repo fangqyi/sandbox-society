@@ -46,18 +46,18 @@ class Inventory:
         return False
 
     def removeItems(self, item_type, item_amount):
-        if self.items[item_type] < item_amount:
-            print("not enough to remove")
+        if item_type not in self.items or self.items[item_type] < item_amount:
+            # print("not enough to remove")
             return False
         else:
             for i in range(item_amount):
-                print("remove: ", item_type)
+                # print("remove: ", item_type)
                 self.items[item_type] = self.items[item_type] - 1
             return True
 
     def insertItems(self, items_list):
         for item_ele in items_list:
-            print("insert: ", item_ele.item_type)
+            # print("insert: ", item_ele.item_type)
             if item_ele.item_type in self.items.keys():
                 self.items[item_ele.item_type] = self.items[item_ele.item_type] + 1
             else:
@@ -101,5 +101,5 @@ def runInventoryTest():
     print("wood tech status:", test_inv.checkWoodTechnologyStatus())
     print("stone tech status:", test_inv.checkStoneTechnologyStatus())
 
-
-runInventoryTest()
+if __name__ == '__main__':
+    runInventoryTest()

@@ -5,6 +5,7 @@ from neural_mmo.forge.blade.core import config
 from neural_mmo.forge.blade.io.stimulus.static import Stimulus
 from neural_mmo.forge.trinity.scripted import baselines
 from neural_mmo.forge.trinity.agent import Agent
+from neural_mmo.forge.trinity.scripted.light_agent import LightAgent
 from neural_mmo.forge.blade.systems.ai import behavior
 from projekt import rllib_wrapper
 
@@ -22,10 +23,11 @@ class RLlibConfig:
    #Restore (overrides resume) will force load a specific checkpoint (e.g. for rendering)
    RESUME      = False
    RESTORE     = 'experiments/CompetitionRound1/Dev_9fe1/checkpoint_001000/checkpoint-1000'
+   RESTORE = False
 
    #Policy specification
-   AGENTS      = [Agent]
-   EVAL_AGENTS = [baselines.Meander, baselines.Forage, baselines.Combat, Agent]
+   AGENTS      = [LightAgent]
+   EVAL_AGENTS = [LightAgent]
    EVALUATE    = False #Reserved param
 
    #Hardware and debug

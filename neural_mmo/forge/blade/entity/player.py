@@ -62,6 +62,9 @@ class Player(entity.Entity):
             return "OFF"
 
     def setLight(self, color):
+        if type(color) == int:
+            self.communication_light = color
+            return
         if color == "OFF":
             self.communication_light = 0
         elif color == "PURPLE":

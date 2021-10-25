@@ -235,9 +235,13 @@ public class Character: UnityModule
       }
 
       // light-based communication
-      if (hist.ContainsKey("light")){
-         object comm = Unpack("light", hist);
+      // foreach (var pair in hist) {
+      //    Debug.Log(pair.Key + ", " + pair.Value);
+      // }
+      if (hist.ContainsKey("communication")){
+         object comm = Unpack("communication", hist);
          object type = Unpack("color", comm);
+         Debug.Log("Recieved color: "+type);
          this.commType = Convert.ToInt32(type);
          updateCommunicationShader();
       }

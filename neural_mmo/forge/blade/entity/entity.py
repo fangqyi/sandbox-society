@@ -71,6 +71,9 @@ class History:
       if self.attack is not None:
          data['attack'] = self.attack
 
+      if self.communication is not None:
+         data['communication'] = self.communication
+
       return data
 
 class Base:
