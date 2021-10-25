@@ -42,7 +42,6 @@ class History:
    def __init__(self, ent):
       self.actions = None
       self.attack  = None
-      self.communication = None
 
       self.origPos     = ent.pos
       self.exploration = 0
@@ -50,6 +49,7 @@ class History:
 
       self.damage    = Static.Entity.Damage(   ent.dataframe, ent.entID)
       self.timeAlive = Static.Entity.TimeAlive(ent.dataframe, ent.entID)
+      self.communication = Static.Entity.Communication(ent.dataframe, ent.entID)
 
       self.lastPos = None
 
@@ -71,8 +71,7 @@ class History:
       if self.attack is not None:
          data['attack'] = self.attack
 
-      if self.communication is not None:
-         data['communication'] = self.communication
+      data['communication'] = {"color": self.communication.val}
 
       return data
 

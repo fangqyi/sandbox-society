@@ -125,8 +125,10 @@ class CompetitionRound1(config.Achievement, SmallMaps):
    def SPAWN(self):
       return self.SPAWN_CONCURRENT
 
-   NENT                    = 128
-   NPOP                    = 1
+   NMOB = 0
+   NENT                    = 1024
+   NPOP                    = 16
+   PLAYER_SPAWN_ATTEMPTS   = 128
 
 class CompetitionRound2(config.Achievement, SmallMaps):
    @property

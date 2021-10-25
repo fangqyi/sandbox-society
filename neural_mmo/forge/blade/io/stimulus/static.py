@@ -75,6 +75,13 @@ class Stimulus(Config):
             self.val = 0
             self.scale = 0.01
 
+      class Communication(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 3
+            self.scale = 1
+
       #Resources -- Redo the max/min scaling. You can't change these
       #after init without messing up the embeddings
       class Food(node.Continuous):
