@@ -1,4 +1,4 @@
-from neural_mmo.forge.trinity.scripted.baselines import Scripted, Combat
+from neural_mmo.forge.trinity.scripted.baselines import Scripted, Combat, Meander
 from neural_mmo.forge.trinity.scripted.io import Observation
 import numpy as np
 
@@ -9,7 +9,7 @@ from neural_mmo.forge.trinity.scripted import io, utils
 
 import random
 
-class LightAgent(Combat): # for some reason, subclassing off Scripted makes the agent not show up
+class LightAgent(Meander): # for some reason, subclassing off Scripted makes the agent not show up
     name = "Light_"
 
     def __call__(self, obs):
@@ -24,15 +24,23 @@ class LightAgent(Combat): # for some reason, subclassing off Scripted makes the 
         # else:
         #     self.signal_yellow()
 
-        chance = 2*(random.randint(0,100)==0)
-        for agent in self.ob.agents:
-            if Observation.attribute(agent, Stimulus.Entity.Communication):
-                if random.randint(0,1) == 0:
-                    chance = 2
-        if Observation.attribute(self.ob.agent, Stimulus.Entity.Communication):
-            chance = 2
+        own_light = Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)
+        thresh = 2
+        seen = {0:0, 1:0, 2:0, 3:0}
+        if own_light:
+            for agent in self.ob.agents:
+                light = Observation.attribute(agent, Stimulus.Entity.Communication)
+                seen[light] += 1
+            if seen[(own_light%3)+1] >= thresh:
+                new_light = (own_light%3)+1
+            else:
+                new_light = own_light
 
-        self.signal(self.config, self.actions, chance)
+        else:
+            new_light = random.randint(1,3) 
+
+        new_light = int(new_light)
+        self.signal(self.config, self.actions, new_light)
 
         return self.actions
 

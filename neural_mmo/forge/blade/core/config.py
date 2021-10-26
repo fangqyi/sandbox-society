@@ -192,6 +192,29 @@ class Config(Template):
 
       return s1 + s2 + s3 + s4
 
+   def SPAWN_ANYWHERE(self):
+      '''Generates spawn positions for new agents
+
+      Default behavior randomly selects a tile position
+      along the borders of the square game map
+
+      Returns:
+         tuple(int, int):
+
+         position:
+            The position (row, col) to spawn the given agent
+      '''
+      #Spawn at edges
+      mmax = self.TERRAIN_CENTER + self.TERRAIN_BORDER
+      mmin = self.TERRAIN_BORDER
+
+      var  = np.random.randint(mmin, mmax)
+      fixed = np.random.randint(mmin, mmax)
+      r, c = int(var), int(fixed)
+      if np.random.rand() > 0.5:
+          r, c = c, r 
+      return (r, c)
+
    @property
    def SPAWN(self):
       return self.SPAWN_CONTINUOUS

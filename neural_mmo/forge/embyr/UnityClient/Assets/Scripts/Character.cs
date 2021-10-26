@@ -86,7 +86,7 @@ public class Character: UnityModule
 
    public void SetColors() {
       this.commColor = new Dictionary<int, Color>();
-      this.commColor.Add(1, hexToColor("D200FF"));
+      this.commColor.Add(1, hexToColor("FF0000"));
       this.commColor.Add(2, hexToColor("FFF70D"));
       this.commColor.Add(3, hexToColor("0100D9"));
 
@@ -241,7 +241,6 @@ public class Character: UnityModule
       if (hist.ContainsKey("communication")){
          object comm = Unpack("communication", hist);
          object type = Unpack("color", comm);
-         Debug.Log("Recieved color: "+type);
          this.commType = Convert.ToInt32(type);
          updateCommunicationShader();
       }

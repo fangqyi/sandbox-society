@@ -121,14 +121,18 @@ class Debug(SmallMaps, config.AllGameSystems):
 
 ### AICrowd competition settings
 class CompetitionRound1(config.Achievement, SmallMaps):
+
    @property
    def SPAWN(self):
-      return self.SPAWN_CONCURRENT
+      return self.SPAWN_ANYWHERE
 
    NMOB = 0
-   NENT                    = 1024
+   NENT                    = 512
    NPOP                    = 16
-   PLAYER_SPAWN_ATTEMPTS   = 128
+   # NSTIM = 10
+   COOPERATIVE = True
+   BASE_HEALTH = 50
+   PLAYER_SPAWN_ATTEMPTS   = 16
 
 class CompetitionRound2(config.Achievement, SmallMaps):
    @property
