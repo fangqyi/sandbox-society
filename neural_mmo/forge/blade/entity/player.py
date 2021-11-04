@@ -46,6 +46,28 @@ class Player(entity.Entity):
     def population(self):
         return self.pop
 
+    def insertItemsIntoInventory(self, items):
+        self.inv.insertItems(items)
+
+    def removeItemsFromInventory(self, item_type, num_items):
+        self.inv.removeItems(item_type, num_items)
+
+    def getSwordStatus(self):
+        small_stone_status, large_boulder_status = self.inv.checkStoneTechnologyStatus()
+        return large_boulder_status
+
+    def getShieldStatus(self):
+        small_stone_status, large_boulder_status = self.inv.checkStoneTechnologyStatus()
+        return small_stone_status
+
+    def getHoeStatus(self):
+        small_stick_status, large_branch_status = self.inv.checkWoodTechnologyStatus()
+        return small_stick_status
+
+    def getImprovedHoeStatus(self):
+        small_stick_status, large_branch_status = self.inv.checkWoodTechnologyStatus()
+        return large_branch_status
+
     def getLightNumeric(self):
         return self.communication_light
 
