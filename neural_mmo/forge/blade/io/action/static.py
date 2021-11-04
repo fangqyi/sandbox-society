@@ -322,6 +322,16 @@ class InventoryRemoval(Node):
       entity.inv.removeItemsFromInventory(itemType, numItems)
       return True
 
+class InventoryItemType(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [ItemType.SMALL_STICK, ItemType.SMALL_ROCK, ItemType.LARGE_BOULDER, ItemType.LARGE_BRANCH]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
 class InventoryItem(Node):
    argType = Fixed
 
