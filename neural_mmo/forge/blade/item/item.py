@@ -2,10 +2,8 @@ from enum import Enum
 
 
 class Item:
-    def __init__(self, item_type, description):
+    def __init__(self, item_type):
         self.item_type = item_type
-        self.description = description
-
 
 class ItemType(Enum):
     RED_BERRY = 1

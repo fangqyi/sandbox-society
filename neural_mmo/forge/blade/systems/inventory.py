@@ -6,6 +6,7 @@ from neural_mmo.forge.blade.systems.equipment import Armor
 class Inventory:
     def __init__(self):
         self.items = dict()
+        self.technology = dict()
 
         # SMALL_STICK = 5
         # LARGE_BRANCH = 6
@@ -67,16 +68,16 @@ class Inventory:
 def runInventoryTest():
     test_inv = Inventory()
     test_inv.insertItems([
-        Item(ItemType.COAL, "lump of coal"),
-        Item(ItemType.COAL, "lump of coal"),
-        Item(ItemType.COAL, "lump of coal"),
-        Item(ItemType.COAL, "lump of coal")
+        Item(ItemType.COAL),
+        Item(ItemType.COAL),
+        Item(ItemType.COAL),
+        Item(ItemType.COAL)
     ])
     test_inv.insertItems([
-        Item(ItemType.GOLD, "gold"),
-        Item(ItemType.DIRT, "dirt"),
-        Item(ItemType.DIRT, "dirt"),
-        Item(ItemType.IRON, "iron")
+        Item(ItemType.GOLD),
+        Item(ItemType.DIRT),
+        Item(ItemType.DIRT),
+        Item(ItemType.IRON)
     ])
     print("has 4 coal:", test_inv.hasItems(ItemType.COAL, 4))
     print("has 6 coal:", test_inv.hasItems(ItemType.COAL, 6))
@@ -86,16 +87,16 @@ def runInventoryTest():
     print("small stick amount:", test_inv.getItemAmount(ItemType.SMALL_STICK))
     print("wood tech status:", test_inv.checkWoodTechnologyStatus())
     test_inv.insertItems([
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick"),
-        Item(ItemType.SMALL_STICK, "small stick")
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK),
+        Item(ItemType.SMALL_STICK)
     ])
     print("small stick amount:", test_inv.getItemAmount(ItemType.SMALL_STICK))
     print("wood tech status:", test_inv.checkWoodTechnologyStatus())
