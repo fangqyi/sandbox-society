@@ -302,6 +302,26 @@ class InventoryInsertion(Node):
       entity.inv.insertItemsIntoInventory(items)
       return True
 
+class InventoryRemoval(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, itemType, numItems):
+      entity.inv.removeItemsFromInventory(itemType, numItems)
+      return True
+
 class InventoryItem(Node):
    argType = Fixed
 
