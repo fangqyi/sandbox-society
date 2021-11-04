@@ -1,6 +1,7 @@
 from pdb import set_trace as T
 import numpy as np
 
+from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge.blade.lib import utils, material
 from neural_mmo.forge.blade.lib.utils import staticproperty
 from neural_mmo.forge.blade.io.node import Node, NodeType
@@ -281,13 +282,32 @@ class TechnologyStatus(Node):
       entity.history.technology.update([sword_status, shield_status, hoe_status, improved_hoe_status])
       return True
 
+class InventoryInsertion(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
 
-class Technology(Node):
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, items):
+      entity.inv.insertItemsIntoInventory(items)
+      return True
+
+class InventoryItem(Node):
    argType = Fixed
 
    @staticproperty
    def edges():
-      return [True, False]
+      return [Item(ItemType.SMALL_STICK), Item(ItemType.SMALL_ROCK), Item(ItemType.LARGE_BOULDER), Item(ItemType.LARGE_BRANCH)]
 
    def args(stim, entity, config):
       return Direction.edges
