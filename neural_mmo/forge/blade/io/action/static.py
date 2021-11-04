@@ -256,6 +256,42 @@ class Light(Node):
    def args(stim, entity, config):
       return Direction.edges
 
+class TechnologyStatus(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity):
+      sword_status = entity.getSwordStatus()
+      shield_status = entity.getShieldStatus()
+      hoe_status = entity.getHoeStatus()
+      improved_hoe_status = entity.getImprovedHoeStatus()
+
+      entity.history.technology.update([sword_status, shield_status, hoe_status, improved_hoe_status])
+      return True
+
+
+class Technology(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [True, False]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
 #TODO: Add communication
 class Message:
    pass
