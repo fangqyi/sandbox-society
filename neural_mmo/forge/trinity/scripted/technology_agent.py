@@ -1,20 +1,15 @@
 from neural_mmo.forge.blade.item.item import ItemType, Item
-from neural_mmo.forge.trinity.scripted.baselines import Scripted, Combat, Meander
-from neural_mmo.forge.trinity.scripted.io import Observation
-import numpy as np
-
-from neural_mmo.forge.blade.io.stimulus.static import Stimulus
+from neural_mmo.forge.trinity.scripted.baselines import Meander
 from neural_mmo.forge.blade.io.action import static as Action
-
-from neural_mmo.forge.trinity.scripted import io, utils
-
-import random
 
 class TechnologyAgent(Meander):
     name = "Technology_"
 
     def __call__(self, obs):
         super().__call__(obs)
+
+        self.insertIntoInventory(self.config, self.actions, "SMALL_STICK", 20)
+        self.testTechnology(self.config, self.actions)
 
         return self.actions
 
@@ -47,3 +42,6 @@ class TechnologyAgent(Meander):
             itemType = ItemType.SMALL_STICK
 
         actions[Action.InventoryRemoval] = {Action.ItemType: itemType, numItems: numItems}
+
+    def testTechnology(self, config, actions):
+        actions[Action.TechnologyStatus] = {}

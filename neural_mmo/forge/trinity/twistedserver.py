@@ -90,6 +90,7 @@ class GodswordServerProtocol(WebSocketServerProtocol):
            print('SENDING OVERLAY: ', len(packet['overlay']))
 
         packet = json.dumps(packet).encode('utf8')
+
         self.sendMessage(packet, False)
 
 class WSServerFactory(WebSocketServerFactory):
@@ -113,6 +114,8 @@ class WSServerFactory(WebSocketServerFactory):
         if delta > 0:
            time.sleep(delta)
         self.time = time.time()
+
+        print(packet["player"][1]["history"])
 
         for client in self.clients:
             client.sendUpdate(packet)

@@ -274,13 +274,22 @@ class TechnologyStatus(Node):
       return True
 
    def call(env, entity):
+      entity.history.sword_status = 0
+      entity.history.shield_status = 0
+      entity.history.hoe_status = 0
+      entity.history.improved_hoe_status = 0
+
       sword_status = entity.getSwordStatus()
       shield_status = entity.getShieldStatus()
       hoe_status = entity.getHoeStatus()
       improved_hoe_status = entity.getImprovedHoeStatus()
-
-      entity.history.technology.update([sword_status, shield_status, hoe_status, improved_hoe_status])
-      return True
+      # print(sword_status, shield_status, hoe_status, improved_hoe_status)
+      entity.history.sword_status = 1 if sword_status else 0
+      entity.history.shield_status = 1 if shield_status else 0
+      entity.history.hoe_status = 1 if hoe_status else 0
+      entity.history.improved_hoe_status = 1 if improved_hoe_status else 0
+      # print(entity.history.hoe_status.getVal(), entity.history.shield_status.getVal())
+      return sword_status, shield_status, hoe_status, improved_hoe_status
 
 class InventoryInsertion(Node):
    priority = 0
@@ -299,7 +308,7 @@ class InventoryInsertion(Node):
       return True
 
    def call(env, entity, items):
-      entity.inv.insertItemsIntoInventory(items)
+      entity.inv.insertItems(items)
       return True
 
 class InventoryRemoval(Node):
@@ -319,7 +328,7 @@ class InventoryRemoval(Node):
       return True
 
    def call(env, entity, itemType, numItems):
-      entity.inv.removeItemsFromInventory(itemType, numItems)
+      entity.inv.removeItems(itemType, numItems)
       return True
 
 class InventoryItemType(Node):

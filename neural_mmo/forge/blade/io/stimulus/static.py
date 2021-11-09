@@ -89,6 +89,9 @@ class Stimulus(Config):
             self.max = 1
             self.scale = 1
 
+         def getVal(self):
+            return self.val
+
       #Resources -- Redo the max/min scaling. You can't change these
       #after init without messing up the embeddings
       class Food(node.Continuous):

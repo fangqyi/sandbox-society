@@ -16,7 +16,7 @@ class Inventory:
     def checkStoneTechnologyStatus(self):
         small_rock_status = False
         large_boulder_status = False
-        small_rock_amount = self.getItemAmount(ItemType.SMALL_STICK)
+        small_rock_amount = self.getItemAmount(ItemType.SMALL_ROCK)
         if small_rock_amount >= 10:
             small_rock_status = True
         large_boulder_amount = self.getItemAmount(ItemType.LARGE_BOULDER)
