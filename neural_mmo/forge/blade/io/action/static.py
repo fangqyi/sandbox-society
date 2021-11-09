@@ -244,6 +244,7 @@ class Signal(Node):
    def call(env, entity, light):
       entity.setLight(light)
       entity.history.communication.update(entity.getLightNumeric())
+
       return light
 
 
@@ -274,21 +275,14 @@ class TechnologyStatus(Node):
       return True
 
    def call(env, entity):
-      entity.history.sword_status = 0
-      entity.history.shield_status = 0
-      entity.history.hoe_status = 0
-      entity.history.improved_hoe_status = 0
-
       sword_status = entity.getSwordStatus()
       shield_status = entity.getShieldStatus()
       hoe_status = entity.getHoeStatus()
       improved_hoe_status = entity.getImprovedHoeStatus()
-      # print(sword_status, shield_status, hoe_status, improved_hoe_status)
-      entity.history.sword_status = 1 if sword_status else 0
-      entity.history.shield_status = 1 if shield_status else 0
-      entity.history.hoe_status = 1 if hoe_status else 0
-      entity.history.improved_hoe_status = 1 if improved_hoe_status else 0
-      # print(entity.history.hoe_status.getVal(), entity.history.shield_status.getVal())
+      entity.history.sword_status.update(1 if sword_status else 0)
+      entity.history.shield_status.update(1 if shield_status else 0)
+      entity.history.hoe_status.update(1 if hoe_status else 0)
+      entity.history.improved_hoe_status.update(1 if improved_hoe_status else 0)
       return sword_status, shield_status, hoe_status, improved_hoe_status
 
 class InventoryInsertion(Node):

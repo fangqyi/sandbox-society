@@ -76,6 +76,12 @@ class History:
          data['attack'] = self.attack
 
       data['communication'] = {"color": self.communication.val}
+      data['technologyStatus'] = {
+         "sword_status": self.sword_status.val,
+         "shield_status": self.shield_status.val,
+         "hoe_status": self.hoe_status.val,
+         "improved_hoe_status": self.improved_hoe_status.val
+      }
 
       return data
 
