@@ -82,7 +82,37 @@ class Stimulus(Config):
             self.max = 3
             self.scale = 1
 
-      class Technology(node.Discrete):
+      class SmallStoneTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class LargeBoulderTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class SmallStickTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class LargeBranchTechnology(node.Discrete):
          def init(self, config):
             self.val = 0
             self.min = 0

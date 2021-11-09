@@ -50,10 +50,10 @@ class History:
       self.damage    = Static.Entity.Damage(   ent.dataframe, ent.entID)
       self.timeAlive = Static.Entity.TimeAlive(ent.dataframe, ent.entID)
       self.communication = Static.Entity.Communication(ent.dataframe, ent.entID)
-      self.sword_status = Static.Entity.Technology(ent.dataframe, ent.entID)
-      self.shield_status = Static.Entity.Technology(ent.dataframe, ent.entID)
-      self.hoe_status = Static.Entity.Technology(ent.dataframe, ent.entID)
-      self.improved_hoe_status = Static.Entity.Technology(ent.dataframe, ent.entID)
+      self.sword_status = Static.Entity.LargeBoulderTechnology(ent.dataframe, ent.entID)
+      self.shield_status = Static.Entity.SmallStoneTechnology(ent.dataframe, ent.entID)
+      self.hoe_status = Static.Entity.SmallStickTechnology(ent.dataframe, ent.entID)
+      self.improved_hoe_status = Static.Entity.LargeBranchTechnology(ent.dataframe, ent.entID)
 
       self.lastPos = None
 
