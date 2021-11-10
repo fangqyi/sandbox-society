@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from pdb import set_trace as T
 
 from neural_mmo.forge.blade.systems import ai, equipment
@@ -100,16 +101,19 @@ class Player(entity.Entity):
 
 
     def applyDamage(self, dmg, style): # ADD INVENTORY INTERACTION
-        self.resources.food.increment(dmg)
-        self.resources.water.increment(dmg)
+        hoe_status = self.getHoeStatus()
+        improved_hoe_status = self.getImprovedHoeStatus()
+        chance = 0.5
+        if hoe_status:
+            chance = 0.75
+        if improved_hoe_status:
+            chance = 1.0
+
+        if chance >= random.uniform(0, 1):
+            self.resources.food.increment(dmg)
+            self.resources.water.increment(dmg)
+
         self.skills.applyDamage(dmg, style)
-        self.inv.insertItems([
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold")
-        ])
 
     def receiveDamage(self, source, dmg): # ADD INVENTORY INTERACTION
         if not super().receiveDamage(source, dmg):
