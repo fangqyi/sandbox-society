@@ -55,4 +55,3 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
 
     def signal(self, config, actions, light):
         actions[Action.Signal] = {Action.Light: light}
-        # actions["comm"] = light

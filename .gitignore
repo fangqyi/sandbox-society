@@ -3,7 +3,7 @@
 *.swo
 *.swp
 baselines/models/current/*
-# neural_mmo/forge/embyr
+neural_mmo/forge/embyr/LegacyWebClient
 docs/source/resource/maps/
 docs/source/autodoc/
 .idea
