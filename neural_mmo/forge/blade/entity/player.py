@@ -101,17 +101,17 @@ class Player(entity.Entity):
 
 
     def applyDamage(self, dmg, style): # ADD INVENTORY INTERACTION
-        hoe_status = self.getHoeStatus()
-        improved_hoe_status = self.getImprovedHoeStatus()
-        chance = 0.5
-        if hoe_status:
-            chance = 0.75
-        if improved_hoe_status:
-            chance = 1.0
-
-        if chance >= random.uniform(0, 1):
-            self.resources.food.increment(dmg)
-            self.resources.water.increment(dmg)
+        # hoe_status = self.getHoeStatus()
+        # improved_hoe_status = self.getImprovedHoeStatus()
+        # chance = 0.5
+        # if hoe_status:
+        #     chance = 0.75
+        # if improved_hoe_status:
+        #     chance = 1.0
+        #
+        # if chance >= random.uniform(0, 1):
+        self.resources.food.increment(dmg)
+        self.resources.water.increment(dmg)
 
         self.skills.applyDamage(dmg, style)
 
