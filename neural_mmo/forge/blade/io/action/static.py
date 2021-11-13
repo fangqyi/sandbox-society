@@ -303,6 +303,15 @@ class InventoryInsertion(Node):
 
    def call(env, entity, items):
       entity.inv.insertItems(items)
+      for item in items:
+         if item.getType() == ItemType.SMALL_ROCK:
+            entity.history.small_rocks.editVal(1)
+         if item.getType() == ItemType.SMALL_STICK:
+            entity.history.small_sticks.editVal(1)
+         if item.getType() == ItemType.LARGE_BOULDER:
+            entity.history.large_boulders.editVal(1)
+         if item.getType() == ItemType.LARGE_BRANCH:
+            entity.history.large_branches.editVal(1)
       return True
 
 class InventoryRemoval(Node):
@@ -323,6 +332,15 @@ class InventoryRemoval(Node):
 
    def call(env, entity, itemType, numItems):
       entity.inv.removeItems(itemType, numItems)
+      if itemType == ItemType.SMALL_ROCK:
+         entity.history.small_rocks.editVal(-numItems)
+      if itemType == ItemType.SMALL_STICK:
+         entity.history.small_sticks.editVal(-numItems)
+      if itemType == ItemType.LARGE_BOULDER:
+         entity.history.large_boulders.editVal(-numItems)
+      if itemType == ItemType.LARGE_BRANCH:
+         entity.history.large_branches.editVal(-numItems)
+
       return True
 
 class InventoryItemType(Node):

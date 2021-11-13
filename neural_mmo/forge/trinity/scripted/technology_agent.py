@@ -40,7 +40,7 @@ class TechnologyAgent(Meander):
 
         if shield_status == 1.0 or sword_status == 1.0 or hoe_status == 1.0 or improved_hoe_status == 1.0:
             print("obtained tech")
-            self.testTechnology(self.config, self.actions)
+            self.checkTechnology(self.config, self.actions)
 
         if shield_status == 1.0 and sword_status == 1.0 and hoe_status == 1.0 and improved_hoe_status == 1.0:
             print("resetting technology")
@@ -48,7 +48,7 @@ class TechnologyAgent(Meander):
             self.removeFromInventory(self.config, self.actions, "SMALL_ROCK", 1)
             self.removeFromInventory(self.config, self.actions, "LARGE_BRANCH", 1)
             self.removeFromInventory(self.config, self.actions, "SMALL_STICK", 1)
-            self.testTechnology(self.config, self.actions)
+            self.checkTechnology(self.config, self.actions)
 
         return self.actions
 
@@ -82,5 +82,8 @@ class TechnologyAgent(Meander):
 
         actions[Action.InventoryRemoval] = {Action.ItemType: itemType, numItems: numItems}
 
-    def testTechnology(self, config, actions):
+    def checkTechnology(self, config, actions):
+        actions[Action.TechnologyStatus] = {}
+
+    def giveItems(self, config, actions, emtity):
         actions[Action.TechnologyStatus] = {}

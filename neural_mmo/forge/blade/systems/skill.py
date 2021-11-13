@@ -207,9 +207,9 @@ class Hunting(Skill):
       if improved_hoe_status:
           chance = 1.0
 
+      restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
+      restore = np.floor(restore * self.level)
       if chance >= random.uniform(0, 1):
-         restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
-         restore = np.floor(restore * self.level)
          food.increment(restore)
 
 
