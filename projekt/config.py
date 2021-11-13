@@ -129,6 +129,7 @@ class CompetitionRound1(config.Achievement, SmallMaps):
    NMOB = 0
    NENT                    = 512
    NPOP                    = 16
+   TERRAIN_CENTER          = 64
    # NSTIM = 10
    COOPERATIVE = True
    BASE_HEALTH = 50

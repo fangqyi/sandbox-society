@@ -22,7 +22,7 @@ public class Character: UnityModule
    
    // light communication 
    public Shader lightShader;
-   public int commType;
+   public uint commType;
    public Dictionary<int, Color> commColor;
    public Dictionary<int, Color> commMKGlowColor;
    public Dictionary<int, Color> commMKGlowTexColor;
@@ -241,7 +241,7 @@ public class Character: UnityModule
       if (hist.ContainsKey("communication")){
          object comm = Unpack("communication", hist);
          object type = Unpack("color", comm);
-         this.commType = Convert.ToInt32(type);
+         this.commType = Convert.ToUInt32(type);
          updateCommunicationShader();
       }
    }
@@ -251,20 +251,19 @@ public class Character: UnityModule
          this.lightShader = Shader.Find("MK/Glow/Selective/Legacy/Transparent/Diffuse");
       }
       MeshRenderer nn = this.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
-      //this.commType = 3;
 
-      if (this.commColor == null) {  // initialize color dictionary
-         this.SetColors();
-      }
+      // if (this.commColor == null) {  // initialize color dictionary
+      //    this.SetColors();
+      // }
 
       if (this.commType == 0){  // no light communication
           nn.materials[0].shader = null;  // TODO: make it compatible with existing shader
       }
       else{
          nn.materials[0].shader = this.lightShader;
-         nn.materials[0].SetColor("_Color", this.commColor[this.commType]);
-         nn.materials[0].SetColor("_MKGlowColor", this.commMKGlowColor[this.commType]);
-         nn.materials[0].SetColor("_MKGlowTexColor", this.commMKGlowTexColor[this.commType]);
+         nn.materials[0].SetColor("_Color", intToColor(this.commType));
+         nn.materials[0].SetColor("_MKGlowColor", intToColor(this.commType));
+         nn.materials[0].SetColor("_MKGlowTexColor", intToColor(this.commType));
          nn.materials[0].SetFloat("_MKGlowPower", (float) 4.0);
       }
    }
@@ -303,4 +302,12 @@ public class Character: UnityModule
       }
       return new Color32(r, g, b, a);
    }
+
+   public static Color intToColor(uint aCol)
+    {
+        byte b = (byte)((aCol) & 0xFF);
+        byte g = (byte)((aCol>>8) & 0xFF);
+        byte r = (byte)((aCol>>16) & 0xFF);
+        return new Color32(r, g, b, 255);
+    }
 }
