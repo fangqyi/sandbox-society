@@ -73,7 +73,7 @@ class TechnologyAgent(Meander):
     def removeFromInventory(self, config, actions, type, numItems):
         itemType = ItemType.SMALL_ROCK
 
-        if type == "large LARGE_BOULDER":
+        if type == "LARGE_BOULDER":
             itemType = ItemType.LARGE_BOULDER
         elif type == "LARGE_BRANCH":
             itemType = ItemType.LARGE_BRANCH
@@ -85,5 +85,20 @@ class TechnologyAgent(Meander):
     def checkTechnology(self, config, actions):
         actions[Action.TechnologyStatus] = {}
 
-    def giveItems(self, config, actions, emtity):
-        actions[Action.TechnologyStatus] = {}
+    def giveItems(self, config, actions, entity, type, numItems):
+        self.removeFromInventory(config, actions, type, numItems)
+        item = Item(ItemType.SMALL_ROCK)
+
+        if type == "LARGE_BOULDER":
+            item = Item(ItemType.LARGE_BOULDER)
+        elif type == "SMALL_STICK":
+            item = Item(ItemType.SMALL_STICK)
+        elif type == "LARGE_BRANCH":
+            item = Item(ItemType.LARGE_BRANCH)
+
+        items = []
+
+        for i in range(numItems):
+            items.append(item)
+
+        actions[Action.GiveItems] = {entity: entity, Action.ItemType: itemType, numItems: numItems}

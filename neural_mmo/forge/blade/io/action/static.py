@@ -376,3 +376,31 @@ class BecomeSkynet:
    pass
 
 Action.hook()
+
+class GiveItems(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, itemType, numItems):
+      entity.inv.insertItems(itemType, numItems)
+      if itemType == ItemType.SMALL_ROCK:
+         entity.history.small_rocks.editVal(numItems)
+      if itemType == ItemType.SMALL_STICK:
+         entity.history.small_sticks.editVal(numItems)
+      if itemType == ItemType.LARGE_BOULDER:
+         entity.history.large_boulders.editVal(numItems)
+      if itemType == ItemType.LARGE_BRANCH:
+         entity.history.large_branches.editVal(numItems)
+      return True
