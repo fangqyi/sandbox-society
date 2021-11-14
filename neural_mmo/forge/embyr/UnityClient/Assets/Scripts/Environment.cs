@@ -7,8 +7,9 @@ using Unity.Rendering;
 using Unity.Mathematics;
 using Unity.Entities.UniversalDelegates;
 using System.Linq;
+using Random=UnityEngine.Random;
 
-public class Tree
+public class Tree : MonoBehaviour
 {
     public int id;
     public int treeId;
@@ -20,20 +21,20 @@ public class Tree
     static private string filepath = "Low Poly Isometric Tiles - Cartoon Pack/Prefabs/Trees/";
     static private int numTreePrefabs = 17;
     static private int numScrubPrefabs = 1;
-    static private List<Prefab> treePrefabs;
-    static private List<Prefab> scrubPrefabs;
+    static private List<GameObject> treePrefabs;
+    static private List<GameObject> scrubPrefabs;
 
     static public void LoadPrefabs()
     {
-        treePrefabs = new List<Prefab>();
+        treePrefabs = new List<GameObject>();
         for (int i = 0; i < numTreePrefabs; i++)
         {
-            treePrefabs.Add(Resources.Load(filepath + "Tree_" + i) as Prefab);
+            treePrefabs.Add(Resources.Load(filepath + "Tree_" + i) as GameObject);
         }
-        scrubPrefabs = new List<Prefab>();
+        scrubPrefabs = new List<GameObject>();
         for (int i = 0; i < numScrubPrefabs; i++)
         {
-            treePrefabs.Add(Resources.Load(filepath + "Tree_trunk_" + i) as Prefab);
+            treePrefabs.Add(Resources.Load(filepath + "Tree_trunk_" + i) as GameObject);
         }
     }
 
@@ -65,7 +66,7 @@ public class Tree
 
 }
 
-public class Stone
+public class Stone : MonoBehaviour
 {
     public int id; //local in the tile
     public int stoneId;
@@ -73,22 +74,22 @@ public class Stone
     public bool alive;
     public Vector3 pos;
     public Quaternion rot;
-    static private List<Prefab> stonePrefabs;
+    static private List<GameObject> stonePrefabs;
     static private string filepath = "tiles_v2/Tiles/Fill parts/Grass/Stone_";
     static private int numScrubPrefabs = 2;
     static public void LoadPrefabs()
     {
-        stonePrefabs = new List<Prefab>();
+        stonePrefabs = new List<GameObject>();
         for (int i = 0; i < numScrubPrefabs; i++)
         {
-            stonePrefabs.Add(Resources.Load(filepath + i) as Prefab);
+            stonePrefabs.Add(Resources.Load(filepath + i) as GameObject);
         }
     }
 
     public Stone(int id, bool status, Vector3 pos, Quaternion rot)
     {
         this.stoneId = Random.Range(0, stonePrefabs.Count);
-        this.alive = staus;
+        this.alive = status;
         this.pos = pos;
         this.rot = rot;
         this.id = id;  // local id in the tile
@@ -114,20 +115,20 @@ public class Stone
     }
 }
 
-public class Stick
+public class Stick : MonoBehaviour
 {
     public GameObject existence;
     public bool isSmall;
-    static private List<Prefab> stickPrefabs;
+    static private List<GameObject> stickPrefabs;
     static private string filepath = "Low Poly Isometric Tiles - Cartoon Pack/Prefabs/Branchs/Branch_";
     static private int numSmallStickPrefabs = 7;
     static private int numLargeStickPrefabs = 19;
     static public void LoadPrefabs()
     {
-        stickPrefabs = new List<Prefab>();
+        stickPrefabs = new List<GameObject>();
         for (int i = 0; i < numLargeStickPrefabs; i++)
         {
-            stickPrefabs.Add(Resources.Load(filepath + i) as Prefab);
+            stickPrefabs.Add(Resources.Load(filepath + i) as GameObject);
         }
     }
 
@@ -143,27 +144,27 @@ public class Stick
     }
 }
 
-public class Pebble
+public class Pebble : MonoBehaviour
 {
     public GameObject existence;
     public bool isSmall;
-    static private List<Prefab> smallPebblePrefabs;
-    static private List<Prefab> largePebblePrefabs;
+    static private List<GameObject> smallPebblePrefabs;
+    static private List<GameObject> largePebblePrefabs;
     static private string largePebbleFilepath = "Low Poly Isometric Tiles - Cartoon Pack/Prefabs/Stones/Sets/Stones_";
     static private string smallPebbleFilepath = "Low Poly Isometric Tiles - Cartoon Pack/Prefabs/Stones/Stone_";
-    static private int numSmallStickPrefabs = 40;
+    static private int numSmallPebblePrefabs = 40;
     static private int numLargePebblePrefabs = 2;
     static public void LoadPrefabs()
     {
-        largePebblePrefabs = new List<Prefab>();
+        largePebblePrefabs = new List<GameObject>();
         for (int i = 0; i < numLargePebblePrefabs; i++)
         {
-            largePebblePrefabs.Add(Resources.Load(largePebbleFilepath + i) as Prefab);
+            largePebblePrefabs.Add(Resources.Load(largePebbleFilepath + i) as GameObject);
         }
-        smallPebblePrefabs = new List<Prefab>();
+        smallPebblePrefabs = new List<GameObject>();
         for (int i = 0; i < numSmallPebblePrefabs; i++)
         {
-            smallPebblePrefabs.Add(Resources.Load(smallPebbleFilepath + i) as Prefab);
+            smallPebblePrefabs.Add(Resources.Load(smallPebbleFilepath + i) as GameObject);
         }
     }
 
@@ -179,7 +180,7 @@ public class Pebble
     }
 }
 
-public class Tile
+public class Tile : MonoBehaviour
 {
     public string name;
     public GameObject top;
@@ -198,9 +199,11 @@ public class Tile
 
     private bool randomizeFillChilds = true;
 
-    static private List<Prefab> topParts;
-    static private List<Prefab> mainParts;
-    static private List<Prefab> fillParts;
+    static private List<GameObject> topParts;
+    static private int numTopParts = 7;
+    static private List<GameObject> mainParts;
+    static private List<GameObject> fillParts;
+    static private int numFillParts = 9;
     static private Material water;
 
     static private int lavaVal = 0;  //legacy
@@ -214,38 +217,38 @@ public class Tile
 
     static public void LoadTileParts()
     {
-        topParts = new List<Prefab>();
-        mainParts = new List<Prefab>();
-        fillParts = new List<Prefab>();
+        topParts = new List<GameObject>();
+        mainParts = new List<GameObject>();
+        fillParts = new List<GameObject>();
 
         string topPathname = "tiles_v2/Tiles/Top parts/Big/Top_Big_0_";
         string mainPathname = "tiles_v2/Tiles/Main parts/Big/Main_Big_0";
         string fillPathname = "tiles_v2/Tiles/Fill parts/Grass/Only Grass/Fill_Grass_";
 
         //Load top tile parts
-        for (int i = 0; i < this.numTopParts; i++)
+        for (int i = 0; i < numTopParts; i++)
         {
-            this.topParts.Add(Resources.Load(topPathname + i) as Prefab);
+            topParts.Add(Resources.Load(topPathname + i) as GameObject);
         }
 
         //Load brick tile part
-        this.mainParts.Add(Resources.Load(mainPathname) as Prefab);
+        mainParts.Add(Resources.Load(mainPathname) as GameObject);
 
         //Load fill tile parts, including grass
         for (int i = 0; i < numFillParts; i++)
         {
-            this.fillParts.Add(Resources.Load(fillPathname + i) as Prefab);
+            fillParts.Add(Resources.Load(fillPathname + i) as GameObject);
         }
 
         //Load water material
-        this.water = Resources.Load("Material/Water") as Material;
+        water = Resources.Load("Material/Water") as Material;
     }
 
     public Tile(string name, int val, Vector3 spawnPos)
     {
         this.name = name;
         this.pos = spawnPos;
-        this.topId = Random.Range(0, this.topParts.Count);
+        this.topId = Random.Range(0, topParts.Count);
         this.top = Instantiate(topParts[this.topId], spawnPos, new Quaternion());
         this.mainId = Random.Range(0, mainParts.Count);
         this.main = Instantiate(mainParts[this.mainId], top.transform);
@@ -262,15 +265,12 @@ public class Tile
                     fill.transform.GetChild(i).gameObject.SetActive(Random.Range(0, 2) == 0 ? false : true);
                     if (fill.transform.GetChild(i).gameObject.activeSelf)
                     {
-                        if (randomizeChildsRotation)
-                        {
-                            fill.transform.GetChild(i).localEulerAngles = new Vector3(0, Random.Range(0f, 360f), 0);
-                        }
+                        fill.transform.GetChild(i).localEulerAngles = new Vector3(0, Random.Range(0f, 360f), 0);
                     }
-                    else
-                    {
-                        toDestroy.Add(fill.transform.GetChild(i).gameObject);
-                    }
+                    //else
+                    //{
+                    //    toDestroy.Add(fill.transform.GetChild(i).gameObject);
+                    //}
                 }
             }
         }
@@ -281,13 +281,13 @@ public class Tile
         else if (val == forestVal || val == scrubVal)
         {
             int id = this.trees.Count;
-            Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
+            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
             this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos, 0.1f), rot));
         }
         else if (val == stoneVal)
         {
             int id = this.stones.Count;
-            Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
+            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
             this.stones.Add(new Stone(id, true, this.getUncollisionedSpawnPos(spawnPos, 0.35f), rot));
         }
 
@@ -305,12 +305,12 @@ public class Tile
             foreach (Tree obj in this.trees)
             {
                 obj.Destroy();
-                this.trees.RemoveAll();
+                this.trees.Clear();
             }
             foreach (Stone obj in this.stones)
             {
                 obj.Destroy();
-                this.stones.RemoveAll();
+                this.stones.Clear();
             }
 
             this.fillId = Random.Range(0, fillParts.Count);
@@ -322,15 +322,12 @@ public class Tile
                     fill.transform.GetChild(i).gameObject.SetActive(Random.Range(0, 2) == 0 ? false : true);
                     if (fill.transform.GetChild(i).gameObject.activeSelf)
                     {
-                        if (randomizeChildsRotation)
-                        {
-                            fill.transform.GetChild(i).localEulerAngles = new Vector3(0, Random.Range(0f, 360f), 0);
-                        }
+                        fill.transform.GetChild(i).localEulerAngles = new Vector3(0, Random.Range(0f, 360f), 0);
                     }
-                    else
-                    {
-                        toDestroy.Add(fill.transform.GetChild(i).gameObject);
-                    }
+                    //else
+                    //{
+                    //    toDestroy.Add(fill.transform.GetChild(i).gameObject);
+                    //}
                 }
             }
         }
@@ -345,7 +342,7 @@ public class Tile
             {
                 if (!obj.alive)
                 {
-                    obj.UpdateAliveStatus(True);
+                    obj.UpdateAliveStatus(true);
                     allAlive = false;
                     break;
                 }
@@ -353,8 +350,8 @@ public class Tile
             if (allAlive)
             {
                 int id = this.trees.Count;
-                Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos, 0.1f), rot));
+                Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos, 0.1f), rot));
             }
         }
         else if (val == scrubVal)
@@ -364,7 +361,7 @@ public class Tile
             {
                 if (obj.alive)
                 {
-                    obj.UpdateAliveStatus(False);
+                    obj.UpdateAliveStatus(false);
                     allDead = false;
                     break;
                 }
@@ -381,7 +378,7 @@ public class Tile
             {
                 if (!obj.alive)
                 {
-                    obj.UpdateAliveStatus(True);
+                    obj.UpdateAliveStatus(true);
                     allAlive = false;
                     break;
                 }
@@ -389,8 +386,8 @@ public class Tile
             if (allAlive)
             {
                 int id = this.stones.Count;
-                Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos, 0.35f), rot));
+                Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos, 0.35f), rot));
             }
         }
         else if (val == brokenStoneVal)
@@ -400,7 +397,7 @@ public class Tile
             {
                 if (obj.alive)
                 {
-                    obj.UpdateAliveStatus(False);
+                    obj.UpdateAliveStatus(false);
                     allDead = false;
                     break;
                 }
@@ -426,8 +423,8 @@ public class Tile
     {
         for (int i = 0; i < num; i++)
         {
-            Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
-            this.smallPebbles.Add(new Pebble(true, this.pos + this.getUncollisionedSpawnPos(this.pos, 0.05f), rot));
+            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+            this.smallPebbles.Add(new Pebble(true, this.getUncollisionedSpawnPos(this.pos, 0.05f), rot));
         }
     }
 
@@ -455,8 +452,8 @@ public class Tile
     {
         for (int i = 0; i < num; i++)
         {
-            Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
-            this.largePebbles.Add(new Pebble(true, this.pos + this.getUncollisionedSpawnPos(this.pos, 0.2f), rot));
+            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+            this.largePebbles.Add(new Pebble(true, this.getUncollisionedSpawnPos(this.pos, 0.2f), rot));
         }
     }
 
@@ -484,8 +481,8 @@ public class Tile
     {
         for (int i = 0; i < num; i++)
         {
-            Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
-            this.smallPebbles.Add(new Pebble(true, this.pos + this.getUncollisionedSpawnPos(this.pos, 0.1f), rot));
+            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+            this.smallSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos, 0.1f), rot));
         }
     }
 
@@ -513,8 +510,8 @@ public class Tile
     {
         for (int i = 0; i < num; i++)
         {
-            Quaternion rot = Quaternion.Euler(0.0f, Randon.Range(0.0f, 360.0f), 0.0f);
-            this.largeSticks.Add(new Pebble(true, this.pos + this.getUncollisionedSpawnPos(this.pos, 0.2f), rot));  // TODO: Collision check doesnt work on sticks
+            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+            this.largeSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos, 0.2f), rot));  // TODO: Collision check doesnt work on sticks
         }
     }
 
@@ -536,32 +533,32 @@ public class Tile
         foreach (Tree obj in this.trees)
         {
             obj.Destroy();
-            this.trees.RemoveAll();
+            this.trees.Clear();
         }
         foreach (Stone obj in this.stones)
         {
             obj.Destroy();
-            this.stones.RemoveAll();
+            this.stones.Clear();
         }
         foreach (Pebble obj in this.smallPebbles)
         {
             obj.Destroy();
-            this.smallPebbles.RemoveAll();
+            this.smallPebbles.Clear();
         }
         foreach (Pebble obj in this.largePebbles)
         {
             obj.Destroy();
-            this.largePebbles.RemoveAll();
+            this.largePebbles.Clear();
         }
         foreach (Stick obj in this.smallSticks)
         {
             obj.Destroy();
-            this.smallSticks.RemoveAll();
+            this.smallSticks.Clear();
         }
         foreach (Stick obj in this.largeSticks)
         {
             obj.Destroy();
-            this.largeSticks.RemoveAll();
+            this.largeSticks.Clear();
         }
     }
 
@@ -579,41 +576,41 @@ public class Tile
 
             validPos = true;
 
-            Collider[] colliders = Physics.OverlapSphere(spanPos + pos, obstacleCheckRadius);
+            Collider[] colliders = Physics.OverlapSphere(spawnPos + pos, obstacleCheckRadius);
             foreach (Collider col in colliders)
             {
-                foreach (GameObject obj in this.stones)
+                foreach (Stone obj in this.stones)
                 {
-                    validPos = !(col.tag == obj.tag);
+                    validPos = !(col.tag == obj.existence.tag);
                 }
-                foreach (GameObject obj in this.trees)
+                foreach (Tree obj in this.trees)
                 {
-                    validPos = !(col.tag == obj.tag);
+                    validPos = !(col.tag == obj.existence.tag);
                 }
-                foreach (GameObject obj in this.smallPebbles)
+                foreach (Pebble obj in this.smallPebbles)
                 {
-                    validPos = !(col.tag == obj.tag);
+                    validPos = !(col.tag == obj.existence.tag);
                 }
-                foreach (GameObject obj in this.smallSticks)
+                foreach (Stick obj in this.smallSticks)
                 {
-                    validPos = !(col.tag == obj.tag);
+                    validPos = !(col.tag == obj.existence.tag);
                 }
-                foreach (GameObject obj in this.largePebbles)
+                foreach (Pebble obj in this.largePebbles)
                 {
-                    validPos = !(col.tag == obj.tag);
+                    validPos = !(col.tag == obj.existence.tag);
                 }
-                foreach (GameObject obj in this.largeSticks)
+                foreach (Stick obj in this.largeSticks)
                 {
-                    validPos = !(col.tag == obj.tag);
+                    validPos = !(col.tag == obj.existence.tag);
                 }
             }
 
             if (validPos)
             {
-                return spanPos + pos;
+                return spawnPos + pos;
             }
         }
-        return spanPos + pos;
+        return spawnPos + pos;
     }
 
 }
@@ -630,6 +627,7 @@ public class Environment : MonoBehaviour
     //assembling parts for terrain
 
     public int[,] vals;
+    public Texture2D values;
     Dictionary<string, object> overlays;
     int overlayR;
     int overlayC;
@@ -657,7 +655,7 @@ public class Environment : MonoBehaviour
 
     MeshRenderer renderer;
 
-    bool debug = true; // for local testing
+    bool test = true; // for local testing
 
     private void loadResources()
     {
@@ -702,9 +700,9 @@ public class Environment : MonoBehaviour
         //this.water.transform.pos = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.06f, Consts.MAP_SIZE / 2f - 0.5f);
         //this.lava.transform.localScale       = new Vector3(28.416334661354583f*sz, 1, 28.416334661354583f*sz);
         //this.lava.transform.pos         = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.6f, Consts.MAP_SIZE / 2f - 0.5f);
-        this.cameraAnchor.transform.pos = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
+        this.cameraAnchor.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
         //this.sword.transform.pos        = new Vector3(Consts.MAP_SIZE / 2f, 6f, Consts.MAP_SIZE / 2f);
-        this.light.transform.pos = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
+        this.light.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
 
 
         List<object> map = (List<object>)packet["map"];
@@ -719,7 +717,7 @@ public class Environment : MonoBehaviour
                 List<object> row = this.test == true? null : (List<object>)map[r];
                 for (int c = 0; c < mapSize; c++)
                 {
-                    this.vals[r, c] = System.Convert.ToInt32(this.test == true? this.rand(1, 5): row[c]);
+                    this.vals[r, c] = System.Convert.ToInt32(this.test == true? Random.Range(1, 5): row[c]);
                     Vector3 spawnPos = new Vector3(r, 0, c);  // TODO: FIX?
                     // creates tile
                     tiles.Add(Tuple.Create(r, c), new Tile(r + "_" + c, this.vals[r, c], spawnPos));
@@ -769,9 +767,9 @@ public class Environment : MonoBehaviour
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos = this.test == true? null : (List<object>)resourceSS[i];
-            int r = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
-            int c = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
-            int d = this.test == true? this.rand(1, 5) : System.Convert.ToInt32(pos[2]);
+            int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
+            int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
+            int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
             tiles[Tuple.Create(r, c)].SetSmallStick(d);
         }
 
@@ -780,9 +778,9 @@ public class Environment : MonoBehaviour
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos =this.test == true? null : (List<object>)resourceLS[i];
-            int r = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
-            int c = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
-            int d = this.test == true? this.rand(1, 5) : System.Convert.ToInt32(pos[2]);
+            int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
+            int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
+            int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
             tiles[Tuple.Create(r, c)].SetLargeStick(d);
         }
 
@@ -791,9 +789,9 @@ public class Environment : MonoBehaviour
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos = this.test == true? null : (List<object>)resourceSP[i];
-            int r = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
-            int c = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
-            int d = this.test == true? this.rand(1, 5) : System.Convert.ToInt32(pos[2]);
+            int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
+            int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
+            int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
             tiles[Tuple.Create(r, c)].SetSmallPepple(d);
         }
 
@@ -802,27 +800,37 @@ public class Environment : MonoBehaviour
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos = this.test == true? null : (List<object>)resourceLS[i];
-            int r = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
-            int c = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
-            int d = this.test == true? this.rand(1, 5) : System.Convert.ToInt32(pos[2]);
+            int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
+            int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
+            int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
             tiles[Tuple.Create(r, c)].SetLargePepple(d);
         }
 
         List<object> resourceT = this.test == true? null : (List<object>)packet["resourceTerrain"];
-        cnt = this.test == true? 2 : resourceAT.Count;
+        cnt = this.test == true? 2 : resourceT.Count;
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos = this.test == true? null : (List<object>)resourceT[i];
-            int r = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
-            int c = this.test == true? this.rand(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
-            int d = this.test == true? this.rand(1, 5) : System.Convert.ToInt32(pos[2]);
+            int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
+            int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
+            int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
             tiles[Tuple.Create(r, c)].UpdateStatus(d);
         }
     }
     
-    private int rand(int min, int max){
-        Random rnd = new Random();
-        return rnd.Next(min, max);
+    void Update()
+    {
+      if (this.overlayMatl)
+      {
+         if (this.cmd)
+         {
+            Debug.Log("Setting overlay texture");
+            this.overlayMatl.SetTexture("_Overlay", this.values);
+            this.cmd = false;
+         }
+         // this.overlayMatl.SetVector("_PanParams", new Vector4(cameraR*Consts.CHUNK_SIZE(), cameraC*Consts.CHUNK_SIZE(), this.overlayR, this.overlayC));
+         this.overlayMatl.SetVector("_SizeParams", new Vector4(Consts.TILE_RADIUS(), 0, 0, 0));
+      }
     }
 
 }
