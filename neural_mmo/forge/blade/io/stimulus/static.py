@@ -151,6 +151,26 @@ class Stimulus(Config):
             self.max = config.TERRAIN_SIZE - 1
             self.scale = 0.15
 
+      class SStick(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
+      class LStick(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
+      class SStone(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
+      class LStone(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
 for objName, obj in Stimulus:
    for idx, (attrName, attr) in enumerate(obj):
       attr.index = idx 

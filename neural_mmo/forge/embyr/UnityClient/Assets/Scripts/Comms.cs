@@ -32,6 +32,9 @@ public class Comms: MonoBehaviour
 
    public Dictionary<string, object> GetPacket() {
 		Dictionary<string, object> pkt = this.packet;
+		foreach(KeyValuePair<string, object> pair in pkt) {
+			Debug.Log("Dict key: "+pair.Key);
+		}
 		this.packet = null;
 		return pkt; 
 	}

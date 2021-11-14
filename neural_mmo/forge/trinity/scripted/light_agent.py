@@ -18,7 +18,9 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
         super().__call__(obs)
 
         d = {v:i for i,v in enumerate(self.lights)}
-        own_light = d[Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)]
+        my_ob = Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)
+        print("My ob:", my_ob)
+        own_light = d[my_ob] if my_ob in d else 0
         thresh = 2
         seen = {0:0, 1:0, 2:0, 3:0}
         if own_light:
@@ -34,6 +36,7 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
             new_light = random.randint(1,3) 
 
         new_light = int(new_light)
+        print("new", self.lights[new_light])
         self.signal(self.config, self.actions, self.lights[new_light])
 
         return self.actions

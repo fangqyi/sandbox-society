@@ -189,6 +189,7 @@ class Realm:
       '''Client packet'''
       return {'environment': self.map.repr,
               'resource': self.map.packet,
+              'items': self.map.items,
               'player': self.players.packet,
               'npc': self.npcs.packet}
 

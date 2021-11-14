@@ -15,6 +15,10 @@ class Tile:
       self.c     = Static.Tile.C(realm.dataframe, self.serial, c)
       self.nEnts = Static.Tile.NEnts(realm.dataframe, self.serial)
       self.index = Static.Tile.Index(realm.dataframe, self.serial, 0)
+      self.ssticks = Static.Tile.SStick(realm.dataframe, self.serial, 0)
+      self.lsticks = Static.Tile.LStick(realm.dataframe, self.serial, 0)
+      self.sstones = Static.Tile.SStone(realm.dataframe, self.serial, 0)
+      self.lstones = Static.Tile.LStone(realm.dataframe, self.serial, 0)
 
       realm.dataframe.init(Static.Tile, self.serial, (r, c))
 
@@ -49,6 +53,10 @@ class Tile:
    @property
    def lava(self):
       return self.mat == material.Lava
+
+   @property
+   def items(self):
+      return self.ssticks.val, self.lsticks.val, self.sstones.val, self.lstones.val
 
    @property
    def static(self):
