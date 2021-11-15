@@ -85,12 +85,13 @@ public class Stone
         for (int i = 0; i < numScrubPrefabs; i++)
         {
             stonePrefabs.Add(Resources.Load(filepath + i) as GameObject);
-            stonePrefabs[i].transform.localScale *= 10;
+            stonePrefabs[i].transform.localScale *= 8;
         }
     }
 
     public Stone(int id, bool status, Vector3 pos, Quaternion rot)
     {
+        Debug.Log("Adding a stone to env");
         this.stoneId = Random.Range(0, stonePrefabs.Count);
         this.alive = status;
         this.pos = pos;
@@ -227,7 +228,10 @@ public class Tile
     static private int brokenStoneVal = 7;
     public int maxSpawnAttemptsPerObstacle = 10;
 
-    static private Vector3 magic = new Vector3(0, 15, 0);
+    static private Vector3 magicTree = new Vector3(0, 15, 0);
+    static private Vector3 magicStone = new Vector3(0, -0.05f, 0);
+    static private Vector3 magicFill = new Vector3(0, -0.1f, 0);
+    static private Vector3 magicResources = new Vector3(0, 10.5f, 0);
 
     static public void LoadTileParts()
     {
@@ -280,6 +284,7 @@ public class Tile
         {
             this.fillId = Random.Range(0, fillParts.Count);
             this.fill =GameObject.Instantiate(fillParts[this.fillId], top.transform);
+            this.fill.transform.position += magicFill;
             if (randomizeFillChilds)
             {
                 for (int i = 0; i < fill.transform.childCount; i++)
@@ -298,19 +303,20 @@ public class Tile
         }
         else if (val == waterVal)
         {
-            this.top.GetComponent<MeshRenderer>().materials[0] = water;
+            Debug.Log("Adding water");
+            this.top.GetComponent<MeshRenderer>().material = water;
         }
         else if (val == forestVal || val == scrubVal)
         {
             int id = this.trees.Count;
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos+magic, 0.1f), rot));
+            this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos+magicTree, 0.1f), rot));
         }
         else if (val == stoneVal)
         {
             int id = this.stones.Count;
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.stones.Add(new Stone(id, true, this.getUncollisionedSpawnPos(spawnPos+magic, 0.35f), rot));
+            this.stones.Add(new Stone(id, true, this.getUncollisionedSpawnPos(spawnPos+magicStone, 0.35f), rot));
         }
     }
 
@@ -322,13 +328,13 @@ public class Tile
             foreach (Tree obj in this.trees)
             {
                 obj.Destroy();
-                this.trees.Clear();
             }
+            this.trees.Clear();
             foreach (Stone obj in this.stones)
             {
                 obj.Destroy();
-                this.stones.Clear();
             }
+            this.stones.Clear();
 
             this.fillId = Random.Range(0, fillParts.Count);
             this.fill =GameObject.Instantiate(fillParts[this.fillId], top.transform);
@@ -368,7 +374,7 @@ public class Tile
             {
                 int id = this.trees.Count;
                 Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magic, 0.1f), rot));
+                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.1f), rot));
             }
         }
         else if (val == scrubVal)
@@ -404,7 +410,7 @@ public class Tile
             {
                 int id = this.stones.Count;
                 Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magic, 0.35f), rot));
+                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.35f), rot));
             }
         }
         else if (val == brokenStoneVal)
@@ -427,7 +433,7 @@ public class Tile
     }
 
     public void SetSmallPebble(int num){
-        int delta = this.smallPebbles.Count - num;
+        int delta = num - this.smallPebbles.Count;
         if (delta > 0){
             this.AddSmallPebble(delta);
         }
@@ -441,7 +447,7 @@ public class Tile
         for (int i = 0; i < num; i++)
         {
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.smallPebbles.Add(new Pebble(true, this.getUncollisionedSpawnPos(this.pos, 0.05f), rot));
+            this.smallPebbles.Add(new Pebble(true, this.getUncollisionedSpawnPos(this.pos+magicResources, 0.05f), rot));
         }
     }
 
@@ -456,7 +462,7 @@ public class Tile
     }
 
     public void SetLargePebble(int num){
-        int delta = this.largePebbles.Count - num;
+        int delta = num - this.largePebbles.Count;
         if (delta > 0){
             this.AddLargePebble(delta);
         }
@@ -470,7 +476,7 @@ public class Tile
         for (int i = 0; i < num; i++)
         {
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.largePebbles.Add(new Pebble(true, this.getUncollisionedSpawnPos(this.pos, 0.2f), rot));
+            this.largePebbles.Add(new Pebble(true, this.getUncollisionedSpawnPos(this.pos+magicResources, 0.2f), rot));
         }
     }
 
@@ -485,7 +491,9 @@ public class Tile
     }
     
     public void SetSmallStick(int num){
-        int delta = this.smallSticks.Count - num;
+        Debug.Log("Set small sticks number: "+num);
+        Debug.Log("Current small sticks number: "+this.smallSticks.Count);
+        int delta = num - this.smallSticks.Count;
         if (delta > 0){
             this.AddSmallStick(delta);
         }
@@ -496,15 +504,19 @@ public class Tile
     
     public void AddSmallStick(int num)
     {
+         Debug.Log("Add small sticks number: "+num);
         for (int i = 0; i < num; i++)
         {
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.smallSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos, 0.1f), rot));
+            Debug.Log("small sticks this.pos: " + this.pos);
+            Debug.Log("small sticks pos pos: " + this.getUncollisionedSpawnPos(this.pos, 0.1f));
+            this.smallSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos+magicResources, 0.1f), rot));
         }
     }
 
     public void RemoveSmallStick(int num)
     {
+        Debug.Log("Remove small sticks number: "+num);
         int tot = this.smallSticks.Count;
         for (int i = 0; i < num; i++)
         {
@@ -514,7 +526,7 @@ public class Tile
     }
 
     public void SetLargeStick(int num){
-        int delta = this.largeSticks.Count - num;
+        int delta = num - this.largeSticks.Count;
         if (delta > 0){
             this.AddLargeStick(delta);
         }
@@ -528,7 +540,7 @@ public class Tile
         for (int i = 0; i < num; i++)
         {
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.largeSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos, 0.2f), rot));  // TODO: Collision check doesnt work on sticks
+            this.largeSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos+magicResources, 0.2f), rot));  // TODO: Collision check doesnt work on sticks
         }
     }
 
@@ -552,33 +564,33 @@ public class Tile
         foreach (Tree obj in this.trees)
         {
             obj.Destroy();
-            this.trees.Clear();
         }
+        this.trees.Clear();
         foreach (Stone obj in this.stones)
         {
             obj.Destroy();
-            this.stones.Clear();
         }
+        this.stones.Clear();
         foreach (Pebble obj in this.smallPebbles)
         {
             obj.Destroy();
-            this.smallPebbles.Clear();
         }
+        this.smallPebbles.Clear();
         foreach (Pebble obj in this.largePebbles)
         {
             obj.Destroy();
-            this.largePebbles.Clear();
         }
+        this.largePebbles.Clear();
         foreach (Stick obj in this.smallSticks)
         {
             obj.Destroy();
-            this.smallSticks.Clear();
         }
+        this.smallSticks.Clear();
         foreach (Stick obj in this.largeSticks)
         {
             obj.Destroy();
-            this.largeSticks.Clear();
         }
+        this.largeSticks.Clear();
     }
 
     private Vector3 getUncollisionedSpawnPos(Vector3 spawnPos, float obstacleCheckRadius)
@@ -591,7 +603,7 @@ public class Tile
         {
             spawnAttempts++;
 
-            pos = new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));  // not sure if cover tile
+            pos = new Vector3(Random.Range(-7f, 7f), 0, Random.Range(-7f, 7f));  // not sure if cover tile
 
             validPos = true;
 
@@ -737,7 +749,7 @@ public class Environment : MonoBehaviour
                 List<object> row = this.test == true? null : (List<object>)map[r];
                 for (int c = 0; c < mapSize; c++)
                 {
-                    this.vals[r, c] = System.Convert.ToInt32(this.test == true? Random.Range(1, 5): row[c]);
+                    this.vals[r, c] = System.Convert.ToInt32(this.test == true? Random.Range(1, 6): row[c]);
                     Vector3 spawnPos = new Vector3(tilesize*r, 0, tilesize*c);  // TODO: FIX?
                     // creates tile
                     tiles.Add(Tuple.Create(r, c), new Tile(r + "_" + c, this.vals[r, c], spawnPos));
