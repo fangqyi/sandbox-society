@@ -34,6 +34,11 @@ class Map:
       '''Flat matrix of tile material indices'''
       return [[t.mat.index for t in row] for row in self.tiles]
 
+   @property
+   def items(self):
+      return [[t.items for t in row] for row in self.tiles]
+   
+
    def reset(self, realm, idx):
       '''Reuse the current tile objects to load a new map'''
       self.updateList = set()
