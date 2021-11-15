@@ -198,7 +198,7 @@ class Realm:
       ret = {item_dict[itm]: map_items[itm] for itm in map_items}
       return {**ret,
               'environment': self.map.repr,
-              'resource': self.map.packet,
+              'resourceTerrain': self.map.packet,
               'player': self.players.packet,
               'npc': self.npcs.packet}
 

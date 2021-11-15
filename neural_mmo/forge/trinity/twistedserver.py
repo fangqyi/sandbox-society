@@ -71,7 +71,7 @@ class GodswordServerProtocol(WebSocketServerProtocol):
 
     def sendUpdate(self, data):
         packet               = {}
-        packet['resource']   = data['resource']
+        packet['resourceTerrain']   = data['resourceTerrain']
         packet['player']     = data['player']
         packet['npc']        = data['npc']
         packet['pos']        = data['pos']

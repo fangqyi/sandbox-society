@@ -686,7 +686,7 @@ public class Environment : MonoBehaviour
 
     MeshRenderer renderer;
 
-    bool test = true; // for local testing
+    bool test = false; // for local testing
 
     private void loadResources()
     {

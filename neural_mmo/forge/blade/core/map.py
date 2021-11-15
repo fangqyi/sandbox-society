@@ -26,7 +26,7 @@ class Map:
        '''Packet of degenerate resource states'''
        missingResources = []
        for e in self.updateList:
-           missingResources.append(e.pos)
+           missingResources.append((e.r.val, e.c.val, e.mat.index))
        return missingResources
 
    @property
