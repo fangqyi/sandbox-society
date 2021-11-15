@@ -9,7 +9,7 @@ using Unity.Entities.UniversalDelegates;
 using System.Linq;
 using Random=UnityEngine.Random;
 
-public class Tree : MonoBehaviour
+public class Tree
 {
     public int id;
     public int treeId;
@@ -34,7 +34,7 @@ public class Tree : MonoBehaviour
         scrubPrefabs = new List<GameObject>();
         for (int i = 0; i < numScrubPrefabs; i++)
         {
-            treePrefabs.Add(Resources.Load(filepath + "Tree_trunk_" + i) as GameObject);
+            scrubPrefabs.Add(Resources.Load(filepath + "Tree_trunk_" + i) as GameObject);
         }
     }
 
@@ -46,7 +46,12 @@ public class Tree : MonoBehaviour
         this.pos = pos;
         this.rot = rot;
         this.id = id;  // local id in the tile
-        this.existence = Instantiate((this.alive == true ? treePrefabs[this.treeId] : scrubPrefabs[this.scrubId]), pos, rot) as GameObject;
+        Debug.Log("treePrefab numer: " + treePrefabs.Count);
+        Debug.Log("idx: " + this.treeId);
+        Debug.Log("scrubPrefab numer: " + scrubPrefabs.Count);
+        Debug.Log("idx: " + this.scrubId);
+        Debug.Log("alive: " + this.alive);
+        this.existence = GameObject.Instantiate((this.alive == true ? treePrefabs[this.treeId] : scrubPrefabs[this.scrubId]), pos, rot) as GameObject;
     }
 
     public void UpdateAliveStatus(bool alive)
@@ -55,18 +60,18 @@ public class Tree : MonoBehaviour
         {
             this.alive = alive;
             this.Destroy();
-            this.existence = Instantiate((this.alive == true ? treePrefabs[this.treeId] : scrubPrefabs[this.scrubId]), this.pos, this.rot) as GameObject;
+            this.existence = GameObject.Instantiate((this.alive == true ? treePrefabs[this.treeId] : scrubPrefabs[this.scrubId]), this.pos, this.rot) as GameObject;
         }
     }
 
     public void Destroy()
     {
-        Destroy(this.existence);
+        GameObject.Destroy(this.existence);
     }
 
 }
 
-public class Stone : MonoBehaviour
+public class Stone
 {
     public int id; //local in the tile
     public int stoneId;
@@ -93,7 +98,7 @@ public class Stone : MonoBehaviour
         this.pos = pos;
         this.rot = rot;
         this.id = id;  // local id in the tile
-        this.existence = (this.alive == true ? Instantiate(stonePrefabs[this.stoneId], pos, rot) as GameObject : null);
+        this.existence = (this.alive == true ? GameObject.Instantiate(stonePrefabs[this.stoneId], pos, rot) as GameObject : null);
     }
 
     public void UpdateAliveStatus(bool alive)
@@ -102,7 +107,7 @@ public class Stone : MonoBehaviour
         {
             this.alive = alive;
             this.Destroy();
-            this.existence = (this.alive == true ? Instantiate(stonePrefabs[this.stoneId], pos, rot) as GameObject : null);
+            this.existence = (this.alive == true ? GameObject.Instantiate(stonePrefabs[this.stoneId], pos, rot) as GameObject : null);
         }
     }
 
@@ -110,12 +115,12 @@ public class Stone : MonoBehaviour
     {
         if (this.existence != null)
         {
-            Destroy(this.existence);
+            GameObject.Destroy(this.existence);
         }
     }
 }
 
-public class Stick : MonoBehaviour
+public class Stick
 {
     public GameObject existence;
     public bool isSmall;
@@ -136,15 +141,15 @@ public class Stick : MonoBehaviour
     {
         int stickId = (isSmall ? Random.Range(0, numSmallStickPrefabs) : Random.Range(numSmallStickPrefabs, numLargeStickPrefabs));
         this.isSmall = isSmall;
-        this.existence = Instantiate(stickPrefabs[stickId], pos, rot) as GameObject;
+        this.existence =GameObject.Instantiate(stickPrefabs[stickId], pos, rot) as GameObject;
     }
     public void Destroy()
     {
-        Destroy(this.existence);
+        GameObject.Destroy(this.existence);
     }
 }
 
-public class Pebble : MonoBehaviour
+public class Pebble
 {
     public GameObject existence;
     public bool isSmall;
@@ -172,15 +177,15 @@ public class Pebble : MonoBehaviour
     {
         int pebbleId = (isSmall ? Random.Range(0, numSmallPebblePrefabs) : Random.Range(0, numLargePebblePrefabs));
         this.isSmall = isSmall;
-        this.existence = Instantiate((isSmall ? smallPebblePrefabs[pebbleId] : largePebblePrefabs[pebbleId]), pos, rot) as GameObject;
+        this.existence =GameObject.Instantiate((isSmall ? smallPebblePrefabs[pebbleId] : largePebblePrefabs[pebbleId]), pos, rot) as GameObject;
     }
     public void Destroy()
     {
-        Destroy(this.existence);
+        GameObject.Destroy(this.existence);
     }
 }
 
-public class Tile : MonoBehaviour
+public class Tile
 {
     public string name;
     public GameObject top;
@@ -249,15 +254,22 @@ public class Tile : MonoBehaviour
         this.name = name;
         this.pos = spawnPos;
         this.topId = Random.Range(0, topParts.Count);
-        this.top = Instantiate(topParts[this.topId], spawnPos, new Quaternion());
+        this.top =GameObject.Instantiate(topParts[this.topId], spawnPos, new Quaternion());
         this.mainId = Random.Range(0, mainParts.Count);
-        this.main = Instantiate(mainParts[this.mainId], top.transform);
+        this.main =GameObject.Instantiate(mainParts[this.mainId], top.transform);
         this.fill = null;
+
+        this.trees = new List<Tree>();
+        this.stones = new List<Stone>();
+        this.smallPebbles = new List<Pebble>();
+        this.largePebbles = new List<Pebble>();
+        this.smallSticks = new List<Stick>();
+        this.largeSticks = new List<Stick>();
 
         if (val == grassVal)
         {
             this.fillId = Random.Range(0, fillParts.Count);
-            this.fill = Instantiate(fillParts[this.fillId], top.transform);
+            this.fill =GameObject.Instantiate(fillParts[this.fillId], top.transform);
             if (randomizeFillChilds)
             {
                 for (int i = 0; i < fill.transform.childCount; i++)
@@ -314,7 +326,7 @@ public class Tile : MonoBehaviour
             }
 
             this.fillId = Random.Range(0, fillParts.Count);
-            this.fill = Instantiate(fillParts[this.fillId], top.transform);
+            this.fill =GameObject.Instantiate(fillParts[this.fillId], top.transform);
             if (randomizeFillChilds)
             {
                 for (int i = 0; i < fill.transform.childCount; i++)
@@ -527,9 +539,11 @@ public class Tile : MonoBehaviour
 
     public void DestroyTile()
     {
-        Destroy(this.top);
-        Destroy(this.main);
-        if (this.fill != null) { Destroy(this.fill); }
+        GameObject.Destroy(this.top);
+        GameObject.Destroy(this.main);
+        if (this.fill != null) { 
+            GameObject.Destroy(this.fill); 
+        }
         foreach (Tree obj in this.trees)
         {
             obj.Destroy();
