@@ -46,11 +46,6 @@ public class Tree
         this.pos = pos;
         this.rot = rot;
         this.id = id;  // local id in the tile
-        Debug.Log("treePrefab numer: " + treePrefabs.Count);
-        Debug.Log("idx: " + this.treeId);
-        Debug.Log("scrubPrefab numer: " + scrubPrefabs.Count);
-        Debug.Log("idx: " + this.scrubId);
-        Debug.Log("alive: " + this.alive);
         this.existence = GameObject.Instantiate((this.alive == true ? treePrefabs[this.treeId] : scrubPrefabs[this.scrubId]), pos, rot) as GameObject;
     }
 
@@ -302,11 +297,6 @@ public class Tile
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
             this.stones.Add(new Stone(id, true, this.getUncollisionedSpawnPos(spawnPos, 0.35f), rot));
         }
-
-        this.smallPebbles = new List<Pebble>();
-        this.largePebbles = new List<Pebble>();
-        this.smallSticks = new List<Stick>();
-        this.largeSticks = new List<Stick>();
     }
 
     public void UpdateStatus(int val)
@@ -586,7 +576,7 @@ public class Tile
         {
             spawnAttempts++;
 
-            pos = new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
+            pos = new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));  // not sure if cover tile
 
             validPos = true;
 
