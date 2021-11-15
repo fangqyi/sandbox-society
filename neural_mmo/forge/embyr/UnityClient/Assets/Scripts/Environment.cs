@@ -250,8 +250,9 @@ public class Tile
         this.pos = spawnPos;
         this.topId = Random.Range(0, topParts.Count);
         this.top =GameObject.Instantiate(topParts[this.topId], spawnPos, new Quaternion());
+        this.top.transform.localScale *= 4;
         this.mainId = Random.Range(0, mainParts.Count);
-        this.main =GameObject.Instantiate(mainParts[this.mainId], top.transform);
+        this.main =GameObject.Instantiate(mainParts[this.mainId], this.top.transform);
         this.fill = null;
 
         this.trees = new List<Tree>();
@@ -411,17 +412,17 @@ public class Tile
         }
     }
 
-    public void SetSmallPepple(int num){
+    public void SetSmallPebble(int num){
         int delta = this.smallPebbles.Count - num;
         if (delta > 0){
-            this.AddSmallPepple(delta);
+            this.AddSmallPebble(delta);
         }
         else{
-            this.RemoveSmallPepple(-delta);
+            this.RemoveSmallPebble(-delta);
         }
     }
 
-    public void AddSmallPepple(int num)
+    public void AddSmallPebble(int num)
     {
         for (int i = 0; i < num; i++)
         {
@@ -430,7 +431,7 @@ public class Tile
         }
     }
 
-    public void RemoveSmallPepple(int num)
+    public void RemoveSmallPebble(int num)
     {
         int tot = this.smallPebbles.Count;
         for (int i = 0; i < num; i++)
@@ -440,17 +441,17 @@ public class Tile
         this.smallPebbles.RemoveRange(tot - num, num);
     }
 
-    public void SetLargePepple(int num){
+    public void SetLargePebble(int num){
         int delta = this.largePebbles.Count - num;
         if (delta > 0){
-            this.AddLargePepple(delta);
+            this.AddLargePebble(delta);
         }
         else{
-            this.RemoveLargePepple(-delta);
+            this.RemoveLargePebble(-delta);
         }
     }
 
-    public void AddLargePepple(int num)
+    public void AddLargePebble(int num)
     {
         for (int i = 0; i < num; i++)
         {
@@ -459,7 +460,7 @@ public class Tile
         }
     }
 
-    public void RemoveLargePepple(int num)
+    public void RemoveLargePebble(int num)
     {
         int tot = this.largePebbles.Count;
         for (int i = 0; i < num; i++)
@@ -659,7 +660,7 @@ public class Environment : MonoBehaviour
 
     MeshRenderer renderer;
 
-    bool test = true; // for local testing
+    bool test = false; // for local testing
 
     private void loadResources()
     {
@@ -704,9 +705,9 @@ public class Environment : MonoBehaviour
         //this.water.transform.pos = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.06f, Consts.MAP_SIZE / 2f - 0.5f);
         //this.lava.transform.localScale       = new Vector3(28.416334661354583f*sz, 1, 28.416334661354583f*sz);
         //this.lava.transform.pos         = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.6f, Consts.MAP_SIZE / 2f - 0.5f);
-        this.cameraAnchor.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
+        // this.cameraAnchor.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
         //this.sword.transform.pos        = new Vector3(Consts.MAP_SIZE / 2f, 6f, Consts.MAP_SIZE / 2f);
-        this.light.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
+        // this.light.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
 
 
         List<object> map = (List<object>)packet["map"];
@@ -716,13 +717,14 @@ public class Environment : MonoBehaviour
         {
             this.vals = new int[mapSize, mapSize];
             Debug.Log("Setting val map");
+            int tilesize = Consts.TILE_RADIUS()/4;
             for (int r = 0; r < mapSize; r++)
             {
                 List<object> row = this.test == true? null : (List<object>)map[r];
                 for (int c = 0; c < mapSize; c++)
                 {
                     this.vals[r, c] = System.Convert.ToInt32(this.test == true? Random.Range(1, 5): row[c]);
-                    Vector3 spawnPos = new Vector3(r, 0, c);  // TODO: FIX?
+                    Vector3 spawnPos = new Vector3(tilesize*r, 0, tilesize*c);  // TODO: FIX?
                     // creates tile
                     tiles.Add(Tuple.Create(r, c), new Tile(r + "_" + c, this.vals[r, c], spawnPos));
                 }
@@ -788,7 +790,7 @@ public class Environment : MonoBehaviour
             tiles[Tuple.Create(r, c)].SetLargeStick(d);
         }
 
-        List<object> resourceSP = this.test == true? null : (List<object>)packet["resourceSmallPepples"];
+        List<object> resourceSP = this.test == true? null : (List<object>)packet["resourceSmallPebbles"];
         cnt = this.test == true? 5 : resourceSP.Count;
         for (int i = 0; i < cnt; i++)
         {
@@ -796,10 +798,10 @@ public class Environment : MonoBehaviour
             int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
             int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
             int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
-            tiles[Tuple.Create(r, c)].SetSmallPepple(d);
+            tiles[Tuple.Create(r, c)].SetSmallPebble(d);
         }
 
-        List<object> resourceLP = this.test == true? null : (List<object>)packet["resourceLargePepples"];
+        List<object> resourceLP = this.test == true? null : (List<object>)packet["resourceLargePebbles"];
         cnt = this.test == true? 5 : resourceLP.Count;
         for (int i = 0; i < cnt; i++)
         {
@@ -807,7 +809,7 @@ public class Environment : MonoBehaviour
             int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
             int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
             int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
-            tiles[Tuple.Create(r, c)].SetLargePepple(d);
+            tiles[Tuple.Create(r, c)].SetLargePebble(d);
         }
 
         List<object> resourceT = this.test == true? null : (List<object>)packet["resourceTerrain"];
