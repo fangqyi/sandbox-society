@@ -30,13 +30,13 @@ public class Tree
         for (int i = 0; i < numTreePrefabs; i++)
         {
             treePrefabs.Add(Resources.Load(filepath + "Tree_" + i) as GameObject);
-            treePrefabs[i].transform.localScale *= 10;
+            treePrefabs[i].transform.localScale = new Vector3(.5f, .5f, .5f);
         }
         scrubPrefabs = new List<GameObject>();
         for (int i = 0; i < numScrubPrefabs; i++)
         {
             scrubPrefabs.Add(Resources.Load(filepath + "Tree_trunk_" + i) as GameObject);
-            scrubPrefabs[i].transform.localScale *= 10;
+            scrubPrefabs[i].transform.localScale = new Vector3(.5f, .5f, .5f);
         }
     }
 
@@ -85,7 +85,7 @@ public class Stone
         for (int i = 0; i < numScrubPrefabs; i++)
         {
             stonePrefabs.Add(Resources.Load(filepath + i) as GameObject);
-            stonePrefabs[i].transform.localScale *= 8;
+            stonePrefabs[i].transform.localScale = new Vector3(.4f, .4f, .4f);
         }
     }
 
@@ -138,7 +138,7 @@ public class Stick
         for (int i = 0; i < numLargeStickPrefabs; i++)
         {
             stickPrefabs.Add(Resources.Load(filepath + i) as GameObject);
-            stickPrefabs[i].transform.localScale *= 5;
+            stickPrefabs[i].transform.localScale = new Vector3(.25f, .25f, .25f);;
         }
     }
 
@@ -171,13 +171,13 @@ public class Pebble
         for (int i = 0; i < numLargePebblePrefabs; i++)
         {
             largePebblePrefabs.Add(Resources.Load(largePebbleFilepath + i) as GameObject);
-            largePebblePrefabs[i].transform.localScale *= 5;
+            largePebblePrefabs[i].transform.localScale = new Vector3(.25f, .25f, .25f);
         }
         smallPebblePrefabs = new List<GameObject>();
         for (int i = 0; i < numSmallPebblePrefabs; i++)
         {
             smallPebblePrefabs.Add(Resources.Load(smallPebbleFilepath + i) as GameObject);
-            smallPebblePrefabs[i].transform.localScale *= 5;
+            smallPebblePrefabs[i].transform.localScale = new Vector3(.25f, .25f, .25f);
         }
     }
 
@@ -228,10 +228,10 @@ public class Tile
     static private int brokenStoneVal = 7;
     public int maxSpawnAttemptsPerObstacle = 10;
 
-    static private Vector3 magicTree = new Vector3(0, 15, 0);
-    static private Vector3 magicStone = new Vector3(0, -0.05f, 0);
+    static private Vector3 magicTree = new Vector3(0, 0.5f, 0);
+    static private Vector3 magicStone = new Vector3(0, 0.0f, 0);
     static private Vector3 magicFill = new Vector3(0, -0.1f, 0);
-    static private Vector3 magicResources = new Vector3(0, 10.5f, 0);
+    static private Vector3 magicResources = new Vector3(0, 0.55f, 0);
 
     static public void LoadTileParts()
     {
@@ -268,7 +268,7 @@ public class Tile
         this.pos = spawnPos;
         this.topId = Random.Range(0, topParts.Count);
         this.top =GameObject.Instantiate(topParts[this.topId], spawnPos, new Quaternion());
-        this.top.transform.localScale *= 10;
+        this.top.transform.localScale = new Vector3(.5f, .5f, .5f);
         this.mainId = Random.Range(0, mainParts.Count);
         this.main =GameObject.Instantiate(mainParts[this.mainId], this.top.transform);
         this.fill = null;
@@ -309,8 +309,10 @@ public class Tile
         else if (val == forestVal || val == scrubVal)
         {
             int id = this.trees.Count;
-            Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos+magicTree, 0.1f), rot));
+            if (id < 1) {
+                Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos+magicTree, 0.1f), rot));
+            }
         }
         else if (val == stoneVal)
         {
@@ -373,8 +375,10 @@ public class Tile
             if (allAlive)
             {
                 int id = this.trees.Count;
-                Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.1f), rot));
+                if (id < 1) {
+                    Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+                    this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.1f), rot));
+                }
             }
         }
         else if (val == scrubVal)
@@ -408,7 +412,7 @@ public class Tile
             }
             if (allAlive)
             {
-                int id = this.stones.Count;
+                int id = this.stones.Count; //fixme should be stone below?
                 Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
                 this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.35f), rot));
             }
@@ -713,7 +717,7 @@ public class Environment : MonoBehaviour
         this.overlayMatl = Resources.Load("Prefabs/Tiles/OverlayMaterial") as Material;
         this.overlayMatl.SetTexture("_Overlay", Texture2D.blackTexture);
 
-        //this.water = GameObject.Find("Client/Environment/Water");
+        this.water = GameObject.Find("Client/Environment/Water");
         //this.lava  = GameObject.Find("Client/Environment/LavaCutout");
         //this.sword = GameObject.Find("HeavySword");
         this.light = GameObject.Find("Client/Light");
@@ -727,11 +731,11 @@ public class Environment : MonoBehaviour
 
         this.values = new Texture2D(mapSize, mapSize);
 
-        //this.water.transform.localScale = new Vector3(0.1f * sz, 1, 0.1f * sz);
-        //this.water.transform.pos = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.06f, Consts.MAP_SIZE / 2f - 0.5f);
+        this.water.transform.localScale = new Vector3(0.1f * sz, 1, 0.1f * sz);
+        this.water.transform.position = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.06f, Consts.MAP_SIZE / 2f - 0.5f);
         //this.lava.transform.localScale       = new Vector3(28.416334661354583f*sz, 1, 28.416334661354583f*sz);
         //this.lava.transform.pos         = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.6f, Consts.MAP_SIZE / 2f - 0.5f);
-        // this.cameraAnchor.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
+        this.cameraAnchor.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
         //this.sword.transform.pos        = new Vector3(Consts.MAP_SIZE / 2f, 6f, Consts.MAP_SIZE / 2f);
         // this.light.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
 
@@ -743,14 +747,14 @@ public class Environment : MonoBehaviour
         {
             this.vals = new int[mapSize, mapSize];
             Debug.Log("Setting val map");
-            int tilesize = Consts.TILE_RADIUS()/4;
+            float tilesize = 1f; //Consts.TILE_RADIUS()/4;
             for (int r = 0; r < mapSize; r++)
             {
                 List<object> row = this.test == true? null : (List<object>)map[r];
                 for (int c = 0; c < mapSize; c++)
                 {
                     this.vals[r, c] = System.Convert.ToInt32(this.test == true? Random.Range(1, 6): row[c]);
-                    Vector3 spawnPos = new Vector3(tilesize*r, 0, tilesize*c);  // TODO: FIX?
+                    Vector3 spawnPos = new Vector3(tilesize*r, -tilesize/2, tilesize*c);  // TODO: FIX?
                     // creates tile
                     tiles.Add(Tuple.Create(r, c), new Tile(r + "_" + c, this.vals[r, c], spawnPos));
                 }

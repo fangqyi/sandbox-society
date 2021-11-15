@@ -127,9 +127,9 @@ class CompetitionRound1(config.Achievement, SmallMaps):
       return self.SPAWN_ANYWHERE
 
    NMOB = 0
-   NENT                    = 512
+   NENT                    = 128
    NPOP                    = 16
-   TERRAIN_CENTER          = 64
+   TERRAIN_CENTER          = 32
    # NSTIM = 10
    COOPERATIVE = True
    BASE_HEALTH = 50
