@@ -76,7 +76,9 @@ class GodswordServerProtocol(WebSocketServerProtocol):
         packet['npc']        = data['npc']
         packet['pos']        = data['pos']
         packet['wilderness'] = data['wilderness']
-        packet['items'] = data['items']
+        for s in ["resourceSmallSticks", "resourceLargeSticks",
+                  "resourceSmallPebbles", "resourceLargePebbles"]:
+            packet[s] = data[s]
 
         config = data['config']
 

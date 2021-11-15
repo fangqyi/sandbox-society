@@ -36,7 +36,8 @@ class Map:
 
    @property
    def items(self):
-      return [[t.items for t in row] for row in self.tiles]
+      item_types = self.tiles[0,0].items_dict.keys()
+      return {itm:[(t.r.val, t.c.val, t.items_dict[itm].val) for t in self.updateList] for itm in item_types}
    
 
    def reset(self, realm, idx):

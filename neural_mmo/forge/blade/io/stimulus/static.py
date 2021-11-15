@@ -79,7 +79,7 @@ class Stimulus(Config):
          def init(self, config):
             self.val = 0
             self.min = 0
-            self.max = 3
+            self.max = 0xFFFFFF
             self.scale = 1
 
       #Resources -- Redo the max/min scaling. You can't change these

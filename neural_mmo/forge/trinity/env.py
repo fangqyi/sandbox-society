@@ -15,6 +15,8 @@ from neural_mmo.forge.blade.lib import log
 
 from neural_mmo.forge.trinity.overlay import OverlayRegistry
 
+oldClient = None
+
 class Env:
    '''Environment wrapper for Neural MMO
 
@@ -347,6 +349,7 @@ class Env:
       Returns:
          packet: A packet of data for the client
       '''
+      global oldClient
       #RLlib likes rendering for no reason
       if not self.config.RENDER:
          return 
@@ -365,8 +368,12 @@ class Env:
          self.overlay      = None
 
       if not self.client:
-         from neural_mmo.forge.trinity.twistedserver import Application
-         self.client = Application(self) 
+         if oldClient is not None:
+            self.client = oldClient
+         else:
+            from neural_mmo.forge.trinity.twistedserver import Application
+            self.client = Application(self) 
+            oldClient = self.client
 
       pos, cmd = self.client.update(packet)
       if self.obs:
