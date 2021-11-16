@@ -404,25 +404,31 @@ class PickUpItem(Node):
       tile = env.map.tiles[r, c]
       ssticks, lsticks, sstones, lstones = tile.items
 
+      if ssticks != 0:
+         print("{} small sticks present".format(ssticks))
+
+      if sstones != 0:
+         print("{} small stones present".format(sstones))
+
       for i in range(ssticks):
          tile.removeItem(ItemType.SMALL_STICK)
-         entity.insertItemsIntoInventory(Item(ItemType.SMALL_STICK))
+         entity.insertItemsIntoInventory([Item(ItemType.SMALL_STICK)])
 
       for i in range(sstones):
          tile.removeItem(ItemType.SMALL_ROCK)
-         entity.insertItemsIntoInventory(Item(ItemType.SMALL_ROCK))
+         entity.insertItemsIntoInventory([Item(ItemType.SMALL_ROCK)])
 
       shield_status = entity.getShieldStatus()
       hoe_status = entity.getHoeStatus()
       if hoe_status:
          for i in range(lsticks):
             tile.removeItem(ItemType.LARGE_BRANCH)
-            entity.insertItemsIntoInventory(Item(ItemType.LARGE_BRANCH))
+            entity.insertItemsIntoInventory([Item(ItemType.LARGE_BRANCH)])
 
       if shield_status:
          for i in range(lstones):
             tile.removeItem(ItemType.LARGE_BOULDER)
-            entity.insertItemsIntoInventory(Item(ItemType.LARGE_BOULDER))
+            entity.insertItemsIntoInventory([Item(ItemType.LARGE_BOULDER)])
 
 
 
@@ -445,9 +451,8 @@ class DropItem(Node):
    def call(env, entity):
       r, c  = entity.pos
 
-
       tile = env.map.tiles[r, c]
-      tile.addItem(ItemType.SMALL_ROCK)
+      tile.addItem(ItemType.SMALL_STICK)
       ## entity.inv.removeItems(itemType, 1)
 
 class InventoryItem(Node):
