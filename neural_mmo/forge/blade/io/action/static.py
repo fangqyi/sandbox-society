@@ -382,6 +382,58 @@ class Gather(Node):
          elif type(tile.mat) == material.Tree:
             entity.inv.insertItems(ItemType.SMALL_STICK)
 
+class PickUpItem(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, delta, itemType, numItems):
+      r, c  = entity.pos
+      entID = entity.entID
+      rDelta, cDelta = delta
+      rNew, cNew = r+rDelta, c+cDelta
+
+      tile = env.map.tiles[rNew, cNew]
+      for i in range(numItems):
+         tile.removeItem(itemType)
+
+class DropItem(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, delta, itemType, numItems):
+      r, c  = entity.pos
+      entID = entity.entID
+      rDelta, cDelta = delta
+      rNew, cNew = r+rDelta, c+cDelta
+
+      tile = env.map.tiles[rNew, cNew]
+      for i in range(numItems):
+         tile.addItem(itemType)
+
 class InventoryItem(Node):
    argType = Fixed
 
