@@ -71,11 +71,14 @@ class GodswordServerProtocol(WebSocketServerProtocol):
 
     def sendUpdate(self, data):
         packet               = {}
-        packet['resource']   = data['resource']
+        packet['resourceTerrain']   = data['resourceTerrain']
         packet['player']     = data['player']
         packet['npc']        = data['npc']
         packet['pos']        = data['pos']
         packet['wilderness'] = data['wilderness']
+        for s in ["resourceSmallSticks", "resourceLargeSticks",
+                  "resourceSmallPebbles", "resourceLargePebbles"]:
+            packet[s] = data[s]
 
         config = data['config']
 

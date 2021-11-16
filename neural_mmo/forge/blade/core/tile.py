@@ -1,6 +1,7 @@
 from pdb import set_trace as T
 import numpy as np
 
+from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge.blade.lib import material
 from neural_mmo.forge.blade.io.stimulus import Static
 
@@ -15,6 +16,15 @@ class Tile:
       self.c     = Static.Tile.C(realm.dataframe, self.serial, c)
       self.nEnts = Static.Tile.NEnts(realm.dataframe, self.serial)
       self.index = Static.Tile.Index(realm.dataframe, self.serial, 0)
+      self.ssticks = Static.Tile.SStick(realm.dataframe, self.serial, 0)
+      self.lsticks = Static.Tile.LStick(realm.dataframe, self.serial, 0)
+      self.sstones = Static.Tile.SStone(realm.dataframe, self.serial, 0)
+      self.lstones = Static.Tile.LStone(realm.dataframe, self.serial, 0)
+      self.items_dict = {ItemType.SMALL_STICK: self.ssticks,
+                         ItemType.LARGE_BRANCH: self.lsticks,
+                         ItemType.SMALL_ROCK: self.ssticks,
+                         ItemType.LARGE_BOULDER: self.ssticks,
+                        }
 
       realm.dataframe.init(Static.Tile, self.serial, (r, c))
 
@@ -51,6 +61,10 @@ class Tile:
       return self.mat == material.Lava
 
    @property
+   def items(self):
+      return self.ssticks.val, self.lsticks.val, self.sstones.val, self.lstones.val
+
+   @property
    def static(self):
       '''No updates needed'''
       assert self.capacity <= self.mat.capacity
@@ -76,6 +90,14 @@ class Tile:
       assert entID in self.ents
       self.nEnts.update(0)
       del self.ents[entID]
+
+   def addItem(self, itm):
+      assert itm in self.items_dict
+      self.items_dict[itm].increment()
+
+   def removeItem(self, itm):
+      assert itm in self.items_dict
+      self.items_dict[itm].decrement()
 
    def step(self):
       if (not self.static and 

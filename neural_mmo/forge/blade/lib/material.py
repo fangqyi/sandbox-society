@@ -56,6 +56,18 @@ class Orerock(Material):
          self.capacity = config.RESOURCE_OREROCK_CAPACITY
          self.respawn  = config.RESOURCE_OREROCK_RESPAWN
 
+class Tree(Material):
+   tex   = 'tree'
+   index = 4
+
+   harvestable = True
+   degen       = Scrub
+
+   def __init__(self, config):
+      if config.game_system_enabled('Resource'):
+         self.capacity = 5 # config.RESOURCE_FOREST_CAPACITY
+         self.respawn  = .05 # config.RESOURCE_FOREST_RESPAWN
+
 class Meta(type):
    def __init__(self, name, bases, dict):
       self.indices = {mtl.index for mtl in self.materials}
@@ -71,10 +83,10 @@ class Meta(type):
       return mtl in self.indices
 
 class All(metaclass=Meta):
-   materials = {Lava, Water, Grass, Scrub, Forest, Stone, Orerock}
+   materials = {Lava, Water, Grass, Scrub, Forest, Stone, Orerock, Tree}
 
 class Impassible(metaclass=Meta):
-   materials = {Lava, Stone, Orerock}
+   materials = {Lava, Stone, Orerock, Tree}
 
 class Habitable(metaclass=Meta):
    materials = {Grass, Scrub, Forest}

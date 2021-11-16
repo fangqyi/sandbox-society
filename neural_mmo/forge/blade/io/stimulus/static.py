@@ -79,7 +79,7 @@ class Stimulus(Config):
          def init(self, config):
             self.val = 0
             self.min = 0
-            self.max = 3
+            self.max = 0xFFFFFF
             self.scale = 1
 
       class SmallStoneTechnology(node.Discrete):
@@ -229,6 +229,26 @@ class Stimulus(Config):
       class C(node.Discrete):
          def init(self, config):
             self.max = config.TERRAIN_SIZE - 1
+            self.scale = 0.15
+
+      class SStick(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
+      class LStick(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
+      class SStone(node.Discrete):
+         def init(self, config):
+            self.max = 5
+            self.scale = 0.15
+
+      class LStone(node.Discrete):
+         def init(self, config):
+            self.max = 5
             self.scale = 0.15
 
 for objName, obj in Stimulus:

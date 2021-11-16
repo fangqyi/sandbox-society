@@ -12,24 +12,20 @@ import random
 class LightAgent(Meander): # for some reason, subclassing off Scripted makes the agent not show up
     name = "Light_"
 
+    lights = [0, 0x6e3caf, 0x57380f, 0x00525a]
+
     def __call__(self, obs):
         super().__call__(obs)
 
-        # signals = [0, 1, 2]
-        # choice = random.choice(signals)
-        # if choice == 0:
-        #     self.signal_blue()
-        # elif choice == 1:
-        #     self.signal_purple()
-        # else:
-        #     self.signal_yellow()
-
-        own_light = Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)
+        d = {v:i for i,v in enumerate(self.lights)}
+        my_ob = Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)
+        # print("My ob:", my_ob)
+        own_light = d[my_ob] if my_ob in d else 0
         thresh = 2
         seen = {0:0, 1:0, 2:0, 3:0}
         if own_light:
             for agent in self.ob.agents:
-                light = Observation.attribute(agent, Stimulus.Entity.Communication)
+                light = d[Observation.attribute(agent, Stimulus.Entity.Communication)]
                 seen[light] += 1
             if seen[(own_light%3)+1] >= thresh:
                 new_light = (own_light%3)+1
@@ -40,18 +36,10 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
             new_light = random.randint(1,3) 
 
         new_light = int(new_light)
-        self.signal(self.config, self.actions, new_light)
+        # print("new", self.lights[new_light])
+        self.signal(self.config, self.actions, self.lights[new_light])
 
         return self.actions
-
-    def signal_blue(self):
-        self.signal(self.config, self.actions, "BLUE")
-
-    def signal_purple(self):
-        self.signal(self.config, self.actions, "PURPLE")
-
-    def signal_yellow(self):
-        self.signal(self.config, self.actions, "YELLOW")
 
     def signal(self, config, actions, light):
         actions[Action.Signal] = {Action.Light: light}

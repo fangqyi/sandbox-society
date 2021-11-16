@@ -84,4 +84,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 /venv
+experiments/
+wandb/
 

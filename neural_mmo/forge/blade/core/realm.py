@@ -8,6 +8,7 @@ from neural_mmo.forge.blade import core
 from neural_mmo.forge.blade.lib.enums import Palette
 from neural_mmo.forge.blade.entity.npc import NPC
 from neural_mmo.forge.blade.entity import Player
+from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge import trinity
 
 from neural_mmo.forge.blade.io.stimulus import Static
@@ -187,8 +188,17 @@ class Realm:
  
    def packet(self):
       '''Client packet'''
-      return {'environment': self.map.repr,
-              'resource': self.map.packet,
+      item_dict = {
+         ItemType.SMALL_STICK: "resourceSmallSticks",
+         ItemType.LARGE_BRANCH: "resourceLargeSticks",
+         ItemType.SMALL_ROCK: "resourceSmallPebbles",
+         ItemType.LARGE_BOULDER: "resourceLargePebbles",
+      }
+      map_items = self.map.items
+      ret = {item_dict[itm]: map_items[itm] for itm in map_items}
+      return {**ret,
+              'environment': self.map.repr,
+              'resourceTerrain': self.map.packet,
               'player': self.players.packet,
               'npc': self.npcs.packet}
 

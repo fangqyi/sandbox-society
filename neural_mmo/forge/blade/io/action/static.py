@@ -258,6 +258,22 @@ class Light(Node):
    def args(stim, entity, config):
       return Direction.edges
 
+class Gather(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
 class TechnologyStatus(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -362,6 +378,19 @@ class InventoryItem(Node):
 
    def args(stim, entity, config):
       return Direction.edges
+
+   def call(env, entity, delta):
+      r, c  = entity.pos
+      entID = entity.entID
+      rDelta, cDelta = delta
+      rNew, cNew = r+rDelta, c+cDelta
+
+      tile = env.map.tiles[rNew, cNew]
+      if tile.harvest():
+         if type(tile.mat) == material.Orerock:
+            entity.inv.insertItems(ItemType.SMALL_ROCK)
+         elif type(tile.mat) == material.Tree:
+            entity.inv.insertItems(ItemType.SMALL_STICK)
 
 #TODO: Add communication
 class Message:
