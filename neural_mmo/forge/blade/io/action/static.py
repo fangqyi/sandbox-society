@@ -258,22 +258,6 @@ class Light(Node):
    def args(stim, entity, config):
       return Direction.edges
 
-class Gather(Node):
-   priority = 0
-   nodeType = NodeType.SELECTION
-
-   @staticproperty
-   def n():
-      return 0
-
-   @staticproperty
-   def edges(self):
-      return []
-
-   @staticproperty
-   def leaf(self):
-      return True
-
 class TechnologyStatus(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -369,15 +353,21 @@ class InventoryItemType(Node):
    def args(stim, entity, config):
       return Direction.edges
 
-class InventoryItem(Node):
-   argType = Fixed
+class Gather(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
 
    @staticproperty
-   def edges():
-      return [Item(ItemType.SMALL_STICK), Item(ItemType.SMALL_ROCK), Item(ItemType.LARGE_BOULDER), Item(ItemType.LARGE_BRANCH)]
+   def n():
+      return 0
 
-   def args(stim, entity, config):
-      return Direction.edges
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
 
    def call(env, entity, delta):
       r, c  = entity.pos
@@ -391,6 +381,17 @@ class InventoryItem(Node):
             entity.inv.insertItems(ItemType.SMALL_ROCK)
          elif type(tile.mat) == material.Tree:
             entity.inv.insertItems(ItemType.SMALL_STICK)
+
+class InventoryItem(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [Item(ItemType.SMALL_STICK), Item(ItemType.SMALL_ROCK), Item(ItemType.LARGE_BOULDER), Item(ItemType.LARGE_BRANCH)]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
 
 #TODO: Add communication
 class Message:
