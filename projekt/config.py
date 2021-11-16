@@ -7,6 +7,7 @@ from neural_mmo.forge.trinity.scripted import baselines
 from neural_mmo.forge.trinity.agent import Agent
 from neural_mmo.forge.trinity.scripted.light_agent import LightAgent
 from neural_mmo.forge.trinity.scripted.technology_agent import TechnologyAgent
+from neural_mmo.forge.trinity.scripted.map_agent import MapAgent
 from neural_mmo.forge.blade.systems.ai import behavior
 from projekt import rllib_wrapper
 
@@ -27,8 +28,8 @@ class RLlibConfig:
    RESTORE = False
 
    #Policy specification
-   AGENTS      = [TechnologyAgent]
-   EVAL_AGENTS = [TechnologyAgent]
+   AGENTS      = [MapAgent]
+   EVAL_AGENTS = [MapAgent]
    EVALUATE    = False #Reserved param
 
    #Hardware and debug
