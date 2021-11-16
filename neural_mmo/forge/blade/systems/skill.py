@@ -1,5 +1,6 @@
 from pdb import set_trace as T
 import abc
+import random
 
 import numpy as np
 from neural_mmo.forge.blade.systems import experience, combat, ai
@@ -198,9 +199,19 @@ class Hunting(Skill):
             not realm.map.harvest(r, c)):
          return
 
+      hoe_status = entity.getHoeStatus()
+      improved_hoe_status = entity.getImprovedHoeStatus()
+      chance = 0.5
+      if hoe_status:
+          chance = 0.75
+      if improved_hoe_status:
+          chance = 1.0
+
       restore = self.config.RESOURCE_HARVEST_RESTORE_FRACTION
       restore = np.floor(restore * self.level)
-      food.increment(restore)
+      if chance >= random.uniform(0, 1):
+         food.increment(restore)
+
 
       if self.config.game_system_enabled('Progression'):
          self.exp += self.config.PROGRESSION_BASE_XP_SCALE * restore

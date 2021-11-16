@@ -82,6 +82,86 @@ class Stimulus(Config):
             self.max = 0xFFFFFF
             self.scale = 1
 
+      class SmallStoneTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class LargeBoulderTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class SmallStickTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class LargeBranchTechnology(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 1
+            self.scale = 1
+
+         def getVal(self):
+            return self.val
+
+      class SmallRocks(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 100
+            self.scale = 1
+
+         def editVal(self, num):
+            self.val = self.val + num
+
+      class SmallSticks(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 100
+            self.scale = 1
+
+         def editVal(self, num):
+            self.val = self.val + num
+
+      class LargeBoulders(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 100
+            self.scale = 1
+
+         def editVal(self, num):
+            self.val = self.val + num
+
+      class LargeBranches(node.Discrete):
+         def init(self, config):
+            self.val = 0
+            self.min = 0
+            self.max = 100
+            self.scale = 1
+
+         def editVal(self, num):
+            self.val = self.val + num
+
       #Resources -- Redo the max/min scaling. You can't change these
       #after init without messing up the embeddings
       class Food(node.Continuous):

@@ -6,6 +6,7 @@ from neural_mmo.forge.blade.io.stimulus.static import Stimulus
 from neural_mmo.forge.trinity.scripted import baselines
 from neural_mmo.forge.trinity.agent import Agent
 from neural_mmo.forge.trinity.scripted.light_agent import LightAgent
+from neural_mmo.forge.trinity.scripted.technology_agent import TechnologyAgent
 from neural_mmo.forge.blade.systems.ai import behavior
 from projekt import rllib_wrapper
 
@@ -26,8 +27,8 @@ class RLlibConfig:
    RESTORE = False
 
    #Policy specification
-   AGENTS      = [LightAgent]
-   EVAL_AGENTS = [LightAgent]
+   AGENTS      = [TechnologyAgent]
+   EVAL_AGENTS = [TechnologyAgent]
    EVALUATE    = False #Reserved param
 
    #Hardware and debug

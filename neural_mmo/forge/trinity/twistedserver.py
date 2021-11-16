@@ -93,6 +93,7 @@ class GodswordServerProtocol(WebSocketServerProtocol):
            print('SENDING OVERLAY: ', len(packet['overlay']))
 
         packet = json.dumps(packet).encode('utf8')
+
         self.sendMessage(packet, False)
 
 class WSServerFactory(WebSocketServerFactory):

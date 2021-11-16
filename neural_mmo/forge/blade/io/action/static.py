@@ -244,6 +244,7 @@ class Signal(Node):
    def call(env, entity, light):
       entity.setLight(light)
       entity.history.communication.update(entity.getLightNumeric())
+
       return light
 
 
@@ -273,6 +274,111 @@ class Gather(Node):
    def leaf(self):
       return True
 
+class TechnologyStatus(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity):
+      sword_status = entity.getSwordStatus()
+      shield_status = entity.getShieldStatus()
+      hoe_status = entity.getHoeStatus()
+      improved_hoe_status = entity.getImprovedHoeStatus()
+      entity.history.sword_status.update(1 if sword_status else 0)
+      entity.history.shield_status.update(1 if shield_status else 0)
+      entity.history.hoe_status.update(1 if hoe_status else 0)
+      entity.history.improved_hoe_status.update(1 if improved_hoe_status else 0)
+      return sword_status, shield_status, hoe_status, improved_hoe_status
+
+class InventoryInsertion(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, items):
+      entity.inv.insertItems(items)
+      for item in items:
+         if item.getType() == ItemType.SMALL_ROCK:
+            entity.history.small_rocks.editVal(1)
+         if item.getType() == ItemType.SMALL_STICK:
+            entity.history.small_sticks.editVal(1)
+         if item.getType() == ItemType.LARGE_BOULDER:
+            entity.history.large_boulders.editVal(1)
+         if item.getType() == ItemType.LARGE_BRANCH:
+            entity.history.large_branches.editVal(1)
+      return True
+
+class InventoryRemoval(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, itemType, numItems):
+      entity.inv.removeItems(itemType, numItems)
+      if itemType == ItemType.SMALL_ROCK:
+         entity.history.small_rocks.editVal(-numItems)
+      if itemType == ItemType.SMALL_STICK:
+         entity.history.small_sticks.editVal(-numItems)
+      if itemType == ItemType.LARGE_BOULDER:
+         entity.history.large_boulders.editVal(-numItems)
+      if itemType == ItemType.LARGE_BRANCH:
+         entity.history.large_branches.editVal(-numItems)
+
+      return True
+
+class InventoryItemType(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [ItemType.SMALL_STICK, ItemType.SMALL_ROCK, ItemType.LARGE_BOULDER, ItemType.LARGE_BRANCH]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
+class InventoryItem(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [Item(ItemType.SMALL_STICK), Item(ItemType.SMALL_ROCK), Item(ItemType.LARGE_BOULDER), Item(ItemType.LARGE_BRANCH)]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
    def call(env, entity, delta):
       r, c  = entity.pos
       entID = entity.entID
@@ -285,7 +391,6 @@ class Gather(Node):
             entity.inv.insertItems(ItemType.SMALL_ROCK)
          elif type(tile.mat) == material.Tree:
             entity.inv.insertItems(ItemType.SMALL_STICK)
-
 
 #TODO: Add communication
 class Message:
@@ -300,3 +405,31 @@ class BecomeSkynet:
    pass
 
 Action.hook()
+
+class GiveItems(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, itemType, numItems):
+      entity.inv.insertItems(itemType, numItems)
+      if itemType == ItemType.SMALL_ROCK:
+         entity.history.small_rocks.editVal(numItems)
+      if itemType == ItemType.SMALL_STICK:
+         entity.history.small_sticks.editVal(numItems)
+      if itemType == ItemType.LARGE_BOULDER:
+         entity.history.large_boulders.editVal(numItems)
+      if itemType == ItemType.LARGE_BRANCH:
+         entity.history.large_branches.editVal(numItems)
+      return True
