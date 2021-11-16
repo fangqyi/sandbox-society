@@ -118,8 +118,6 @@ class WSServerFactory(WebSocketServerFactory):
            time.sleep(delta)
         self.time = time.time()
 
-        print(packet["player"][1]["history"])
-
         for client in self.clients:
             client.sendUpdate(packet)
             if client.pos is not None:
