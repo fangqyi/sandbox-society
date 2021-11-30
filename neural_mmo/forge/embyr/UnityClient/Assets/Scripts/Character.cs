@@ -102,9 +102,9 @@ public class Character: UnityModule
       //OBJ model and overheads
       this.NNObj(ball, rod_bottom, rod_top);
       this.Overheads(name, ball);
-      this.LoadToolPrefabs();
+      //this.LoadToolPrefabs();
 
-      //initToolStatus();
+      initToolStatus();
 
       this.UpdatePlayer(players, npcs, packet);
       this.UpdatePos(false);
@@ -178,7 +178,7 @@ public class Character: UnityModule
 
    void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
       Debug.Log("Check for swords... Current: "+this.hasSword);
-      Debug.Log("Now: "+isSword);
+      Debug.Log("Sword New: "+isSword);
       if (isSword != this.hasSword){
          this.hasSword = isSword;
          if (this.hasSword){
@@ -189,6 +189,7 @@ public class Character: UnityModule
          }
          else{
             GameObject.Destroy(this.sword);
+            Debug.Log("Sword destroyed");
          }
       }
       if (isShield != this.hasShield){
