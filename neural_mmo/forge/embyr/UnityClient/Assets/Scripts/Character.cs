@@ -41,7 +41,9 @@ public class Character: UnityModule
    public SkillGroup skills;
    public ResourceGroup resources;
    public Overheads overheads;
-   public float disTool2Agent = 0.25f;
+   public float disTool2Agent = 0.5f;
+   public float disTool2Ground = 0.5f;
+   public float scaleTool = 0.5f;
 
    // tool prefabs
    static private String toolFilepath = "OneOffDesign/Lowpoly Medieval Fantasy Weapons/Prefabs/";
@@ -153,6 +155,8 @@ public class Character: UnityModule
       } 
       this.UpdatePos(true);
       this.UpdateAttack();
+      this.updateToolForward();
+      this.updateToolPos();
    }
 
    public void UpdatePos(bool smooth)
@@ -184,9 +188,10 @@ public class Character: UnityModule
       if (isSword != this.hasSword){
          this.hasSword = isSword;
          if (this.hasSword){
-            Vector3 agentPos = this.transform.position;
-            Vector3 pos = new Vector3(agentPos.x + this.disTool2Agent, agentPos.y, agentPos.z);
+            Vector3 pos = new Vector3(this.transform.position.x + this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+            Debug.Log("Sword agent new pos: "+ pos.x + ", " + pos.y + ", " + pos.z);
             this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
+            this.sword.transform.localScale *= scaleTool;
             Debug.Log("Sword added");
          }
          else{
@@ -197,9 +202,9 @@ public class Character: UnityModule
       if (isShield != this.hasShield){
          this.hasShield = isShield;
          if (this.hasShield){
-            Vector3 agentPos = this.transform.position;
-            Vector3 pos = new Vector3(agentPos.x - this.disTool2Agent, agentPos.y, agentPos.z);
+            Vector3 pos = new Vector3(this.transform.position.x - this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
             this.shield = GameObject.Instantiate(prefShield, pos, Quaternion.identity) as GameObject;
+            this.shield.transform.localScale *= scaleTool;
          }
          else{
             GameObject.Destroy(this.shield);
@@ -208,9 +213,9 @@ public class Character: UnityModule
       if (isHatchet != this.hasHatchet){
          this.hasHatchet = isHatchet;
          if (this.hasHatchet){
-            Vector3 agentPos = this.transform.position;
-            Vector3 pos = new Vector3(agentPos.x, agentPos.y, agentPos.z + this.disTool2Agent);
+            Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z + this.disTool2Agent);
             this.hatchet = GameObject.Instantiate(prefHatchet, pos, Quaternion.identity) as GameObject;
+            this.hatchet.transform.localScale *= scaleTool;
          }
          else{
             GameObject.Destroy(this.hatchet);
@@ -219,18 +224,17 @@ public class Character: UnityModule
       if (isPickaxe != this.hasPickaxe){
          this.hasPickaxe = isPickaxe;
          if (this.hasPickaxe){
-            Vector3 agentPos = this.transform.position;
-            Vector3 pos = new Vector3(agentPos.x, agentPos.y, agentPos.z - this.disTool2Agent);
+            Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z - this.disTool2Agent);
             this.pickaxe = GameObject.Instantiate(prefPickaxe, pos, Quaternion.identity) as GameObject;
+            this.pickaxe.transform.localScale *= scaleTool;
          }
          else{
             GameObject.Destroy(this.pickaxe);
          }
       }
-      updateToolForward();
    }
 
-   void updateToolForward(){
+   public void updateToolForward(){
       if (this.hasSword){
          this.sword.transform.forward = this.transform.forward;
       }
@@ -242,6 +246,36 @@ public class Character: UnityModule
       }
       if (this.hasPickaxe){
          this.pickaxe.transform.forward = this.transform.forward; 
+      }
+   }
+
+   public void updateToolPos(){
+      if (this.hasSword){
+         this.sword.transform.position = new Vector3(this.transform.position.x + this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+      }
+      if (this.hasShield){
+         this.shield.transform.position = new Vector3(this.transform.position.x - this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+      }
+      if (this.hasHatchet){
+         this.hatchet.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z + this.disTool2Agent);
+      }
+      if (this.hasPickaxe){
+         this.pickaxe.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z - this.disTool2Agent);
+      }
+   }
+
+   void destroyTools(){
+      if (this.hasSword){
+         GameObject.Destroy(this.sword);
+      }
+      if (this.hasShield){
+         GameObject.Destroy(this.shield);      
+      }
+      if (this.hasHatchet){
+         GameObject.Destroy(this.hatchet);
+      }
+      if (this.hasPickaxe){
+         GameObject.Destroy(this.pickaxe);
       }
    }
 
@@ -399,6 +433,7 @@ public class Character: UnityModule
       {
          GameObject.Destroy(this.attack);
       }
+      destroyTools();
    }
 
    //Random function off Unity forums
