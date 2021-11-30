@@ -177,12 +177,15 @@ public class Character: UnityModule
    }
 
    void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
+      Debug.Log("Check for swords... Current: "+this.hasSword);
+      Debug.Log("Now: "+isSword);
       if (isSword != this.hasSword){
          this.hasSword = isSword;
          if (this.hasSword){
             Vector3 agentPos = this.transform.position;
             Vector3 pos = new Vector3(agentPos.x + this.disTool2Agent, agentPos.y, agentPos.z);
             this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
+            Debug.Log("Sword added");
          }
          else{
             GameObject.Destroy(this.sword);
