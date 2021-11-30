@@ -42,8 +42,8 @@ public class Character: UnityModule
    public ResourceGroup resources;
    public Overheads overheads;
    public float disTool2Agent = 0.5f;
-   public float disTool2Ground = 0.5f;
-   public float scaleTool = 0.5f;
+   public float disTool2Ground = 0.6f;
+   public float scaleTool = 0.35f;
 
    // tool prefabs
    static private String toolFilepath = "OneOffDesign/Lowpoly Medieval Fantasy Weapons/Prefabs/";
@@ -161,7 +161,6 @@ public class Character: UnityModule
 
    public void UpdatePos(bool smooth)
    {
-      Debug.Log("Calling UpdatePos");
       Vector3 orig = new Vector3(this.rOld, 0, this.cOld);
       Vector3 targ = new Vector3(this.r, 0, this.c);
       if (smooth)
@@ -182,21 +181,15 @@ public class Character: UnityModule
    }
 
    void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
-      Debug.Log("Check for swords... Current: "+this.hasSword);
-      Debug.Log("Sword New: "+isSword);
-      Debug.Log("Sword agent current pos: "+ this.transform.position.x + ", " + this.transform.position.y + ", " + this.transform.position.z);
       if (isSword != this.hasSword){
          this.hasSword = isSword;
          if (this.hasSword){
             Vector3 pos = new Vector3(this.transform.position.x + this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
-            Debug.Log("Sword agent new pos: "+ pos.x + ", " + pos.y + ", " + pos.z);
             this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
             this.sword.transform.localScale *= scaleTool;
-            Debug.Log("Sword added");
          }
          else{
             GameObject.Destroy(this.sword);
-            Debug.Log("Sword destroyed");
          }
       }
       if (isShield != this.hasShield){
