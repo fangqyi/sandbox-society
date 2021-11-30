@@ -48,7 +48,7 @@ public class Character: UnityModule
    static public GameObject prefShield;
    static public GameObject prefSword;
    static public GameObject prefPickaxe;
-   static public GameObject preftHatchet;
+   static public GameObject prefHatchet;
    
    //tool gameobjects
    public GameObject shield;
@@ -63,9 +63,9 @@ public class Character: UnityModule
    
    public static void LoadToolPrefabs(){
       prefPickaxe = Resources.Load(toolFilepath + "Pref_PickAxe_A") as GameObject;
-      preftHatchet = Resources.Load(toolFilepath + "Pref_Hatchet_A") as GameObject;
+      prefHatchet = Resources.Load(toolFilepath + "Pref_Hatchet_A") as GameObject;
       prefShield = Resources.Load(toolFilepath + "Pref_RoundShield_A") as GameObject; 
-      prefSword = Resouces.Load(toolFilepath + "Pref_ShortSword_A") as GameObject;
+      prefSword = Resources.Load(toolFilepath + "Pref_ShortSword_A") as GameObject;
    }
 
    //Load the OBJ shader and materials
@@ -179,8 +179,8 @@ public class Character: UnityModule
       if (isSword != this.hasSword){
          this.hasSword = isSword;
          if (this.hasSword){
-            Vector3 agentPos = this.transform.pos;
-            Vector3 pos = new Vector3(agentPos.pos.x + this.disTool2Agent, agentPos.pos.y, agentPos.pos.z);
+            Vector3 agentPos = this.transform.position;
+            Vector3 pos = new Vector3(agentPos.x + this.disTool2Agent, agentPos.y, agentPos.z);
             this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
          }
          else{
@@ -190,8 +190,8 @@ public class Character: UnityModule
       if (isShield != this.hasShield){
          this.hasShield = isShield;
          if (this.hasShield){
-            Vector3 agentPos = this.transform.pos;
-            Vector3 pos = new Vector3(agentPos.pos.x - this.disTool2Agent, agentPos.pos.y, agentPos.pos.z);
+            Vector3 agentPos = this.transform.position;
+            Vector3 pos = new Vector3(agentPos.x - this.disTool2Agent, agentPos.y, agentPos.z);
             this.shield = GameObject.Instantiate(prefShield, pos, Quaternion.identity) as GameObject;
          }
          else{
@@ -201,8 +201,8 @@ public class Character: UnityModule
       if (isHatchet != this.hasHatchet){
          this.hasHatchet = isHatchet;
          if (this.hasHatchet){
-            Vector3 agentPos = this.transform.pos;
-            Vector3 pos = new Vector3(agentPos.pos.x, agentPos.pos.y, agentPos.pos.z + this.disTool2Agent);
+            Vector3 agentPos = this.transform.position;
+            Vector3 pos = new Vector3(agentPos.x, agentPos.y, agentPos.z + this.disTool2Agent);
             this.hatchet = GameObject.Instantiate(prefHatchet, pos, Quaternion.identity) as GameObject;
          }
          else{
@@ -212,8 +212,8 @@ public class Character: UnityModule
       if (isPickaxe != this.hasPickaxe){
          this.hasPickaxe = isPickaxe;
          if (this.hasPickaxe){
-            Vector3 agentPos = this.transform.pos;
-            Vector3 pos = new Vector3(agentPos.pos.x, agentPos.pos.y, agentPos.pos.z - this.disTool2Agent);
+            Vector3 agentPos = this.transform.position;
+            Vector3 pos = new Vector3(agentPos.x, agentPos.y, agentPos.z - this.disTool2Agent);
             this.pickaxe = GameObject.Instantiate(prefPickaxe, pos, Quaternion.identity) as GameObject;
          }
          else{
