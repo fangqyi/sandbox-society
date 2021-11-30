@@ -42,6 +42,8 @@ public class PlayerManager : UnityModule
 
       this.players = new EntityGroup();
       this.npcs    = new EntityGroup();
+      Player.LoadToolPrefabs();
+      NonPlayer.LoadToolPrefabs();
    }
 
    public void UpdateEntities(Dictionary<string, object> packet) {

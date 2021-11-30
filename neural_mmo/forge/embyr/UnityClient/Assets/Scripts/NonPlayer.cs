@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NonPlayer : Character 
+public class NonPlayer : Character
 {
    public void Awake()
    {
