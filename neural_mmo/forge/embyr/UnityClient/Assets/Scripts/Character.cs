@@ -41,6 +41,32 @@ public class Character: UnityModule
    public SkillGroup skills;
    public ResourceGroup resources;
    public Overheads overheads;
+   public float disTool2Agent = 0.25f;
+
+   // tool prefabs
+   static private String toolFilepath = "OneOffDesign/Lowpoly Medieval Fantasy Weapons/Prefabsx/";
+   static public GameObject prefShield;
+   static public GameObject prefSword;
+   static public GameObject prefPickaxe;
+   static public GameObject preftHatchet;
+   
+   //tool gameobjects
+   public GameObject shield;
+   public GameObject sword;
+   public GameObject pickaxe;
+   public GameObject hatchet;
+
+   public bool hasShield;
+   public bool hasSword;
+   public bool hasPickaxe;
+   public bool hasHatchet;
+   
+   public static void LoadToolPrefabs(){
+      prefPickaxe = Resources.Load(toolFilepath + "Pref_PickAxe_A") as GameObject;
+      preftHatchet = Resources.Load(toolFilepath + "Pref_Hatchet_A") as GameObject;
+      prefShield = Resources.Load(toolFilepath + "Pref_RoundShield_A") as GameObject; 
+      prefSword = Resouces.Load(toolFilepath + "Pref_ShortSword_A") as GameObject;
+   }
 
    //Load the OBJ shader and materials
    public void NNObj(Color ball, Color rod_bottom, Color rod_top)
@@ -77,11 +103,12 @@ public class Character: UnityModule
       this.NNObj(ball, rod_bottom, rod_top);
       this.Overheads(name, ball);
 
+      initToolStatus();
+
       this.UpdatePlayer(players, npcs, packet);
       this.UpdatePos(false);
 
-      // light communication color
-      
+      // light communication color     
    }
 
    public void SetColors() {
@@ -146,6 +173,69 @@ public class Character: UnityModule
          targ = this.target.transform.position;
       }
       this.transform.forward = Vector3.RotateTowards(this.forward, orig - targ, (float)Math.PI * Client.tickFrac, 0f);
+   }
+
+   void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
+      if (isSword != this.hasSword){
+         this.hasSword = isSword;
+         if (this.hasSword){
+            Vector3 agentPos = this.transform.pos;
+            Vector3 pos = new Vector3(agentPos.pos.x + this.disTool2Agent, agentPos.pos.y, agentPos.pos.z);
+            this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
+         }
+         else{
+            GameObject.Destroy(this.sword);
+         }
+      }
+      if (isShield != this.hasShield){
+         this.hasShield = isShield;
+         if (this.hasShield){
+            Vector3 agentPos = this.transform.pos;
+            Vector3 pos = new Vector3(agentPos.pos.x - this.disTool2Agent, agentPos.pos.y, agentPos.pos.z);
+            this.shield = GameObject.Instantiate(prefShield, pos, Quaternion.identity) as GameObject;
+         }
+         else{
+            GameObject.Destroy(this.shield);
+         }
+      }
+      if (isHatchet != this.hasHatchet){
+         this.hasHatchet = isHatchet;
+         if (this.hasHatchet){
+            Vector3 agentPos = this.transform.pos;
+            Vector3 pos = new Vector3(agentPos.pos.x, agentPos.pos.y, agentPos.pos.z + this.disTool2Agent);
+            this.hatchet = GameObject.Instantiate(prefHatchet, pos, Quaternion.identity) as GameObject;
+         }
+         else{
+            GameObject.Destroy(this.hatchet);
+         }
+      }
+      if (isPickaxe != this.hasPickaxe){
+         this.hasPickaxe = isPickaxe;
+         if (this.hasPickaxe){
+            Vector3 agentPos = this.transform.pos;
+            Vector3 pos = new Vector3(agentPos.pos.x, agentPos.pos.y, agentPos.pos.z - this.disTool2Agent);
+            this.pickaxe = GameObject.Instantiate(prefPickaxe, pos, Quaternion.identity) as GameObject;
+         }
+         else{
+            GameObject.Destroy(this.pickaxe);
+         }
+      }
+      updateToolForward();
+   }
+
+   void updateToolForward(){
+      if (this.hasSword){
+         this.sword.transform.forward = this.transform.forward;
+      }
+      if (this.hasShield){
+         this.shield.transform.forward = this.transform.forward;
+      }
+      if (this.hasHatchet){
+         this.hatchet.transform.forward = this.transform.forward; 
+      }
+      if (this.hasPickaxe){
+         this.pickaxe.transform.forward = this.transform.forward; 
+      }
    }
 
    public void DeathAnimation()
@@ -244,9 +334,19 @@ public class Character: UnityModule
          this.commType = Convert.ToUInt32(type);
          updateCommunicationShader();
       }
+
+      if (hist.ContainsKey("technologyStatus")){
+         object tools = Unpack("technologyStatus", hist);
+         bool isSword = Convert.ToBoolean(Unpack("sword_status", tools));
+         bool isShield = Convert.ToBoolean(Unpack("shield_status", tools));
+         bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
+         bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
+         UpdateTools(isSword, isShield, isHatchet, isPickaxe);
+      }
+      
    }
 
-   private void updateCommunicationShader(){
+   void updateCommunicationShader(){
       if (this.lightShader == null){
          this.lightShader = Shader.Find("MK/Glow/Selective/Legacy/Transparent/Diffuse");
       }
@@ -266,6 +366,13 @@ public class Character: UnityModule
          nn.materials[0].SetColor("_MKGlowTexColor", intToColor(this.commType));
          nn.materials[0].SetFloat("_MKGlowPower", (float) 4.0);
       }
+   }
+
+   void initToolStatus(){
+      this.hasHatchet = false;
+      this.hasPickaxe = false;
+      this.hasSword = false;
+      this.hasShield = false;
    }
 
    
