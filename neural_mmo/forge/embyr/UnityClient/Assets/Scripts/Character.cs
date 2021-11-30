@@ -161,7 +161,6 @@ public class Character: UnityModule
 
    public void UpdatePos(bool smooth)
    {
-      Debug.Log("Calling UpdatePos");
       Vector3 orig = new Vector3(this.rOld, 0, this.cOld);
       Vector3 targ = new Vector3(this.r, 0, this.c);
       if (smooth)

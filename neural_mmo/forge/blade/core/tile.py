@@ -5,6 +5,8 @@ from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge.blade.lib import material
 from neural_mmo.forge.blade.io.stimulus import Static
 
+from random import randint
+
 class Tile:
    def __init__(self, config, realm, r, c):
       self.config = config
@@ -24,8 +26,8 @@ class Tile:
       self.lstones = Static.Tile.LStone(realm.dataframe, self.serial, 0)
       self.items_dict = {ItemType.SMALL_STICK: self.ssticks,
                          ItemType.LARGE_BRANCH: self.lsticks,
-                         ItemType.SMALL_ROCK: self.ssticks,
-                         ItemType.LARGE_BOULDER: self.ssticks,
+                         ItemType.SMALL_ROCK: self.sstones,
+                         ItemType.LARGE_BOULDER: self.lstones,
                         }
 
       realm.dataframe.init(Static.Tile, self.serial, (r, c))
@@ -84,10 +86,10 @@ class Tile:
       self.nEnts.update(0)
       self.index.update(self.state.index)
 
-      self.addItem(ItemType.SMALL_STICK)
-      self.addItem(ItemType.SMALL_STICK)
-      self.addItem(ItemType.SMALL_ROCK)
-      self.addItem(ItemType.SMALL_ROCK)
+      for i in range(randint(0,4)):
+         self.addItem(ItemType.SMALL_STICK)
+      for i in range(randint(0,4)):
+         self.addItem(ItemType.SMALL_ROCK)
  
    def addEnt(self, ent):
       assert ent.entID not in self.ents

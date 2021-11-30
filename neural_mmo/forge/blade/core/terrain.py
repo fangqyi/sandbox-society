@@ -66,6 +66,8 @@ class MapGenerator:
          return Terrain.GRASS
       if val <= config.TERRAIN_FOREST:
          return Terrain.FOREST
+      if val <= .95:
+         return Terrain.OREROCK
       return Terrain.STONE
 
    def generate(self):
