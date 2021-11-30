@@ -12,6 +12,8 @@ class Tile:
 
       self.serialized = 'R{}-C{}'.format(r, c)
 
+      self.dirty = True
+
       self.r     = Static.Tile.R(realm.dataframe, self.serial, r)
       self.c     = Static.Tile.C(realm.dataframe, self.serial, c)
       self.nEnts = Static.Tile.NEnts(realm.dataframe, self.serial)
@@ -77,9 +79,15 @@ class Tile:
       self.capacity = self.mat.capacity
       self.tex      = mat.tex
       self.ents     = {}
+      self.dirty = True
 
       self.nEnts.update(0)
       self.index.update(self.state.index)
+
+      self.addItem(ItemType.SMALL_STICK)
+      self.addItem(ItemType.SMALL_STICK)
+      self.addItem(ItemType.SMALL_ROCK)
+      self.addItem(ItemType.SMALL_ROCK)
  
    def addEnt(self, ent):
       assert ent.entID not in self.ents
@@ -94,10 +102,12 @@ class Tile:
    def addItem(self, itm):
       assert itm in self.items_dict
       self.items_dict[itm].increment()
+      self.dirty = True
 
    def removeItem(self, itm):
       assert itm in self.items_dict
       self.items_dict[itm].decrement()
+      self.dirty = True
 
    def step(self):
       if (not self.static and 

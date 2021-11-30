@@ -5,7 +5,7 @@ from neural_mmo.forge.blade.core import config
 from neural_mmo.forge.blade.io.stimulus.static import Stimulus
 from neural_mmo.forge.trinity.scripted import baselines
 from neural_mmo.forge.trinity.agent import Agent
-from neural_mmo.forge.trinity.scripted.light_agent import LightAgent
+from neural_mmo.forge.trinity.scripted.light_agent import LightAgent, LightMapAgent
 from neural_mmo.forge.trinity.scripted.technology_agent import TechnologyAgent
 from neural_mmo.forge.trinity.scripted.map_agent import MapAgent
 from neural_mmo.forge.blade.systems.ai import behavior
@@ -28,8 +28,9 @@ class RLlibConfig:
    RESTORE = False
 
    #Policy specification
-   AGENTS      = [MapAgent]
-   EVAL_AGENTS = [MapAgent]
+   AGENTS      = [LightMapAgent]
+   EVAL_AGENTS = [LightMapAgent]
+
    EVALUATE    = False #Reserved param
 
    #Hardware and debug
@@ -129,13 +130,13 @@ class CompetitionRound1(config.Achievement, SmallMaps):
       return self.SPAWN_ANYWHERE
 
    NMOB = 0
-   NENT                    = 128
+   NENT                    = 96
    NPOP                    = 16
    TERRAIN_CENTER          = 32
    # NSTIM = 10
    COOPERATIVE = True
    BASE_HEALTH = 50
-   PLAYER_SPAWN_ATTEMPTS   = 16
+   PLAYER_SPAWN_ATTEMPTS   = 8
 
 class CompetitionRound2(config.Achievement, SmallMaps):
    @property

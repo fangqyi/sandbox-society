@@ -1,5 +1,6 @@
 from neural_mmo.forge.trinity.scripted.baselines import Scripted, Combat, Meander
 from neural_mmo.forge.trinity.scripted.io import Observation
+from neural_mmo.forge.trinity.scripted.map_agent import MapAgent
 import numpy as np
 
 from neural_mmo.forge.blade.io.stimulus.static import Stimulus
@@ -13,6 +14,7 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
     name = "Light_"
 
     lights = [0, 0x6e3caf, 0x57380f, 0x00525a]
+    thresh = 2
 
     def __call__(self, obs):
         super().__call__(obs)
@@ -21,13 +23,13 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
         my_ob = Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)
         # print("My ob:", my_ob)
         own_light = d[my_ob] if my_ob in d else 0
-        thresh = 2
+        self.thresh = 2
         seen = {0:0, 1:0, 2:0, 3:0}
         if own_light:
             for agent in self.ob.agents:
                 light = d[Observation.attribute(agent, Stimulus.Entity.Communication)]
                 seen[light] += 1
-            if seen[(own_light%3)+1] >= thresh:
+            if seen[(own_light%3)+1] >= self.thresh:
                 new_light = (own_light%3)+1
             else:
                 new_light = own_light
@@ -43,3 +45,13 @@ class LightAgent(Meander): # for some reason, subclassing off Scripted makes the
 
     def signal(self, config, actions, light):
         actions[Action.Signal] = {Action.Light: light}
+
+
+class LightMapAgent(LightAgent, MapAgent):
+    def __call__(self, obs):
+        LightAgent.__call__(self, obs)
+        tile = self.ob.tile(0, 0)
+
+        self.pickUpItems(self.config, self.actions)
+
+        return self.actions

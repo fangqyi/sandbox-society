@@ -16,7 +16,7 @@ class MapAgent(Meander):
         tile = self.ob.tile(0, 0)
 
         self.pickUpItems(self.config, self.actions)
-        self.dropItems(self.config, self.actions)
+        # self.dropItems(self.config, self.actions)
 
         return self.actions
 

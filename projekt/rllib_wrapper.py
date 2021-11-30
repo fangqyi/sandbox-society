@@ -60,7 +60,8 @@ class Input(nn.Module):
 
       #Hackey obs scaling
       self.tileWeight = torch.Tensor([1.0, 0.0, 0.02, 0.02, 0.0, 0.0, 0.0, 0.0])
-      self.entWeight  = torch.Tensor([1.0, 0.0, 0.0, 0.05, 0.00, 0.02, 0.02, 0.1, 0.01, 0.1, 0.1, 0.1, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]) # I added this to make lights observable hopefully
+      self.entWeight  = torch.Tensor([1.0, 0.0, 0.0, 0.05, 0.00, 0.02, 0.02, 0.1, 0.01, 0.1, 0.1, 0.1, 0.3, 0.0, 0,0,0,0,0,0,0,0]) # I added this to make lights observable hopefully
+
 
    def forward(self, inp):
       '''Produces tensor representations from an IO object

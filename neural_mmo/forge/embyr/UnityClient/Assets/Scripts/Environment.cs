@@ -228,8 +228,8 @@ public class Tile
     static private int brokenStoneVal = 7;
     public int maxSpawnAttemptsPerObstacle = 10;
 
-    static private Vector3 magicTree = new Vector3(0, 0.5f, 0);
-    static private Vector3 magicStone = new Vector3(0, 0.0f, 0);
+    static private Vector3 magicTree = new Vector3(0, 1f, 0);
+    static private Vector3 magicStone = new Vector3(0, 0.125f, 0);
     static private Vector3 magicFill = new Vector3(0, -0.1f, 0);
     static private Vector3 magicResources = new Vector3(0, 0.55f, 0);
 
@@ -603,11 +603,13 @@ public class Tile
         bool validPos = false;
         int spawnAttempts = 0;
 
+        // return spawnPos;
+
         while (!validPos && spawnAttempts < maxSpawnAttemptsPerObstacle)
         {
             spawnAttempts++;
 
-            pos = new Vector3(Random.Range(-7f, 7f), 0, Random.Range(-7f, 7f));  // not sure if cover tile
+            pos = new Vector3(Random.Range(-.25f, .25f), 0, Random.Range(-.25f, .25f));  // not sure if cover tile
 
             validPos = true;
 
@@ -718,7 +720,7 @@ public class Environment : MonoBehaviour
         this.overlayMatl.SetTexture("_Overlay", Texture2D.blackTexture);
 
         this.water = GameObject.Find("Client/Environment/Water");
-        //this.lava  = GameObject.Find("Client/Environment/LavaCutout");
+        // this.lava  = GameObject.Find("Client/Environment/LavaCutout");
         //this.sword = GameObject.Find("HeavySword");
         this.light = GameObject.Find("Client/Light");
 
@@ -748,10 +750,10 @@ public class Environment : MonoBehaviour
             this.vals = new int[mapSize, mapSize];
             Debug.Log("Setting val map");
             float tilesize = 1f; //Consts.TILE_RADIUS()/4;
-            for (int r = 0; r < mapSize; r++)
+            for (int r = mapBorder; r < mapSize - mapBorder + 1; r++)
             {
                 List<object> row = this.test == true? null : (List<object>)map[r];
-                for (int c = 0; c < mapSize; c++)
+                for (int c = mapBorder; c < mapSize - mapBorder + 1; c++)
                 {
                     this.vals[r, c] = System.Convert.ToInt32(this.test == true? Random.Range(1, 6): row[c]);
                     Vector3 spawnPos = new Vector3(tilesize*r, -tilesize/2, tilesize*c);  // TODO: FIX?
@@ -800,12 +802,14 @@ public class Environment : MonoBehaviour
         //Parse inactive resource set
         List<object> resourceSS = this.test == true? null : (List<object>)packet["resourceSmallSticks"];
         int cnt = this.test == true? 5 : resourceSS.Count;
+        Debug.Log("number to set: "+cnt);
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos = this.test == true? null : (List<object>)resourceSS[i];
             int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
             int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
             int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
+            Debug.Log(r + "_" + c);
             tiles[Tuple.Create(r, c)].SetSmallStick(d);
         }
 
