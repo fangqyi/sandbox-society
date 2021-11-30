@@ -335,14 +335,15 @@ public class Character: UnityModule
          updateCommunicationShader();
       }
 
-      if (hist.ContainsKey("technologyStatus")){
-         object tools = Unpack("technologyStatus", hist);
-         bool isSword = Convert.ToBoolean(Unpack("sword_status", tools));
-         bool isShield = Convert.ToBoolean(Unpack("shield_status", tools));
-         bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
-         bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
-         UpdateTools(isSword, isShield, isHatchet, isPickaxe);
-      }
+      //if (hist.ContainsKey("technologyStatus")){
+      //   object tools = Unpack("technologyStatus", hist);
+      //   bool isSword = Convert.ToBoolean(Unpack("sword_status", tools));
+      //   bool isShield = Convert.ToBoolean(Unpack("shield_status", tools));
+      //   bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
+      //   bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
+      //   UpdateTools(isSword, isShield, isHatchet, isPickaxe);
+      //}
+      UpdateTools(true, true, true, true);
       
    }
 
