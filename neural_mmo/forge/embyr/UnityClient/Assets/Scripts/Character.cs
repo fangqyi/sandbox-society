@@ -157,6 +157,7 @@ public class Character: UnityModule
 
    public void UpdatePos(bool smooth)
    {
+      Debug.Log("Calling UpdatePos");
       Vector3 orig = new Vector3(this.rOld, 0, this.cOld);
       Vector3 targ = new Vector3(this.r, 0, this.c);
       if (smooth)
@@ -179,6 +180,7 @@ public class Character: UnityModule
    void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
       Debug.Log("Check for swords... Current: "+this.hasSword);
       Debug.Log("Sword New: "+isSword);
+      Debug.Log("Sword agent current pos: "+ this.transform.position.x + ", " + this.transform.position.y + ", " + this.transform.position.z);
       if (isSword != this.hasSword){
          this.hasSword = isSword;
          if (this.hasSword){
