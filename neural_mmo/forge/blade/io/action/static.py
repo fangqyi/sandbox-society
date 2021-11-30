@@ -379,8 +379,10 @@ class Gather(Node):
       if tile.harvest():
          if type(tile.mat) == material.Orerock:
             entity.inv.insertItems(ItemType.SMALL_ROCK)
+            entity.history.small_rocks.editVal(1)
          elif type(tile.mat) == material.Tree:
             entity.inv.insertItems(ItemType.SMALL_STICK)
+            entity.history.small_sticks.editVal(1)
 
 class PickUpItem(Node):
    priority = 0
@@ -413,10 +415,12 @@ class PickUpItem(Node):
       for i in range(ssticks):
          tile.removeItem(ItemType.SMALL_STICK)
          entity.insertItemsIntoInventory([Item(ItemType.SMALL_STICK)])
+         entity.history.small_sticks.editVal(1)
 
       for i in range(sstones):
          tile.removeItem(ItemType.SMALL_ROCK)
          entity.insertItemsIntoInventory([Item(ItemType.SMALL_ROCK)])
+         entity.history.small_rocks.editVal(1)
 
       shield_status = entity.getShieldStatus()
       hoe_status = entity.getHoeStatus()
@@ -424,11 +428,13 @@ class PickUpItem(Node):
          for i in range(lsticks):
             tile.removeItem(ItemType.LARGE_BRANCH)
             entity.insertItemsIntoInventory([Item(ItemType.LARGE_BRANCH)])
+            entity.history.large_branches.editVal(1)
 
       if shield_status:
          for i in range(lstones):
             tile.removeItem(ItemType.LARGE_BOULDER)
             entity.insertItemsIntoInventory([Item(ItemType.LARGE_BOULDER)])
+            entity.history.large_boulders.editVal(1)
 
 
 
