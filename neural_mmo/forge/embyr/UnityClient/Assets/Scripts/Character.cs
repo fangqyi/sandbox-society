@@ -61,7 +61,7 @@ public class Character: UnityModule
    public bool hasPickaxe;
    public bool hasHatchet;
    
-   public static void LoadToolPrefabs(){
+   public void LoadToolPrefabs(){
       prefPickaxe = Resources.Load(toolFilepath + "Pref_PickAxe_A") as GameObject;
       prefHatchet = Resources.Load(toolFilepath + "Pref_Hatchet_A") as GameObject;
       prefShield = Resources.Load(toolFilepath + "Pref_RoundShield_A") as GameObject; 
@@ -102,6 +102,7 @@ public class Character: UnityModule
       //OBJ model and overheads
       this.NNObj(ball, rod_bottom, rod_top);
       this.Overheads(name, ball);
+      this.LoadToolPrefabs();
 
       initToolStatus();
 
