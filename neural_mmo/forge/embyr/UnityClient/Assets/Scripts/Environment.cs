@@ -21,6 +21,7 @@ public class Tree
     static private string filepath = "Low Poly Isometric Tiles - Cartoon Pack/Prefabs/Trees/";
     static private int numTreePrefabs = 17;
     static private int numScrubPrefabs = 1;
+    static private float treeLocalScale = 0.8f;
     static private List<GameObject> treePrefabs;
     static private List<GameObject> scrubPrefabs;
 
@@ -49,6 +50,7 @@ public class Tree
         this.rot = rot;
         this.id = id;  // local id in the tile
         this.existence = GameObject.Instantiate((this.alive == true ? treePrefabs[this.treeId] : scrubPrefabs[this.scrubId]), pos, rot) as GameObject;
+        this.existence.transform.localScale *= treeLocalScale;
     }
 
     public void UpdateAliveStatus(bool alive)
