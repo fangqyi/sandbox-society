@@ -214,6 +214,8 @@ public class Tile
 
     static private List<GameObject> topParts;
     static private int numTopParts = 7;
+    static private List<GameObject> topStoneParts;
+    static private int numTopStoneParts = 15;
     static private List<GameObject> mainParts;
     static private List<GameObject> fillParts;
     static private int numFillParts = 9;
@@ -229,8 +231,8 @@ public class Tile
     public int maxSpawnAttemptsPerObstacle = 10;
 
     static private Vector3 magicTree = new Vector3(0, 1f, 0);
-    static private Vector3 magicStone = new Vector3(0, 0.125f, 0);
-    static private Vector3 magicFill = new Vector3(0, -0.1f, 0);
+    static private Vector3 magicStone = new Vector3(0, 0.13f, 0);
+    static private Vector3 magicFill = new Vector3(0, -0.05f, 0);
     static private Vector3 magicResources = new Vector3(0, 0.55f, 0);
 
     static public void LoadTileParts()
@@ -240,6 +242,7 @@ public class Tile
         fillParts = new List<GameObject>();
 
         string topPathname = "tiles_v2/Tiles/Top parts/Big/Top_Big_0_";
+        string topStonePathname = "tiles_v2/Tiles/Top parts/Stone/Top_Stone_0_"; 
         string mainPathname = "tiles_v2/Tiles/Main parts/Big/Main_Big_0";
         string fillPathname = "tiles_v2/Tiles/Fill parts/Grass/Only Grass/Fill_Grass_";
 
@@ -247,6 +250,10 @@ public class Tile
         for (int i = 0; i < numTopParts; i++)
         {
             topParts.Add(Resources.Load(topPathname + i) as GameObject);
+        }
+        for (int i = 0; i < numTopStoneParts; i++)
+        {
+            topStoneParts.Add(Resources.Load(topStonePathname + i) as GameObject);
         }
 
         //Load brick tile part
@@ -262,12 +269,30 @@ public class Tile
         water = Resources.Load("Material/Water") as Material;
     }
 
+    int getTileTopId(int val){
+        if (val == grassVal){
+            return 5; // "Top_Big_0_5"
+        }
+        else if (val == forestVal){
+            return 2;  // "Top_Big_0_2"
+        }
+        else if (val == scrubVal){  // degenerated forest
+            return 0;  // "Top_Big_0_0"
+        }
+        else if (val == stoneVal){
+            return Random.Range(0, topStoneParts.Count);
+        }
+        else{
+            return Random.Range(0, topParts.Count);
+        }
+    }
+
     public Tile(string name, int val, Vector3 spawnPos)
     {
         this.name = name;
         this.pos = spawnPos;
-        this.topId = Random.Range(0, topParts.Count);
-        this.top =GameObject.Instantiate(topParts[this.topId], spawnPos, new Quaternion());
+        this.topId = getTileTopId(val);
+        this.top = GameObject.Instantiate(topParts[this.topId], spawnPos, new Quaternion());
         this.top.transform.localScale = new Vector3(.5f, .5f, .5f);
         this.mainId = Random.Range(0, mainParts.Count);
         this.main =GameObject.Instantiate(mainParts[this.mainId], this.top.transform);
@@ -495,8 +520,6 @@ public class Tile
     }
     
     public void SetSmallStick(int num){
-        Debug.Log("Set small sticks number: "+num);
-        Debug.Log("Current small sticks number: "+this.smallSticks.Count);
         int delta = num - this.smallSticks.Count;
         if (delta > 0){
             this.AddSmallStick(delta);
@@ -508,19 +531,15 @@ public class Tile
     
     public void AddSmallStick(int num)
     {
-         Debug.Log("Add small sticks number: "+num);
         for (int i = 0; i < num; i++)
         {
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            Debug.Log("small sticks this.pos: " + this.pos);
-            Debug.Log("small sticks pos pos: " + this.getUncollisionedSpawnPos(this.pos, 0.1f));
             this.smallSticks.Add(new Stick(true, this.getUncollisionedSpawnPos(this.pos+magicResources, 0.1f), rot));
         }
     }
 
     public void RemoveSmallStick(int num)
     {
-        Debug.Log("Remove small sticks number: "+num);
         int tot = this.smallSticks.Count;
         for (int i = 0; i < num; i++)
         {
