@@ -31,32 +31,20 @@ class MapAgent(Meander):
 
 class TechnologyLightMapAgent(MapAgent):
     def __call__(self, obs):
-
-        tile = self.ob.tile(0, 0)
-
-        rock_count_prev = Observation.attribute(self.ob.agent, Stimulus.Entity.SmallRocks) + Observation.attribute(
-            self.ob.agent, Stimulus.Entity.LargeBoulders)
-        stick_count_prev = Observation.attribute(self.ob.agent, Stimulus.Entity.SmallSticks) + Observation.attribute(
-            self.ob.agent, Stimulus.Entity.LargeBranches)
-
         MapAgent.__call__(self, obs)
-        # self.pickUpItems(self.config, self.actions)
+        self.ob = io.Observation(self.config, obs)
 
-        rock_count_curr = Observation.attribute(self.ob.agent, Stimulus.Entity.SmallRocks) + Observation.attribute(
+        rock_count = Observation.attribute(self.ob.agent, Stimulus.Entity.SmallRocks) + Observation.attribute(
             self.ob.agent, Stimulus.Entity.LargeBoulders)
-        stick_count_curr = Observation.attribute(self.ob.agent, Stimulus.Entity.SmallSticks) + Observation.attribute(
+        stick_count = Observation.attribute(self.ob.agent, Stimulus.Entity.SmallSticks) + Observation.attribute(
             self.ob.agent, Stimulus.Entity.LargeBranches)
 
-        rock_collected = rock_count_prev < rock_count_curr
-        stick_collected = stick_count_prev < stick_count_curr
-
-        if rock_collected and stick_collected:
-            self.signal(self.config, self.actions, 0x6a0dad)
-        elif rock_collected:
+        if rock_count == stick_count:
+            self.signal(self.config, self.actions, 0xffffff)
+        elif rock_count > stick_count:
             self.signal(self.config, self.actions, 0xff0000)
-        elif stick_collected:
+        elif stick_count > rock_count:
             self.signal(self.config, self.actions, 0x0000ff)
-
+        else:
+            self.signal(self.config, self.actions, 0)
         return self.actions
-
-

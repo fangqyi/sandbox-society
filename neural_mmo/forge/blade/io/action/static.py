@@ -305,13 +305,13 @@ class InventoryInsertion(Node):
       entity.inv.insertItems(items)
       for item in items:
          if item.getType() == ItemType.SMALL_ROCK:
-            entity.history.small_rocks.editVal(1)
+            entity.history.small_rocks.increment()
          if item.getType() == ItemType.SMALL_STICK:
-            entity.history.small_sticks.editVal(1)
+            entity.history.small_sticks.increment()
          if item.getType() == ItemType.LARGE_BOULDER:
-            entity.history.large_boulders.editVal(1)
+            entity.history.large_boulders.increment()
          if item.getType() == ItemType.LARGE_BRANCH:
-            entity.history.large_branches.editVal(1)
+            entity.history.large_branches.increment()
       return True
 
 class InventoryRemoval(Node):
@@ -333,13 +333,13 @@ class InventoryRemoval(Node):
    def call(env, entity, itemType, numItems):
       entity.inv.removeItems(itemType, numItems)
       if itemType == ItemType.SMALL_ROCK:
-         entity.history.small_rocks.editVal(-numItems)
+         entity.history.small_rocks.decrement(numItems)
       if itemType == ItemType.SMALL_STICK:
-         entity.history.small_sticks.editVal(-numItems)
+         entity.history.small_sticks.decrement(numItems)
       if itemType == ItemType.LARGE_BOULDER:
-         entity.history.large_boulders.editVal(-numItems)
+         entity.history.large_boulders.decrement(numItems)
       if itemType == ItemType.LARGE_BRANCH:
-         entity.history.large_branches.editVal(-numItems)
+         entity.history.large_branches.decrement(numItems)
 
       return True
 
@@ -376,13 +376,13 @@ class Gather(Node):
       rNew, cNew = r+rDelta, c+cDelta
 
       tile = env.map.tiles[rNew, cNew]
-      if tile.harvest():
-         if type(tile.mat) == material.Orerock:
+      if env.map.harvest(rNew, cNew):
+         if type(tile.mat) == material.Stone:
             entity.inv.insertItems(ItemType.SMALL_ROCK)
-            entity.history.small_rocks.editVal(1)
-         elif type(tile.mat) == material.Tree:
+            entity.history.small_rocks.increment()
+         elif type(tile.mat) == material.Forest:
             entity.inv.insertItems(ItemType.SMALL_STICK)
-            entity.history.small_sticks.editVal(1)
+            entity.history.small_sticks.increment()
 
 class PickUpItem(Node):
    priority = 0
@@ -406,21 +406,15 @@ class PickUpItem(Node):
       tile = env.map.tiles[r, c]
       ssticks, lsticks, sstones, lstones = tile.items
 
-      if ssticks != 0:
-         print("{} small sticks present".format(ssticks))
-
-      if sstones != 0:
-         print("{} small stones present".format(sstones))
-
       for i in range(ssticks):
          tile.removeItem(ItemType.SMALL_STICK)
          entity.insertItemsIntoInventory([Item(ItemType.SMALL_STICK)])
-         entity.history.small_sticks.editVal(1)
+         entity.history.small_sticks.increment()
 
       for i in range(sstones):
          tile.removeItem(ItemType.SMALL_ROCK)
          entity.insertItemsIntoInventory([Item(ItemType.SMALL_ROCK)])
-         entity.history.small_rocks.editVal(1)
+         entity.history.small_rocks.increment()
 
       shield_status = entity.getShieldStatus()
       hoe_status = entity.getHoeStatus()
@@ -428,13 +422,13 @@ class PickUpItem(Node):
          for i in range(lsticks):
             tile.removeItem(ItemType.LARGE_BRANCH)
             entity.insertItemsIntoInventory([Item(ItemType.LARGE_BRANCH)])
-            entity.history.large_branches.editVal(1)
+            entity.history.large_branches.increment()
 
       if shield_status:
          for i in range(lstones):
             tile.removeItem(ItemType.LARGE_BOULDER)
             entity.insertItemsIntoInventory([Item(ItemType.LARGE_BOULDER)])
-            entity.history.large_boulders.editVal(1)
+            entity.history.large_boulders.increment()
 
 
 
@@ -505,11 +499,11 @@ class GiveItems(Node):
    def call(env, entity, itemType, numItems):
       entity.inv.insertItems(itemType, numItems)
       if itemType == ItemType.SMALL_ROCK:
-         entity.history.small_rocks.editVal(numItems)
+         entity.history.small_rocks.increment(numItems)
       if itemType == ItemType.SMALL_STICK:
-         entity.history.small_sticks.editVal(numItems)
+         entity.history.small_sticks.increment(numItems)
       if itemType == ItemType.LARGE_BOULDER:
-         entity.history.large_boulders.editVal(numItems)
+         entity.history.large_boulders.increment(numItems)
       if itemType == ItemType.LARGE_BRANCH:
-         entity.history.large_branches.editVal(numItems)
+         entity.history.large_branches.increment(numItems)
       return True

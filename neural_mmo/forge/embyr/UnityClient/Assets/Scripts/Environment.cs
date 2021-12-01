@@ -336,19 +336,20 @@ public class Tile
             int id = this.trees.Count;
             if (id < 1) {
                 Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(spawnPos+magicTree, 0.1f), rot));
+                this.trees.Add(new Tree(id, val == forestVal, spawnPos+magicTree, rot));
             }
         }
         else if (val == stoneVal)
         {
             int id = this.stones.Count;
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-            this.stones.Add(new Stone(id, true, this.getUncollisionedSpawnPos(spawnPos+magicStone, 0.35f), rot));
+            this.stones.Add(new Stone(id, true, spawnPos+magicStone, rot));
         }
     }
 
     public void UpdateStatus(int val)
     {
+        Debug.Log("calling update status with val "+val);
         if (val == grassVal)
         {
             // remove all trees and stones
@@ -402,7 +403,7 @@ public class Tile
                 int id = this.trees.Count;
                 if (id < 1) {
                     Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                    this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.1f), rot));
+                    this.trees.Add(new Tree(id, val == forestVal, this.pos+magicTree, rot));
                 }
             }
         }
@@ -439,7 +440,7 @@ public class Tile
             {
                 int id = this.stones.Count; //fixme should be stone below?
                 Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.getUncollisionedSpawnPos(this.pos+magicTree, 0.35f), rot));
+                this.trees.Add(new Tree(id, val == forestVal, this.pos+magicTree, rot));
             }
         }
         else if (val == brokenStoneVal)

@@ -37,8 +37,8 @@ class Forest(Material):
 
    def __init__(self, config):
       if config.game_system_enabled('Resource'):
-         self.capacity = config.RESOURCE_FOREST_CAPACITY
-         self.respawn  = config.RESOURCE_FOREST_RESPAWN
+         self.capacity = 1 #config.RESOURCE_FOREST_CAPACITY
+         self.respawn  = .05 #config.RESOURCE_FOREST_RESPAWN
 
 class Stone(Material):
    tex   = 'stone'
@@ -53,12 +53,12 @@ class Orerock(Material):
 
    def __init__(self, config):
       if config.game_system_enabled('Resource'):
-         self.capacity = config.RESOURCE_OREROCK_CAPACITY
-         self.respawn  = config.RESOURCE_OREROCK_RESPAWN
+         self.capacity = 10 #config.RESOURCE_OREROCK_CAPACITY
+         self.respawn  = .05 #config.RESOURCE_OREROCK_RESPAWN
 
 class Tree(Material):
    tex   = 'tree'
-   index = 4
+   index = 7
 
    harvestable = True
    degen       = Scrub
