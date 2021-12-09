@@ -1,3 +1,4 @@
+// new environment (the original implementation is preserved as legacy at Environment(old) file) | qf, mav
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ using Unity.Entities.UniversalDelegates;
 using System.Linq;
 using Random=UnityEngine.Random;
 
-// implements basic items in the map (tree, rocks, ...) and tile that is consisted of three components with items on the top | qf
+// implements basic items in the map (tree, rocks, ...) and tile that is consisted of three components with items on the top | qf, mav
 // possible optimization in runtime: remove the remaining prefabs in resources directory  
 public class Tree
 {
