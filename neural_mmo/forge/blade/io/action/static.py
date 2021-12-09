@@ -225,6 +225,10 @@ class Mage(Node):
    def skill(entity):
       return entity.skills.mage
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+Signal is a node that allows entities to set their communication light.
+'''
 class Signal(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -247,7 +251,10 @@ class Signal(Node):
 
       return light
 
-
+'''
+Duke CS390 Fall 2021: AI Sandbox
+Light is a node that defines the types of lights entities can use.
+'''
 class Light(Node):
    argType = Fixed
 
@@ -258,6 +265,10 @@ class Light(Node):
    def args(stim, entity, config):
       return Direction.edges
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+TechnologyStatus is a node that allows entities to obtain their technology status for rocks and sticks.
+'''
 class TechnologyStatus(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -285,6 +296,10 @@ class TechnologyStatus(Node):
       entity.history.improved_hoe_status.update(1 if improved_hoe_status else 0)
       return sword_status, shield_status, hoe_status, improved_hoe_status
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+InventoryInsertion is a node that allows entities to insert items into their inventory.
+'''
 class InventoryInsertion(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -314,6 +329,10 @@ class InventoryInsertion(Node):
             entity.history.large_branches.increment()
       return True
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+InventoryRemoval is a node that allows entities to remove items from their inventory.
+'''
 class InventoryRemoval(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -343,6 +362,10 @@ class InventoryRemoval(Node):
 
       return True
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+InventoryItemType is a node that defines the possible types for inventory items.
+'''
 class InventoryItemType(Node):
    argType = Fixed
 
@@ -353,6 +376,10 @@ class InventoryItemType(Node):
    def args(stim, entity, config):
       return Direction.edges
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+Gather is a node that allows entities to gather resources that naturally spawn from their current tile.
+'''
 class Gather(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -384,6 +411,10 @@ class Gather(Node):
             entity.inv.insertItems(ItemType.SMALL_STICK)
             entity.history.small_sticks.increment()
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+PickUpItem is a node that allows entities to pick up items from their current tile. This includes items that have been dropped.
+'''
 class PickUpItem(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -430,8 +461,10 @@ class PickUpItem(Node):
             entity.insertItemsIntoInventory([Item(ItemType.LARGE_BOULDER)])
             entity.history.large_boulders.increment()
 
-
-
+'''
+Duke CS390 Fall 2021: AI Sandbox
+DropItem is a node that allows entities to drop inventory items onto their current tile.
+'''
 class DropItem(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -455,6 +488,10 @@ class DropItem(Node):
       tile.addItem(ItemType.SMALL_STICK)
       ## entity.inv.removeItems(itemType, 1)
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+InventoryItem is a node that represents the different types of inventory items an entity can have.
+'''
 class InventoryItem(Node):
    argType = Fixed
 
