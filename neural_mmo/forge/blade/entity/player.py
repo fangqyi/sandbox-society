@@ -12,7 +12,10 @@ from neural_mmo.forge.blade.io.stimulus import Static
 from neural_mmo.forge.blade.systems.inventory import Inventory
 from neural_mmo.forge.blade.item.item import Item, ItemType
 
-
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Edited the player class to include inventory and technology features.
+'''
 class Player(entity.Entity):
     def __init__(self, realm, pos, agent):
         super().__init__(realm, pos, agent.iden, agent.name, agent.color, agent.pop)

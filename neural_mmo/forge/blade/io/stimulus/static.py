@@ -76,7 +76,7 @@ class Stimulus(Config):
             self.scale = 0.01
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's communication value.
       '''
       class Communication(node.Discrete):
@@ -87,7 +87,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's small stone technology.
       '''
       class SmallStoneTechnology(node.Discrete):
@@ -98,7 +98,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's large boulder technology.
       '''
       class LargeBoulderTechnology(node.Discrete):
@@ -109,7 +109,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's small stick technology.
       '''
       class SmallStickTechnology(node.Discrete):
@@ -120,7 +120,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's large branch technology.
       '''
       class LargeBranchTechnology(node.Discrete):
@@ -131,7 +131,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's small stones.
       '''
       class SmallRocks(node.Discrete):
@@ -142,7 +142,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's small sticks.
       '''
       class SmallSticks(node.Discrete):
@@ -153,7 +153,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's large boulders.
       '''
       class LargeBoulders(node.Discrete):
@@ -164,7 +164,7 @@ class Stimulus(Config):
             self.scale = 1
 
       '''
-      Duke CS390 Fall 2021: AI Sandbox
+      Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
       Node to represent entity's large branches.
       '''
       class LargeBranches(node.Discrete):

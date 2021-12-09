@@ -6,7 +6,7 @@ from neural_mmo.forge.blade.io.action import static as Action
 from neural_mmo.forge.trinity.scripted.io import Observation
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 Scripted Agent for technology.
 '''
 class TechnologyAgent(Meander):

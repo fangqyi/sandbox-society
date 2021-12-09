@@ -226,7 +226,7 @@ class Mage(Node):
       return entity.skills.mage
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 Signal is a node that allows entities to set their communication light.
 '''
 class Signal(Node):
@@ -252,7 +252,7 @@ class Signal(Node):
       return light
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 Light is a node that defines the types of lights entities can use.
 '''
 class Light(Node):
@@ -266,7 +266,7 @@ class Light(Node):
       return Direction.edges
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 TechnologyStatus is a node that allows entities to obtain their technology status for rocks and sticks.
 '''
 class TechnologyStatus(Node):
@@ -297,7 +297,7 @@ class TechnologyStatus(Node):
       return sword_status, shield_status, hoe_status, improved_hoe_status
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 InventoryInsertion is a node that allows entities to insert items into their inventory.
 '''
 class InventoryInsertion(Node):
@@ -330,7 +330,7 @@ class InventoryInsertion(Node):
       return True
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 InventoryRemoval is a node that allows entities to remove items from their inventory.
 '''
 class InventoryRemoval(Node):
@@ -363,7 +363,7 @@ class InventoryRemoval(Node):
       return True
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 InventoryItemType is a node that defines the possible types for inventory items.
 '''
 class InventoryItemType(Node):

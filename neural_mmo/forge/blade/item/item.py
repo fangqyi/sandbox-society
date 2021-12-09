@@ -9,7 +9,7 @@ class Item:
         return self.item_type
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 Enum class to represent item types.
 '''
 class ItemType(Enum):

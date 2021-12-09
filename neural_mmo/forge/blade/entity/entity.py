@@ -38,6 +38,10 @@ class Status:
       data['freeze']     = self.freeze.val
       return data
 
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Edited the history class to pass information about new features to the frontend.
+'''
 class History:
    def __init__(self, ent):
       self.actions = None

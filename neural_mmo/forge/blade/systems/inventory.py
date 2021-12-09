@@ -2,7 +2,8 @@ from neural_mmo.forge.blade.item import item, armor
 from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge.blade.systems.equipment import Armor
 
-
+# Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+# Edited the inventory class to support new items and interactions.
 class Inventory:
     def __init__(self):
         self.items = dict()
@@ -90,7 +91,7 @@ class Inventory:
 
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
 Test for inventory interactions.
 '''
 def runInventoryTest():
