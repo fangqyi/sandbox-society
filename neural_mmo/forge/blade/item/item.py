@@ -8,6 +8,10 @@ class Item:
     def getType(self):
         return self.item_type
 
+'''
+Duke CS390 Fall 2021: AI Sandbox
+Enum class to represent item types.
+'''
 class ItemType(Enum):
     RED_BERRY = 1
     BLUE_BERRY = 2
