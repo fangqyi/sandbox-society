@@ -43,7 +43,7 @@ public class Character: UnityModule
    public Overheads overheads;
    public float disTool2Agent = 0.5f;
    public float disTool2Ground = 0.6f;
-   public float scaleTool = 0.35f;
+   public float scaleTool = 0.4f;
 
    // tool prefabs
    static private String toolFilepath = "OneOffDesign/Lowpoly Medieval Fantasy Weapons/Prefabs/";
@@ -180,6 +180,13 @@ public class Character: UnityModule
       this.transform.forward = Vector3.RotateTowards(this.forward, orig - targ, (float)Math.PI * Client.tickFrac, 0f);
    }
 
+   private void setToolColor(GameObject tool, Color32 color) {
+      Material mat = tool.GetComponent<Renderer>().material;
+      mat.shader = Shader.Find("MK/Glow/Selective/Legacy/Normal/Diffuse");
+      mat.SetColor("_Color", color);
+      mat.SetFloat("_MKGlowTexStrength", .25f);
+   }
+
    void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
       if (isSword != this.hasSword){
          this.hasSword = isSword;
@@ -187,6 +194,8 @@ public class Character: UnityModule
             Vector3 pos = new Vector3(this.transform.position.x + this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
             this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
             this.sword.transform.localScale *= scaleTool;
+
+            setToolColor(this.sword, intToColor(0xFF));
          }
          else{
             GameObject.Destroy(this.sword);
@@ -198,6 +207,7 @@ public class Character: UnityModule
             Vector3 pos = new Vector3(this.transform.position.x - this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
             this.shield = GameObject.Instantiate(prefShield, pos, Quaternion.identity) as GameObject;
             this.shield.transform.localScale *= scaleTool;
+            setToolColor(this.shield, intToColor(0xFF));
          }
          else{
             GameObject.Destroy(this.shield);
@@ -209,6 +219,8 @@ public class Character: UnityModule
             Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z + this.disTool2Agent);
             this.hatchet = GameObject.Instantiate(prefHatchet, pos, Quaternion.identity) as GameObject;
             this.hatchet.transform.localScale *= scaleTool;
+
+            setToolColor(this.hatchet, intToColor(0xFF0000));
          }
          else{
             GameObject.Destroy(this.hatchet);
@@ -220,6 +232,8 @@ public class Character: UnityModule
             Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z - this.disTool2Agent);
             this.pickaxe = GameObject.Instantiate(prefPickaxe, pos, Quaternion.identity) as GameObject;
             this.pickaxe.transform.localScale *= scaleTool;
+
+            setToolColor(this.pickaxe, intToColor(0xFF0000));
          }
          else{
             GameObject.Destroy(this.pickaxe);
@@ -376,8 +390,8 @@ public class Character: UnityModule
       //   bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
       //   bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
       //   UpdateTools(isSword, isShield, isHatchet, isPickaxe);
-      //}
-      UpdateTools(true, true, true, true);
+      //} 
+      UpdateTools(true, true, true, true); //FIXME dynamic tooling
       
    }
 

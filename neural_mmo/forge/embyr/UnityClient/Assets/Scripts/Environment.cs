@@ -228,8 +228,8 @@ public class Tile
     static private int grassVal = 2;
     static private int scrubVal = 3;  //dead tree
     static private int forestVal = 4;  //alive tree
-    static private int stoneVal = 5;  //alive stone
-    static private int brokenStoneVal = 7;
+    static private int stoneVal = 6;  //alive stone
+    static private int brokenStoneVal = 5;
     public int maxSpawnAttemptsPerObstacle = 10;
 
     static private Vector3 magicTree = new Vector3(0, 1f, 0);
@@ -240,6 +240,7 @@ public class Tile
     static public void LoadTileParts()
     {
         topParts = new List<GameObject>();
+        topStoneParts = new List<GameObject>();
         mainParts = new List<GameObject>();
         fillParts = new List<GameObject>();
 
@@ -282,10 +283,10 @@ public class Tile
             return 0;  // "Top_Big_0_0"
         }
         else if (val == stoneVal){
-            return Random.Range(0, topStoneParts.Count);
+            return 0;//Random.Range(0, topStoneParts.Count);
         }
         else{
-            return Random.Range(0, topParts.Count);
+            return 0;//Random.Range(0, topParts.Count);
         }
     }
 
@@ -294,9 +295,17 @@ public class Tile
         this.name = name;
         this.pos = spawnPos;
         this.topId = getTileTopId(val);
-        this.top = GameObject.Instantiate(topParts[this.topId], spawnPos, new Quaternion());
+        Debug.Log("top id is "+this.topId);
+        GameObject top_temp;
+        if (val == stoneVal) {
+            top_temp = topStoneParts[this.topId];
+        } else {
+            top_temp = topParts[this.topId];
+        }
+        this.top = GameObject.Instantiate(top_temp, spawnPos, new Quaternion());
+        Debug.Log("survived top id");
         this.top.transform.localScale = new Vector3(.5f, .5f, .5f);
-        this.mainId = Random.Range(0, mainParts.Count);
+        this.mainId = Random.Range(0, mainParts.Count - 1);
         this.main =GameObject.Instantiate(mainParts[this.mainId], this.top.transform);
         this.fill = null;
 
@@ -309,7 +318,7 @@ public class Tile
 
         if (val == grassVal)
         {
-            this.fillId = Random.Range(0, fillParts.Count);
+            this.fillId = Random.Range(0, fillParts.Count - 1);
             this.fill =GameObject.Instantiate(fillParts[this.fillId], top.transform);
             this.fill.transform.position += magicFill;
             if (randomizeFillChilds)
@@ -831,7 +840,6 @@ public class Environment : MonoBehaviour
             int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
             int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
             int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
-            Debug.Log(r + "_" + c);
             tiles[Tuple.Create(r, c)].SetSmallStick(d);
         }
 
@@ -876,6 +884,7 @@ public class Environment : MonoBehaviour
             int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
             int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
             int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
+            Debug.Log(r+" "+c);
             tiles[Tuple.Create(r, c)].UpdateStatus(d);
         }
     }

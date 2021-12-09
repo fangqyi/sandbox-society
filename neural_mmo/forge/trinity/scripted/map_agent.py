@@ -1,6 +1,6 @@
 from neural_mmo.forge.blade.io.stimulus.static import Stimulus
 from neural_mmo.forge.blade.item.item import ItemType, Item
-from neural_mmo.forge.trinity.scripted import io
+from neural_mmo.forge.trinity.scripted import io, move
 from neural_mmo.forge.trinity.scripted.baselines import Meander
 from neural_mmo.forge.blade.io.action import static as Action
 from neural_mmo.forge.trinity.scripted.io import Observation
@@ -48,3 +48,22 @@ class TechnologyLightMapAgent(MapAgent):
         else:
             self.signal(self.config, self.actions, 0)
         return self.actions
+
+class SocialAgent(MapAgent):
+    def __call__(self, obs):
+        MapAgent.__call__(self, obs):
+        self.ob = io.Observation(self.config, obs)
+        my_light = Observation.attribute(self.ob.agent, Stimulus.Entity.Communication)
+        my_type = None
+
+        #red = stick, blue = stone
+        if my_light == 0:
+            my_type = "stick" if randint(0,1) else "stone"
+        elif my_light>>16 > my_light & 255:
+            my_type = "stick"
+        else:
+            my_type = "stone"
+
+        self.explore()
+
+        
