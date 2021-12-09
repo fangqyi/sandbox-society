@@ -75,6 +75,10 @@ class Stimulus(Config):
             self.val = 0
             self.scale = 0.01
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's communication value.
+      '''
       class Communication(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -82,6 +86,10 @@ class Stimulus(Config):
             self.max = 0xFFFFFF
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's small stone technology.
+      '''
       class SmallStoneTechnology(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -89,6 +97,10 @@ class Stimulus(Config):
             self.max = 1
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's large boulder technology.
+      '''
       class LargeBoulderTechnology(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -96,6 +108,10 @@ class Stimulus(Config):
             self.max = 1
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's small stick technology.
+      '''
       class SmallStickTechnology(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -103,6 +119,10 @@ class Stimulus(Config):
             self.max = 1
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's large branch technology.
+      '''
       class LargeBranchTechnology(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -110,6 +130,10 @@ class Stimulus(Config):
             self.max = 1
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's small stones.
+      '''
       class SmallRocks(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -117,6 +141,10 @@ class Stimulus(Config):
             self.max = 100
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's small sticks.
+      '''
       class SmallSticks(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -124,6 +152,10 @@ class Stimulus(Config):
             self.max = 100
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's large boulders.
+      '''
       class LargeBoulders(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -131,6 +163,10 @@ class Stimulus(Config):
             self.max = 100
             self.scale = 1
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent entity's large branches.
+      '''
       class LargeBranches(node.Discrete):
          def init(self, config):
             self.val = 0
@@ -207,21 +243,37 @@ class Stimulus(Config):
             self.max = config.TERRAIN_SIZE - 1
             self.scale = 0.15
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent tile's small sticks.
+      '''
       class SStick(node.Discrete):
          def init(self, config):
             self.max = 5
             self.scale = 0.15
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent tile's large sticks.
+      '''
       class LStick(node.Discrete):
          def init(self, config):
             self.max = 5
             self.scale = 0.15
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent tile's small stones.
+      '''
       class SStone(node.Discrete):
          def init(self, config):
             self.max = 5
             self.scale = 0.15
 
+      '''
+      Duke CS390 Fall 2021: AI Sandbox
+      Node to represent tile's large stones.
+      '''
       class LStone(node.Discrete):
          def init(self, config):
             self.max = 5
