@@ -122,8 +122,8 @@ class Debug(SmallMaps, config.AllGameSystems):
    EMBED                   = 2
 
 
-### AICrowd competition settings
-class CompetitionRound1(config.Achievement, SmallMaps):
+### Added config for 390
+class Social(config.Achievement, SmallMaps):
 
    @property
    def SPAWN(self):
@@ -137,6 +137,17 @@ class CompetitionRound1(config.Achievement, SmallMaps):
    COOPERATIVE = True
    BASE_HEALTH = 50
    PLAYER_SPAWN_ATTEMPTS   = 8
+
+### AICrowd competition settings
+class CompetitionRound1(SmallMaps, config.AllGameSystems):
+   ACHIEVEMENTS            = DEFAULT_ACHIEVEMENTS
+
+   @property
+   def SPAWN(self):
+      return self.SPAWN_CONCURRENT
+
+   NENT                    = 128
+   NPOP                    = 1
 
 class CompetitionRound2(config.Achievement, SmallMaps):
    @property
