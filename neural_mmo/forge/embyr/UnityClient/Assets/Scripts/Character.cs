@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+// implements the frontend agent with addition of light commmunication shader and usage of tool as representation | qf
+// for better visualization, modifications have been made to allow shaders with customizable colors on agent's light and tools | mav 
 public class Character: UnityModule 
 {
 
@@ -187,6 +189,8 @@ public class Character: UnityModule
       mat.SetFloat("_MKGlowTexStrength", .25f);
    }
 
+   // update for tools if agent has or discard its tools (including sword, shield, hatchet, pixckaxe) | qf 
+   // hetter color shaders have been applied for easy distinguishment | mav
    void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
       if (isSword != this.hasSword){
          this.hasSword = isSword;
@@ -372,10 +376,7 @@ public class Character: UnityModule
                attackPrefab, this.attackPos, this.AttackRotation());
       }
 
-      // light-based communication
-      // foreach (var pair in hist) {
-      //    Debug.Log(pair.Key + ", " + pair.Value);
-      // }
+      // light-based communication}
       if (hist.ContainsKey("communication")){
          object comm = Unpack("communication", hist);
          object type = Unpack("color", comm);
@@ -383,15 +384,16 @@ public class Character: UnityModule
          updateCommunicationShader();
       }
 
-      //if (hist.ContainsKey("technologyStatus")){
-      //   object tools = Unpack("technologyStatus", hist);
-      //   bool isSword = Convert.ToBoolean(Unpack("sword_status", tools));
-      //   bool isShield = Convert.ToBoolean(Unpack("shield_status", tools));
-      //   bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
-      //   bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
-      //   UpdateTools(isSword, isShield, isHatchet, isPickaxe);
-      //} 
-      UpdateTools(true, true, true, true); //FIXME dynamic tooling
+      // tool status
+      if (hist.ContainsKey("technologyStatus")){
+         object tools = Unpack("technologyStatus", hist);
+         bool isSword = Convert.ToBoolean(Unpack("sword_status", tools));
+         bool isShield = Convert.ToBoolean(Unpack("shield_status", tools));
+         bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
+         bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
+         UpdateTools(isSword, isShield, isHatchet, isPickaxe);
+      } 
+      //UpdateTools(true, true, true, true); // for debugging
       
    }
 
@@ -400,10 +402,6 @@ public class Character: UnityModule
          this.lightShader = Shader.Find("MK/Glow/Selective/Legacy/Transparent/Diffuse");
       }
       MeshRenderer nn = this.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
-
-      // if (this.commColor == null) {  // initialize color dictionary
-      //    this.SetColors();
-      // }
 
       if (this.commType == 0){  // no light communication
           nn.materials[0].shader = null;  // TODO: make it compatible with existing shader

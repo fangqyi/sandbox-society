@@ -9,13 +9,15 @@ using Unity.Entities.UniversalDelegates;
 using System.Linq;
 using Random=UnityEngine.Random;
 
+// implements basic items in the map (tree, rocks, ...) and tile that is consisted of three components with items on the top | qf
+// possible optimization in runtime: remove the remaining prefabs in resources directory  
 public class Tree
 {
     public int id;
     public int treeId;
     public int scrubId;
     public GameObject existence;
-    public bool alive; //tree is consumeable item
+    public bool alive; // tree is consumeable item
     public Vector3 pos;
     public Quaternion rot;
     static private string filepath = "Low Poly Isometric Tiles - Cartoon Pack/Prefabs/Trees/";
@@ -283,10 +285,10 @@ public class Tile
             return 0;  // "Top_Big_0_0"
         }
         else if (val == stoneVal){
-            return 0;//Random.Range(0, topStoneParts.Count);
+            return 0;  //Random.Range(0, topStoneParts.Count);
         }
         else{
-            return 0;//Random.Range(0, topParts.Count);
+            return 0;  //Random.Range(0, topParts.Count);
         }
     }
 
@@ -330,10 +332,6 @@ public class Tile
                     {
                         fill.transform.GetChild(i).localEulerAngles = new Vector3(0, Random.Range(0f, 360f), 0);
                     }
-                    //else
-                    //{
-                    //    toDestroy.Add(fill.transform.GetChild(i).gameObject);
-                    //}
                 }
             }
         }
@@ -386,10 +384,6 @@ public class Tile
                     {
                         fill.transform.GetChild(i).localEulerAngles = new Vector3(0, Random.Range(0f, 360f), 0);
                     }
-                    //else
-                    //{
-                    //    toDestroy.Add(fill.transform.GetChild(i).gameObject);
-                    //}
                 }
             }
         }
@@ -723,7 +717,7 @@ public class Environment : MonoBehaviour
 
     MeshRenderer renderer;
 
-    bool test = false; // for local testing
+    bool test = false; // for local testing (allows frontend not to listen's backend's packet)
 
     private void loadResources()
     {
@@ -751,8 +745,6 @@ public class Environment : MonoBehaviour
         this.overlayMatl.SetTexture("_Overlay", Texture2D.blackTexture);
 
         this.water = GameObject.Find("Client/Environment/Water");
-        // this.lava  = GameObject.Find("Client/Environment/LavaCutout");
-        //this.sword = GameObject.Find("HeavySword");
         this.light = GameObject.Find("Client/Light");
 
         Consts.MAP_SIZE = System.Convert.ToInt32(packet["size"]);
@@ -766,12 +758,7 @@ public class Environment : MonoBehaviour
 
         this.water.transform.localScale = new Vector3(0.1f * sz, 1, 0.1f * sz);
         this.water.transform.position = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.06f, Consts.MAP_SIZE / 2f - 0.5f);
-        //this.lava.transform.localScale       = new Vector3(28.416334661354583f*sz, 1, 28.416334661354583f*sz);
-        //this.lava.transform.pos         = new Vector3(Consts.MAP_SIZE / 2f - 0.5f, -0.6f, Consts.MAP_SIZE / 2f - 0.5f);
         this.cameraAnchor.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
-        //this.sword.transform.pos        = new Vector3(Consts.MAP_SIZE / 2f, 6f, Consts.MAP_SIZE / 2f);
-        // this.light.transform.position = new Vector3( mapSize / 2f, 0f,  mapSize / 2f);
-
 
         List<object> map = (List<object>)packet["map"];
         this.tiles = new Dictionary<Tuple<int, int>, Tile>();
@@ -833,7 +820,6 @@ public class Environment : MonoBehaviour
         //Parse inactive resource set
         List<object> resourceSS = this.test == true? null : (List<object>)packet["resourceSmallSticks"];
         int cnt = this.test == true? 5 : resourceSS.Count;
-        Debug.Log("number to set: "+cnt);
         for (int i = 0; i < cnt; i++)
         {
             List<object> pos = this.test == true? null : (List<object>)resourceSS[i];
@@ -884,14 +870,13 @@ public class Environment : MonoBehaviour
             int r = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[0]);
             int c = this.test == true? Random.Range(1, mapSize-2) : System.Convert.ToInt32(pos[1]);
             int d = this.test == true? Random.Range(1, 5) : System.Convert.ToInt32(pos[2]);
-            Debug.Log(r+" "+c);
             tiles[Tuple.Create(r, c)].UpdateStatus(d);
         }
     }
     
     void Update()
     {
-      if (this.overlayMatl)
+      if (this.overlayMatl)  // future TODO: accomodate overlay generation with the new environment.
       {
          if (this.cmd)
          {
