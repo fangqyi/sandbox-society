@@ -10,7 +10,7 @@ Sandbox Society is an open-source MARL research environment that encourages lear
 
 In addition to the listed features, Sandbox Society also provides a new Unity frontend client that supports better visualization and remote rendering. 
 ## Quickstart:
-As Sandbox Society inherits the infrastructure from NeuralMMO, it also officially supports Ubuntu 20.04, Windows 10 + WSL, and MacOS (with unknown problems in Windows 11). The only difference in infrastructure is that our unity client and backend are in the same repository, which  eliminates the original step of moving the client implementation to `neural-mmo/forge/embyr` during setup.
+As Sandbox Society inherits the infrastructure from NeuralMMO, the backend officially supports Ubuntu 20.04, Windows 10 + WSL, and MacOS (with unknown problems in Windows 11). At the moment, **the frontend is only built for Windows 10**, but the project can be opened in Unity Editor and run on any of the above systems. The only difference in infrastructure is that our unity client and backend are in the same repository, which  eliminates the original step of moving the client implementation to `neural-mmo/forge/embyr` during setup.
 For a quickstart,
 ```
 conda create --name neural_mmo_env
@@ -24,17 +24,18 @@ Then, follow these additional required steps:
 
 For more technical details and troubleshooting questions, please read the [installation documentation](https://jsuarez5341.github.io/neural-mmo/build/html/rst/userguide.html#installation) of NeuralMMO.
  
- Having installed the simulation, we could proceed to generate maps for simulation. Run 
- ```
- python Forge.py generate --config=SmallMaps --TERRAIN_RENDER
-# --config=LargeMaps
- ```
+Having installed the simulation, we could proceed to generate maps for simulation. Run 
+```
+python Forge.py generate --config=Social --TERRAIN_RENDER
+
+```
 To view the simulation of scripted agents, run
 ```
-python Forge.py render --config=SmallMaps
+python Forge.py render --config=Social
 ```
-For remote rendering, 
+For running the backend on a remote server, first run the client on your local machine. Then, start the backend on your remote server, and run on your local machine:
 ```
+ssh -L 8080:localhost:8080 [user@server_ip]
 ```
  Please read further technical details at the [documentation of NeuralMMO](https://jsuarez5341.github.io/neural-mmo/build/html/rst/userguide.html). 
   
