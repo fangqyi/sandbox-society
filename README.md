@@ -29,7 +29,7 @@ Having installed the simulation, we could proceed to generate maps for simulatio
 python Forge.py generate --config=Social --TERRAIN_RENDER
 
 ```
-To view the simulation of scripted agents, run
+To view the simulation of our scripted social agents that love sharing and division of labor, run
 ```
 python Forge.py render --config=Social
 ```
