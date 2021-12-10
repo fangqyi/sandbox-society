@@ -9,6 +9,9 @@ Sandbox Society is an open-source MARL research environment that encourages lear
 -   exchange system (e.g. barter)
 
 In addition to the listed features, Sandbox Society also provides a new Unity frontend client that supports better visualization and remote rendering. 
+
+**Final Demo: [https://youtu.be/EYz_iBq3-RQ](https://youtu.be/EYz_iBq3-RQ)**
+
 ## Quickstart:
 As Sandbox Society inherits the infrastructure from NeuralMMO, the backend officially supports Ubuntu 20.04, Windows 10 + WSL, and MacOS (with unknown problems in Windows 11). At the moment, **the frontend is only built for Windows 10**, but the project can be opened in Unity Editor and run on any of the above systems. The only difference in infrastructure is that our unity client and backend are in the same repository, which  eliminates the original step of moving the client implementation to `neural-mmo/forge/embyr` during setup.
 For a quickstart,
