@@ -68,7 +68,7 @@ class MapGenerator:
          return Terrain.FOREST
       # if val <= .95:
       #    return Terrain.IRON_ORE
-      return Terrain.STONE
+      return Terrain.IRON_ORE #Terrain.STONE
 
    def generate(self):
       config = self.config

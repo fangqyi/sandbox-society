@@ -298,7 +298,6 @@ public class Tile
         this.name = name;
         this.pos = spawnPos;
         this.topId = getTileTopId(val);
-        Debug.Log("top id is "+this.topId);
         GameObject top_temp;
         if (val == stoneVal) {
             top_temp = topStoneParts[this.topId];
@@ -306,7 +305,6 @@ public class Tile
             top_temp = topParts[this.topId];
         }
         this.top = GameObject.Instantiate(top_temp, spawnPos, new Quaternion());
-        Debug.Log("survived top id");
         this.top.transform.localScale = new Vector3(.5f, .5f, .5f);
         this.mainId = Random.Range(0, mainParts.Count - 1);
         this.main =GameObject.Instantiate(mainParts[this.mainId], this.top.transform);
@@ -350,10 +348,13 @@ public class Tile
             }
         }
         else if (val == stoneVal)
-        {
+        {   
+            Debug.Log("making a stone on init");
             int id = this.stones.Count;
             Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
             this.stones.Add(new Stone(id, true, spawnPos+magicStone, rot));
+        } else {
+            Debug.Log("val didn't find a home: "+val);
         }
     }
 
@@ -446,7 +447,7 @@ public class Tile
             {
                 int id = this.stones.Count; //fixme should be stone below?
                 Quaternion rot = Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-                this.trees.Add(new Tree(id, val == forestVal, this.pos+magicTree, rot));
+                // this.stones.Add(new Stone(id, val == stoneVal, this.pos+magicStone, rot));
             }
         }
         else if (val == brokenStoneVal)

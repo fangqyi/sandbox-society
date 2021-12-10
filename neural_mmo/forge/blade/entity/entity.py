@@ -92,10 +92,10 @@ class History:
 
       # Add the technology status to the entity packet.
       data['technologyStatus'] = {
-         "sword_status": self.sword_status.val,
-         "shield_status": self.shield_status.val,
-         "hoe_status": self.hoe_status.val,
-         "improved_hoe_status": self.improved_hoe_status.val
+         "sword_status": self.large_boulders.val >= 5,
+         "shield_status": self.small_rocks.val >= 5,
+         "hoe_status": self.small_sticks.val >= 5,
+         "improved_hoe_status": self.large_branches.val >= 5
       }
 
       # Add the inventory to the entity packet.

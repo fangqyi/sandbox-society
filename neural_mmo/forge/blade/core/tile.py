@@ -86,10 +86,10 @@ class Tile:
       self.nEnts.update(0)
       self.index.update(self.state.index)
 
-      for i in range(randint(0,4)):
-         self.addItem(ItemType.SMALL_STICK)
-      for i in range(randint(0,4)):
-         self.addItem(ItemType.SMALL_ROCK)
+      # for i in range(randint(0,4)):
+      #    self.addItem(ItemType.SMALL_STICK)
+      # for i in range(randint(0,4)):
+      #    self.addItem(ItemType.SMALL_ROCK)
  
    def addEnt(self, ent):
       assert ent.entID not in self.ents

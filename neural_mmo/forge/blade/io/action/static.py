@@ -404,11 +404,12 @@ class Gather(Node):
 
       tile = env.map.tiles[rNew, cNew]
       if env.map.harvest(rNew, cNew):
-         if type(tile.mat) == material.Stone:
-            entity.inv.insertItems(ItemType.SMALL_ROCK)
+         if type(tile.mat) == material.Orerock:
+            entity.inv.insertItems([ItemType.SMALL_ROCK])
             entity.history.small_rocks.increment()
          elif type(tile.mat) == material.Forest:
-            entity.inv.insertItems(ItemType.SMALL_STICK)
+            entity.resources.food.update(entity.resources.food.max)
+            entity.inv.insertItems([ItemType.SMALL_STICK])
             entity.history.small_sticks.increment()
 
 '''
@@ -533,8 +534,11 @@ class GiveItems(Node):
    def leaf(self):
       return True
 
-   def call(env, entity, itemType, numItems):
-      entity.inv.insertItems(itemType, numItems)
+   def call(env, entity, args):
+      target, itemType, numItems = args
+      numItems = int(numItems)
+      entity.inv.removeItems(itemType, numItems)
+      entity.inv.insertItems([ItemType]*numItems)
       if itemType == ItemType.SMALL_ROCK:
          entity.history.small_rocks.increment(numItems)
       if itemType == ItemType.SMALL_STICK:

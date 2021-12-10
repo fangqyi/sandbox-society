@@ -19,14 +19,14 @@ class Inventory:
     Method to obtain stone technology status from inventory.
     '''
     def checkStoneTechnologyStatus(self):
-        small_rock_status = False
-        large_boulder_status = False
+        small_rock_status = 1
+        large_boulder_status = 1
         small_rock_amount = self.getItemAmount(ItemType.SMALL_ROCK)
-        if small_rock_amount >= 10:
-            small_rock_status = True
+        if small_rock_amount >= 5:
+            small_rock_status = 1
         large_boulder_amount = self.getItemAmount(ItemType.LARGE_BOULDER)
-        if large_boulder_amount >= 10:
-            large_boulder_status = True
+        if large_boulder_amount >= 5:
+            large_boulder_status = 1
         return small_rock_status, large_boulder_status
 
     '''
@@ -34,14 +34,14 @@ class Inventory:
     Method to obtain wood technology status from inventory.
     '''
     def checkWoodTechnologyStatus(self):
-        small_stick_status = False
-        large_branch_status = False
+        small_stick_status = 1
+        large_branch_status = 1
         small_stick_amount = self.getItemAmount(ItemType.SMALL_STICK)
-        if small_stick_amount >= 10:
-            small_stick_status = True
+        if small_stick_amount >= 5:
+            small_stick_status = 1
         large_branch_amount = self.getItemAmount(ItemType.LARGE_BRANCH)
-        if large_branch_amount >= 10:
-            large_branch_status = True
+        if large_branch_amount >= 5:
+            large_branch_status = 1
         return small_stick_status, large_branch_status
 
     '''
@@ -84,10 +84,10 @@ class Inventory:
     def insertItems(self, items_list):
         for item_ele in items_list:
             # print("insert: ", item_ele.item_type)
-            if item_ele.item_type in self.items.keys():
-                self.items[item_ele.item_type] = self.items[item_ele.item_type] + 1
+            if item_ele in self.items.keys():
+                self.items[item_ele] = self.items[item_ele] + 1
             else:
-                self.items[item_ele.item_type] = 1
+                self.items[item_ele] = 1
 
 
 '''

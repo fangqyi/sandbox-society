@@ -7,7 +7,7 @@ from neural_mmo.forge.trinity.scripted import baselines
 from neural_mmo.forge.trinity.agent import Agent
 from neural_mmo.forge.trinity.scripted.light_agent import LightAgent, LightMapAgent
 from neural_mmo.forge.trinity.scripted.technology_agent import TechnologyAgent
-from neural_mmo.forge.trinity.scripted.map_agent import MapAgent, TechnologyLightMapAgent
+from neural_mmo.forge.trinity.scripted.map_agent import MapAgent, TechnologyLightMapAgent, SocialAgent
 from neural_mmo.forge.blade.systems.ai import behavior
 from projekt import rllib_wrapper
 
@@ -28,8 +28,8 @@ class RLlibConfig:
    RESTORE = False
 
    #Policy specification
-   AGENTS      = [TechnologyLightMapAgent]
-   EVAL_AGENTS = [TechnologyLightMapAgent]
+   AGENTS      = [SocialAgent]
+   EVAL_AGENTS = [SocialAgent]
 
    EVALUATE    = False #Reserved param
 
@@ -130,18 +130,16 @@ class Social(config.Achievement, SmallMaps):
       return self.SPAWN_ANYWHERE
 
    NMOB = 0
-   NENT                    = 96
+   NENT                    = 48
    NPOP                    = 16
    TERRAIN_CENTER          = 32
    # NSTIM = 10
    COOPERATIVE = True
    BASE_HEALTH = 50
-   PLAYER_SPAWN_ATTEMPTS   = 8
+   PLAYER_SPAWN_ATTEMPTS   = 4
 
 ### AICrowd competition settings
 class CompetitionRound1(SmallMaps, config.AllGameSystems):
-   ACHIEVEMENTS            = DEFAULT_ACHIEVEMENTS
-
    @property
    def SPAWN(self):
       return self.SPAWN_CONCURRENT
