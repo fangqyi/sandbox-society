@@ -22,7 +22,7 @@ To run the simulation, first generate maps:
 python3 Forge.py generate --config=Social
 ```
 
-Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/sandbox_society.exe`. For Mac/Linux, this would mean running `client.sh` in the top directory, **but the current frontend is NOT built for Mac or Linux**.
+Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/sandbox_society.exe`. **The current frontend is not yet built for Mac/Linux.** As a workaround, the project can be opened in the Unity Editor and run there, on all systems.
 
 Then render the backend:
 
@@ -31,8 +31,6 @@ python3 Forge.py render --config=Social
 ```
 
 ## Configurations
-  address ways to update or change key non-programming components of the app, such as database information, data files, resource links, phone numbers, server addresses, etc.
-
 Many of the configurable parameters can be set in `projekt/config.py`. Simply create a new class sublcassing from `core.Config` or one of the existing config classes, and set the desired parameters appropriately. This config can then be called from the command line in the generate and render commands above, as `--config=[new_config_name]`. A comprensive list of parameters can be found in `neural_mmo/forge/blade/core/config.py`.
 
 To run with a different scripted agent, change the AGENT and EVAL_AGENTS lists to be lists of the classes of the desired scripted agents. These scripted agents can be found in `neural_mmo/forge/trinity/scripted` as subclasses of the `baselines.Scripted` class. To make a new type of agent, create a new subclass of Scripted, and define the desired behavior in the `__call__` method.
