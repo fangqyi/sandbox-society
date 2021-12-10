@@ -377,7 +377,7 @@ class InventoryItemType(Node):
       return Direction.edges
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
 Gather is a node that allows entities to gather resources that naturally spawn from their current tile.
 '''
 class Gather(Node):
@@ -413,7 +413,7 @@ class Gather(Node):
             entity.history.small_sticks.increment()
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
 PickUpItem is a node that allows entities to pick up items from their current tile. This includes items that have been dropped.
 '''
 class PickUpItem(Node):
@@ -463,7 +463,7 @@ class PickUpItem(Node):
             entity.history.large_boulders.increment()
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
 DropItem is a node that allows entities to drop inventory items onto their current tile.
 '''
 class DropItem(Node):
@@ -518,6 +518,10 @@ class BecomeSkynet:
 
 Action.hook()
 
+'''
+Maverick Chung
+An action designed to allow agents to give any number of items of one type to another agent
+'''
 class GiveItems(Node):
    priority = 0
    nodeType = NodeType.SELECTION

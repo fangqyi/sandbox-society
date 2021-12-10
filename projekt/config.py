@@ -122,8 +122,11 @@ class Debug(SmallMaps, config.AllGameSystems):
    EMBED                   = 2
 
 
-### Added config for 390
 class Social(config.Achievement, SmallMaps):
+   '''
+   Config added for social agents for 390
+   Maverick Chung
+   '''
 
    @property
    def SPAWN(self):

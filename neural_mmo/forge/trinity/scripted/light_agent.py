@@ -11,7 +11,7 @@ from neural_mmo.forge.trinity.scripted import io, utils
 import random
 
 '''
-Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang, Maverick Chung
 Scripted Agent for light communication. Implements rock paper scissors.
 '''
 class LightAgent(Meander):

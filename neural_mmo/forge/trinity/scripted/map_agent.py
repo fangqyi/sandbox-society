@@ -60,7 +60,7 @@ class TechnologyLightMapAgent(MapAgent):
         return self.actions
 
 '''
-Duke CS390 Fall 2021: AI Sandbox
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
 Scripted Agent for social behavior.
 '''
 class SocialAgent(MapAgent):

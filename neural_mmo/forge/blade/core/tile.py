@@ -101,11 +101,19 @@ class Tile:
       self.nEnts.update(0)
       del self.ents[entID]
 
+   '''
+   Maverick Chung
+   Adds an item to the tile
+   '''
    def addItem(self, itm):
       assert itm in self.items_dict
       self.items_dict[itm].increment()
       self.dirty = True
 
+   '''
+   Maverick Chung
+   Removes an item from the tile
+   '''
    def removeItem(self, itm):
       assert itm in self.items_dict
       self.items_dict[itm].decrement()
