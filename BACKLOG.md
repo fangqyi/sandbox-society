@@ -7,8 +7,9 @@ Here maintains a list of future TO-DOs:
 - Support visualization of exerpiment logs (e.g. generate plots) 
 - Allow agents to share food and water besides resources
 - Introduce the role of predator
+- Build the frontend for Mac and Linux
 ### Optimization:
 - Water graphics could be smoother with animation
 - When frontend render large maps, allow the sacrfise of local details during global view and only render ojects in sights during local view
 ### Bugs:
-
+- Shaders on agent tools display improperly, showing as bright purple.
