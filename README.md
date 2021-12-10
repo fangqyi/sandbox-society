@@ -39,4 +39,28 @@ For remote rendering,
  Please read further technical details at the [documentation of NeuralMMO](https://jsuarez5341.github.io/neural-mmo/build/html/rst/userguide.html). 
   
  ## Dependencies:
-> Written with [StackEdit](https://stackedit.io/).
+Our project is based on NeuralMMO 1.5.2. 
+ ```
+Python dependencies: 
+ray==1.5.2  
+cloudpickle==1.2.2  
+setproctitle==1.1.10 
+redis==3.5.3  
+dm-tree==0.1.5  
+tensorflow==2.4.1 
+aioredis==1.3.1 
+fire==0.4.0   
+autobahn==19.3.3 
+Twisted==19.2.0 
+gym==0.17.2   
+vec-noise==1.1.4   
+bokeh==2.2.3   
+imageio==2.8.0  
+sphinx-rtd-theme==0.5.1  
+tqdm==4.61.1  
+matplotlib==3.1.3  
+numpy==1.21.1  
+trueskill==0.4.5   
+wandb==0.10.32  
+```
+
