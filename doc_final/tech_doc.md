@@ -15,6 +15,8 @@ To accomodate the new design of features, such as resource items and factories, 
 
     - upper layer: environment manager that organizes and updates an array of tiles
 
-The benefits of such hiearchical organization is that 
+The benefits of such hiearchical organization is that each layer is encapsualted well and was proven to be flexible to changes (e.g. we later changed the generation of all tile materials with very minimal lines of new code).
+In addition, to optimize the performance of the environment rendering, we improved the existing resoucre loading system. It was to load from memory every creation and update of a new tile chunk. With our changes, there is no repetitive loading of same resoucre regardless of the times it is used in rendering environment.
+
 ### Character
 
