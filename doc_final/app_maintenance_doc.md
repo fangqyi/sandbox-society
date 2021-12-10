@@ -31,8 +31,6 @@ python3 Forge.py render --config=Social
 ```
 
 ## Configurations
-  address ways to update or change key non-programming components of the app, such as database information, data files, resource links, phone numbers, server addresses, etc.
-
 Many of the configurable parameters can be set in `projekt/config.py`. Simply create a new class sublcassing from `core.Config` or one of the existing config classes, and set the desired parameters appropriately. This config can then be called from the command line in the generate and render commands above, as `--config=[new_config_name]`. A comprensive list of parameters can be found in `neural_mmo/forge/blade/core/config.py`.
 
 To run with a different scripted agent, change the AGENT and EVAL_AGENTS lists to be lists of the classes of the desired scripted agents. These scripted agents can be found in `neural_mmo/forge/trinity/scripted` as subclasses of the `baselines.Scripted` class. To make a new type of agent, create a new subclass of Scripted, and define the desired behavior in the `__call__` method.
