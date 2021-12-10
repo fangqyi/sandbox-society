@@ -18,7 +18,7 @@ For more technical details and troubleshooting questions, please read the [insta
 ## Configurations
   address ways to update or change key non-programming components of the app, such as database information, data files, resource links, phone numbers, server addresses, etc.
 
-## Libraries and tools 
+## Libraries and Tools 
 ```
 ray==1.5.2  ### Apache License 2.0
 cloudpickle==1.2.2   ### non-standard license https://github.com/cloudpipe/cloudpickle/blob/master/LICENSE
