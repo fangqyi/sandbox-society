@@ -12,7 +12,6 @@ cd neural-mmo && bash scripts/setup.sh # --CORE_ONLY to omit RLlib requirements
 Then, follow these additional required steps:  
 - Edit projekt/config.py as per the instructions therein to match your hardware specs
 - Create a file wandb_api_key in the repo root and paste in your WanDB API key. This new integration is now so important to logging and evaluation that we are requiring it by default. Do not commit this file.
-- Add `custom_metrics[k] = filt; continue` after line 175 in your RLlib metrics file (usually ~/anaconda3/lib/python3.8/site-packages/ray/rllib/evaluation/metrics.py). This is an RLlib limitation which we hope to resolve in the next version.
 
 For more technical details and troubleshooting questions, please read the [installation documentation](https://jsuarez5341.github.io/neural-mmo/build/html/rst/userguide.html#installation) of NeuralMMO.
 
@@ -23,7 +22,7 @@ To run the simulation, first generate maps:
 python3 Forge.py generate --config=Social
 ```
 
-Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/neural_mmo.exe`. For Mac/Linux, this would mean running `client.sh` in the top directory, **but the current frontend is NOT built for Mac or Linux**.
+Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/sandbox_society.exe`. For Mac/Linux, this would mean running `client.sh` in the top directory, **but the current frontend is NOT built for Mac or Linux**.
 
 Then render the backend:
 
