@@ -12,4 +12,4 @@ With the release, Society Sandbox provides an extension to NeuralMMO in features
 
 In addition to the listed features, Sandbox Society also release with a new Unity frontend client that supports better visualization and remote rendering.
 #### Testing
-This release has tested on Win10+WSL.
+This release has been tested on Win10+WSL.
