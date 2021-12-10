@@ -2,11 +2,16 @@ from enum import Enum
 
 
 class Item:
-    def __init__(self, item_type, description):
+    def __init__(self, item_type):
         self.item_type = item_type
-        self.description = description
 
+    def getType(self):
+        return self.item_type
 
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Enum class to represent item types.
+'''
 class ItemType(Enum):
     RED_BERRY = 1
     BLUE_BERRY = 2

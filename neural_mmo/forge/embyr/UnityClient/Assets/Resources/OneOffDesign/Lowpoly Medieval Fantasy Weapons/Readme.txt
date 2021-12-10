@@ -1,0 +1,3 @@
+Notes on usage:
+- To parent weapons to character models, add an empty gameobject to the rig (parented to the hand). The gameobject should be positioned in the center of the palm. Ensure that the forward vector is pointing out from the wrist. The up vector should be pointing up along the thumb.
+- To parent shields to character models, add an empty gameobject to the rig (parented to the hand).  The game object should be positioned on the outside of the hand. The forward vector should point out from the back of the hand. The up vector should be pointing up along the thumb.

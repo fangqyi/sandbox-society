@@ -3,7 +3,8 @@
 *.swo
 *.swp
 baselines/models/current/*
-# neural_mmo/forge/embyr
+neural_mmo/forge/embyr/LegacyWebClient
+neural_mmo/forge/embyr/.DS_Store
 docs/source/resource/maps/
 docs/source/autodoc/
 .idea
@@ -22,6 +23,8 @@ three.js/*
 *.swo
 *.swp
 *.pyc
+
+prototype_demo.mp4
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #
@@ -84,4 +87,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 /venv
-
+experiments/
+wandb/
+/

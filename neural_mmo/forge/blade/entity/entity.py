@@ -38,6 +38,10 @@ class Status:
       data['freeze']     = self.freeze.val
       return data
 
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Edited the history class to pass information about new features to the frontend.
+'''
 class History:
    def __init__(self, ent):
       self.actions = None
@@ -49,7 +53,19 @@ class History:
 
       self.damage    = Static.Entity.Damage(   ent.dataframe, ent.entID)
       self.timeAlive = Static.Entity.TimeAlive(ent.dataframe, ent.entID)
+
+      # The following adds communication and technology to the entity.
       self.communication = Static.Entity.Communication(ent.dataframe, ent.entID)
+      self.sword_status = Static.Entity.LargeBoulderTechnology(ent.dataframe, ent.entID)
+      self.shield_status = Static.Entity.SmallStoneTechnology(ent.dataframe, ent.entID)
+      self.hoe_status = Static.Entity.SmallStickTechnology(ent.dataframe, ent.entID)
+      self.improved_hoe_status = Static.Entity.LargeBranchTechnology(ent.dataframe, ent.entID)
+
+      # The following adds inventory items to the entity.
+      self.small_rocks = Static.Entity.SmallRocks(ent.dataframe, ent.entID)
+      self.small_sticks = Static.Entity.SmallSticks(ent.dataframe, ent.entID)
+      self.large_boulders = Static.Entity.LargeBoulders(ent.dataframe, ent.entID)
+      self.large_branches = Static.Entity.LargeBranches(ent.dataframe, ent.entID)
 
       self.lastPos = None
 
@@ -71,7 +87,24 @@ class History:
       if self.attack is not None:
          data['attack'] = self.attack
 
+      # Add the communication light to the entity packet.
       data['communication'] = {"color": self.communication.val}
+
+      # Add the technology status to the entity packet.
+      data['technologyStatus'] = {
+         "sword_status": self.large_boulders.val >= 5,
+         "shield_status": self.small_rocks.val >= 5,
+         "hoe_status": self.small_sticks.val >= 5,
+         "improved_hoe_status": self.large_branches.val >= 5
+      }
+
+      # Add the inventory to the entity packet.
+      data['inventory'] = {
+         "small_rocks": self.small_rocks.val,
+         "small_sticks": self.small_sticks.val,
+         "large_boulders": self.large_boulders.val,
+         "large_branches": self.large_branches.val
+      }
 
       return data
 

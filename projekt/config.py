@@ -5,7 +5,9 @@ from neural_mmo.forge.blade.core import config
 from neural_mmo.forge.blade.io.stimulus.static import Stimulus
 from neural_mmo.forge.trinity.scripted import baselines
 from neural_mmo.forge.trinity.agent import Agent
-from neural_mmo.forge.trinity.scripted.light_agent import LightAgent
+from neural_mmo.forge.trinity.scripted.light_agent import LightAgent, LightMapAgent
+from neural_mmo.forge.trinity.scripted.technology_agent import TechnologyAgent
+from neural_mmo.forge.trinity.scripted.map_agent import MapAgent, TechnologyLightMapAgent, SocialAgent
 from neural_mmo.forge.blade.systems.ai import behavior
 from projekt import rllib_wrapper
 
@@ -26,8 +28,9 @@ class RLlibConfig:
    RESTORE = False
 
    #Policy specification
-   AGENTS      = [LightAgent]
-   EVAL_AGENTS = [LightAgent]
+   AGENTS      = [SocialAgent]
+   EVAL_AGENTS = [SocialAgent]
+
    EVALUATE    = False #Reserved param
 
    #Hardware and debug
@@ -119,21 +122,33 @@ class Debug(SmallMaps, config.AllGameSystems):
    EMBED                   = 2
 
 
-### AICrowd competition settings
-class CompetitionRound1(config.Achievement, SmallMaps):
+class Social(config.Achievement, SmallMaps):
+   '''
+   Config added for social agents for 390
+   Maverick Chung
+   '''
 
    @property
    def SPAWN(self):
       return self.SPAWN_ANYWHERE
 
    NMOB = 0
-   NENT                    = 512
+   NENT                    = 48
    NPOP                    = 16
-   TERRAIN_CENTER          = 64
+   TERRAIN_CENTER          = 32
    # NSTIM = 10
    COOPERATIVE = True
    BASE_HEALTH = 50
-   PLAYER_SPAWN_ATTEMPTS   = 16
+   PLAYER_SPAWN_ATTEMPTS   = 4
+
+### AICrowd competition settings
+class CompetitionRound1(SmallMaps, config.AllGameSystems):
+   @property
+   def SPAWN(self):
+      return self.SPAWN_CONCURRENT
+
+   NENT                    = 128
+   NPOP                    = 1
 
 class CompetitionRound2(config.Achievement, SmallMaps):
    @property

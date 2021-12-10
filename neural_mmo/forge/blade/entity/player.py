@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from pdb import set_trace as T
 
 from neural_mmo.forge.blade.systems import ai, equipment
@@ -11,7 +12,10 @@ from neural_mmo.forge.blade.io.stimulus import Static
 from neural_mmo.forge.blade.systems.inventory import Inventory
 from neural_mmo.forge.blade.item.item import Item, ItemType
 
-
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Edited the player class to include inventory and technology features.
+'''
 class Player(entity.Entity):
     def __init__(self, realm, pos, agent):
         super().__init__(realm, pos, agent.iden, agent.name, agent.color, agent.pop)
@@ -46,9 +50,63 @@ class Player(entity.Entity):
     def population(self):
         return self.pop
 
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Method to insert items into the entity's inventory.
+    '''
+    def insertItemsIntoInventory(self, items):
+        self.inv.insertItems(items)
+
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Method to remove items from the entity's inventory.
+    '''
+    def removeItemsFromInventory(self, item_type, num_items):
+        self.inv.removeItems(item_type, num_items)
+
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Getter method for the entity's sword status.
+    '''
+    def getSwordStatus(self):
+        small_stone_status, large_boulder_status = self.inv.checkStoneTechnologyStatus()
+        return large_boulder_status
+
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Getter method for the entity's shield status.
+    '''
+    def getShieldStatus(self):
+        small_stone_status, large_boulder_status = self.inv.checkStoneTechnologyStatus()
+        return small_stone_status
+
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Getter method for the entity's hoe status.
+    '''
+    def getHoeStatus(self):
+        small_stick_status, large_branch_status = self.inv.checkWoodTechnologyStatus()
+        return small_stick_status
+
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Getter method for the entity's improved hoe status.
+    '''
+    def getImprovedHoeStatus(self):
+        small_stick_status, large_branch_status = self.inv.checkWoodTechnologyStatus()
+        return large_branch_status
+
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Getter method for the numeric representation of the entity's light.
+    '''
     def getLightNumeric(self):
         return self.communication_light
 
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Getter method for the entity's light
+    '''
     def getLight(self):
         if self.communication_light == 0:
             return "OFF"
@@ -61,6 +119,10 @@ class Player(entity.Entity):
         else:
             return "OFF"
 
+    '''
+    Duke CS390 Fall 2021: AI Sandbox
+    Setter method for the entity's light.
+    '''
     def setLight(self, color):
         if type(color) == int:
             self.communication_light = color
@@ -78,16 +140,19 @@ class Player(entity.Entity):
 
 
     def applyDamage(self, dmg, style): # ADD INVENTORY INTERACTION
+        # hoe_status = self.getHoeStatus()
+        # improved_hoe_status = self.getImprovedHoeStatus()
+        # chance = 0.5
+        # if hoe_status:
+        #     chance = 0.75
+        # if improved_hoe_status:
+        #     chance = 1.0
+        #
+        # if chance >= random.uniform(0, 1):
         self.resources.food.increment(dmg)
         self.resources.water.increment(dmg)
+
         self.skills.applyDamage(dmg, style)
-        self.inv.insertItems([
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold"),
-            Item(ItemType.GOLD, "gold")
-        ])
 
     def receiveDamage(self, source, dmg): # ADD INVENTORY INTERACTION
         if not super().receiveDamage(source, dmg):

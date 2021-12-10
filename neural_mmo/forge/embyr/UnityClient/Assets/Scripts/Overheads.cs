@@ -48,6 +48,7 @@ public class Overheads : UnityModule
        this.canvasGroup = this.GetComponent<CanvasGroup>();
        //this.canvas.GetComponent<ScreenSpaceCanvas>().AddToCanvas(this);
        this.transform.position = new Vector3(-100, -100, 0); //Render off screen
+       this.transform.localScale = new Vector3(.75f, .75f, .75f);
        this.transform.SetParent(this.canvas.transform);
 
        //Name & Damage
@@ -65,7 +66,7 @@ public class Overheads : UnityModule
       Vector3 anchor    = this.cameraAnchor.transform.position;
       Vector3 cameraPos = this.camera.transform.position;
 
-      this.depth        = - new Vector3(worldPos.x - anchor.x, cameraPos.y, worldPos.z - anchor.z).magnitude;
+      this.depth        = - new Vector3(worldPos.x - anchor.x, cameraPos.y, worldPos.z - anchor.z).magnitude*1.5f;
       this.canvasGroup.alpha = 4 - 4*Mathf.Clamp((-this.depth - 0) / 16 - 1, 0, 1);
 
       if (this.canvasGroup.alpha == 0) {

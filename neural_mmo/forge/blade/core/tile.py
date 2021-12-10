@@ -1,8 +1,11 @@
 from pdb import set_trace as T
 import numpy as np
 
+from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge.blade.lib import material
 from neural_mmo.forge.blade.io.stimulus import Static
+
+from random import randint
 
 class Tile:
    def __init__(self, config, realm, r, c):
@@ -10,6 +13,8 @@ class Tile:
       self.realm  = realm
 
       self.serialized = 'R{}-C{}'.format(r, c)
+
+      self.dirty = True
 
       self.r     = Static.Tile.R(realm.dataframe, self.serial, r)
       self.c     = Static.Tile.C(realm.dataframe, self.serial, c)
@@ -19,6 +24,11 @@ class Tile:
       self.lsticks = Static.Tile.LStick(realm.dataframe, self.serial, 0)
       self.sstones = Static.Tile.SStone(realm.dataframe, self.serial, 0)
       self.lstones = Static.Tile.LStone(realm.dataframe, self.serial, 0)
+      self.items_dict = {ItemType.SMALL_STICK: self.ssticks,
+                         ItemType.LARGE_BRANCH: self.lsticks,
+                         ItemType.SMALL_ROCK: self.sstones,
+                         ItemType.LARGE_BOULDER: self.lstones,
+                        }
 
       realm.dataframe.init(Static.Tile, self.serial, (r, c))
 
@@ -71,9 +81,15 @@ class Tile:
       self.capacity = self.mat.capacity
       self.tex      = mat.tex
       self.ents     = {}
+      self.dirty = True
 
       self.nEnts.update(0)
       self.index.update(self.state.index)
+
+      # for i in range(randint(0,4)):
+      #    self.addItem(ItemType.SMALL_STICK)
+      # for i in range(randint(0,4)):
+      #    self.addItem(ItemType.SMALL_ROCK)
  
    def addEnt(self, ent):
       assert ent.entID not in self.ents
@@ -84,6 +100,24 @@ class Tile:
       assert entID in self.ents
       self.nEnts.update(0)
       del self.ents[entID]
+
+   '''
+   Maverick Chung
+   Adds an item to the tile
+   '''
+   def addItem(self, itm):
+      assert itm in self.items_dict
+      self.items_dict[itm].increment()
+      self.dirty = True
+
+   '''
+   Maverick Chung
+   Removes an item from the tile
+   '''
+   def removeItem(self, itm):
+      assert itm in self.items_dict
+      self.items_dict[itm].decrement()
+      self.dirty = True
 
    def step(self):
       if (not self.static and 

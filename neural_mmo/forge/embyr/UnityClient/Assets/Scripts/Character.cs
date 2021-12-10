@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+// implements the frontend agent with addition of light commmunication shader and usage of tool as representation | qf
+// for better visualization, modifications have been made to allow shaders with customizable colors on agent's light and tools | mav 
 public class Character: UnityModule 
 {
 
@@ -41,6 +43,34 @@ public class Character: UnityModule
    public SkillGroup skills;
    public ResourceGroup resources;
    public Overheads overheads;
+   public float disTool2Agent = 0.5f;
+   public float disTool2Ground = 0.6f;
+   public float scaleTool = 0.4f;
+
+   // tool prefabs
+   static private String toolFilepath = "OneOffDesign/Lowpoly Medieval Fantasy Weapons/Prefabs/";
+   static public GameObject prefShield;
+   static public GameObject prefSword;
+   static public GameObject prefPickaxe;
+   static public GameObject prefHatchet;
+   
+   //tool gameobjects
+   public GameObject shield;
+   public GameObject sword;
+   public GameObject pickaxe;
+   public GameObject hatchet;
+
+   public bool hasShield;
+   public bool hasSword;
+   public bool hasPickaxe;
+   public bool hasHatchet;
+   
+   public static void LoadToolPrefabs(){
+      prefPickaxe = Resources.Load(toolFilepath + "Pref_PickAxe_A") as GameObject;
+      prefHatchet = Resources.Load(toolFilepath + "Pref_Hatchet_A") as GameObject;
+      prefShield = Resources.Load(toolFilepath + "Pref_RoundShield_A") as GameObject; 
+      prefSword = Resources.Load(toolFilepath + "Pref_ShortSword_A") as GameObject;
+   }
 
    //Load the OBJ shader and materials
    public void NNObj(Color ball, Color rod_bottom, Color rod_top)
@@ -76,12 +106,14 @@ public class Character: UnityModule
       //OBJ model and overheads
       this.NNObj(ball, rod_bottom, rod_top);
       this.Overheads(name, ball);
+      //this.LoadToolPrefabs();
+
+      initToolStatus();
 
       this.UpdatePlayer(players, npcs, packet);
       this.UpdatePos(false);
 
-      // light communication color
-      
+      // light communication color     
    }
 
    public void SetColors() {
@@ -125,6 +157,8 @@ public class Character: UnityModule
       } 
       this.UpdatePos(true);
       this.UpdateAttack();
+      this.updateToolForward();
+      this.updateToolPos();
    }
 
    public void UpdatePos(bool smooth)
@@ -146,6 +180,114 @@ public class Character: UnityModule
          targ = this.target.transform.position;
       }
       this.transform.forward = Vector3.RotateTowards(this.forward, orig - targ, (float)Math.PI * Client.tickFrac, 0f);
+   }
+
+   private void setToolColor(GameObject tool, Color32 color) {
+      Material mat = tool.GetComponent<Renderer>().material;
+      mat.shader = Shader.Find("MK/Glow/Selective/Legacy/Normal/Diffuse");
+      mat.SetColor("_Color", color);
+      mat.SetFloat("_MKGlowTexStrength", .25f);
+   }
+
+   // update for tools if agent has or discard its tools (including sword, shield, hatchet, pixckaxe) | qf 
+   // hetter color shaders have been applied for easy distinguishment | mav
+   void UpdateTools(bool isSword, bool isShield, bool isHatchet, bool isPickaxe){
+      if (isSword != this.hasSword){
+         this.hasSword = isSword;
+         if (this.hasSword){
+            Vector3 pos = new Vector3(this.transform.position.x + this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+            this.sword = GameObject.Instantiate(prefSword, pos, Quaternion.identity) as GameObject;
+            this.sword.transform.localScale *= scaleTool;
+
+            setToolColor(this.sword, intToColor(0xFF));
+         }
+         else{
+            GameObject.Destroy(this.sword);
+         }
+      }
+      if (isShield != this.hasShield){
+         this.hasShield = isShield;
+         if (this.hasShield){
+            Vector3 pos = new Vector3(this.transform.position.x - this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+            this.shield = GameObject.Instantiate(prefShield, pos, Quaternion.identity) as GameObject;
+            this.shield.transform.localScale *= scaleTool;
+            setToolColor(this.shield, intToColor(0xFF));
+         }
+         else{
+            GameObject.Destroy(this.shield);
+         }
+      }
+      if (isHatchet != this.hasHatchet){
+         this.hasHatchet = isHatchet;
+         if (this.hasHatchet){
+            Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z + this.disTool2Agent);
+            this.hatchet = GameObject.Instantiate(prefHatchet, pos, Quaternion.identity) as GameObject;
+            this.hatchet.transform.localScale *= scaleTool;
+
+            setToolColor(this.hatchet, intToColor(0xFF0000));
+         }
+         else{
+            GameObject.Destroy(this.hatchet);
+         }
+      }
+      if (isPickaxe != this.hasPickaxe){
+         this.hasPickaxe = isPickaxe;
+         if (this.hasPickaxe){
+            Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z - this.disTool2Agent);
+            this.pickaxe = GameObject.Instantiate(prefPickaxe, pos, Quaternion.identity) as GameObject;
+            this.pickaxe.transform.localScale *= scaleTool;
+
+            setToolColor(this.pickaxe, intToColor(0xFF0000));
+         }
+         else{
+            GameObject.Destroy(this.pickaxe);
+         }
+      }
+   }
+
+   public void updateToolForward(){
+      if (this.hasSword){
+         this.sword.transform.forward = this.transform.forward;
+      }
+      if (this.hasShield){
+         this.shield.transform.forward = this.transform.forward;
+      }
+      if (this.hasHatchet){
+         this.hatchet.transform.forward = this.transform.forward; 
+      }
+      if (this.hasPickaxe){
+         this.pickaxe.transform.forward = this.transform.forward; 
+      }
+   }
+
+   public void updateToolPos(){
+      if (this.hasSword){
+         this.sword.transform.position = new Vector3(this.transform.position.x + this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+      }
+      if (this.hasShield){
+         this.shield.transform.position = new Vector3(this.transform.position.x - this.disTool2Agent, this.transform.position.y + disTool2Ground, this.transform.position.z);
+      }
+      if (this.hasHatchet){
+         this.hatchet.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z + this.disTool2Agent);
+      }
+      if (this.hasPickaxe){
+         this.pickaxe.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + disTool2Ground, this.transform.position.z - this.disTool2Agent);
+      }
+   }
+
+   void destroyTools(){
+      if (this.hasSword){
+         GameObject.Destroy(this.sword);
+      }
+      if (this.hasShield){
+         GameObject.Destroy(this.shield);      
+      }
+      if (this.hasHatchet){
+         GameObject.Destroy(this.hatchet);
+      }
+      if (this.hasPickaxe){
+         GameObject.Destroy(this.pickaxe);
+      }
    }
 
    public void DeathAnimation()
@@ -234,27 +376,32 @@ public class Character: UnityModule
                attackPrefab, this.attackPos, this.AttackRotation());
       }
 
-      // light-based communication
-      // foreach (var pair in hist) {
-      //    Debug.Log(pair.Key + ", " + pair.Value);
-      // }
+      // light-based communication}
       if (hist.ContainsKey("communication")){
          object comm = Unpack("communication", hist);
          object type = Unpack("color", comm);
          this.commType = Convert.ToUInt32(type);
          updateCommunicationShader();
       }
+
+      // tool status
+      if (hist.ContainsKey("technologyStatus")){
+         object tools = Unpack("technologyStatus", hist);
+         bool isSword = Convert.ToBoolean(Unpack("sword_status", tools));
+         bool isShield = Convert.ToBoolean(Unpack("shield_status", tools));
+         bool isHatchet = Convert.ToBoolean(Unpack("hoe_status", tools));
+         bool isPickaxe = Convert.ToBoolean(Unpack("improved_hoe_status", tools));
+         UpdateTools(isSword, isShield, isHatchet, isPickaxe);
+      } 
+      //UpdateTools(true, true, true, true); // for debugging
+      
    }
 
-   private void updateCommunicationShader(){
+   void updateCommunicationShader(){
       if (this.lightShader == null){
          this.lightShader = Shader.Find("MK/Glow/Selective/Legacy/Transparent/Diffuse");
       }
       MeshRenderer nn = this.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
-
-      // if (this.commColor == null) {  // initialize color dictionary
-      //    this.SetColors();
-      // }
 
       if (this.commType == 0){  // no light communication
           nn.materials[0].shader = null;  // TODO: make it compatible with existing shader
@@ -266,6 +413,13 @@ public class Character: UnityModule
          nn.materials[0].SetColor("_MKGlowTexColor", intToColor(this.commType));
          nn.materials[0].SetFloat("_MKGlowPower", (float) 4.0);
       }
+   }
+
+   void initToolStatus(){
+      this.hasHatchet = false;
+      this.hasPickaxe = false;
+      this.hasSword = false;
+      this.hasShield = false;
    }
 
    
@@ -284,6 +438,7 @@ public class Character: UnityModule
       {
          GameObject.Destroy(this.attack);
       }
+      destroyTools();
    }
 
    //Random function off Unity forums

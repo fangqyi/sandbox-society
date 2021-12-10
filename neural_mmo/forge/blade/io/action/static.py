@@ -1,6 +1,7 @@
 from pdb import set_trace as T
 import numpy as np
 
+from neural_mmo.forge.blade.item.item import Item, ItemType
 from neural_mmo.forge.blade.lib import utils, material
 from neural_mmo.forge.blade.lib.utils import staticproperty
 from neural_mmo.forge.blade.io.node import Node, NodeType
@@ -224,6 +225,10 @@ class Mage(Node):
    def skill(entity):
       return entity.skills.mage
 
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Signal is a node that allows entities to set their communication light.
+'''
 class Signal(Node):
    priority = 0
    nodeType = NodeType.SELECTION
@@ -243,9 +248,13 @@ class Signal(Node):
    def call(env, entity, light):
       entity.setLight(light)
       entity.history.communication.update(entity.getLightNumeric())
+
       return light
 
-
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+Light is a node that defines the types of lights entities can use.
+'''
 class Light(Node):
    argType = Fixed
 
@@ -255,6 +264,245 @@ class Light(Node):
 
    def args(stim, entity, config):
       return Direction.edges
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+TechnologyStatus is a node that allows entities to obtain their technology status for rocks and sticks.
+'''
+class TechnologyStatus(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity):
+      sword_status = entity.getSwordStatus()
+      shield_status = entity.getShieldStatus()
+      hoe_status = entity.getHoeStatus()
+      improved_hoe_status = entity.getImprovedHoeStatus()
+      entity.history.sword_status.update(1 if sword_status else 0)
+      entity.history.shield_status.update(1 if shield_status else 0)
+      entity.history.hoe_status.update(1 if hoe_status else 0)
+      entity.history.improved_hoe_status.update(1 if improved_hoe_status else 0)
+      return sword_status, shield_status, hoe_status, improved_hoe_status
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+InventoryInsertion is a node that allows entities to insert items into their inventory.
+'''
+class InventoryInsertion(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, items):
+      entity.inv.insertItems(items)
+      for item in items:
+         if item.getType() == ItemType.SMALL_ROCK:
+            entity.history.small_rocks.increment()
+         if item.getType() == ItemType.SMALL_STICK:
+            entity.history.small_sticks.increment()
+         if item.getType() == ItemType.LARGE_BOULDER:
+            entity.history.large_boulders.increment()
+         if item.getType() == ItemType.LARGE_BRANCH:
+            entity.history.large_branches.increment()
+      return True
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+InventoryRemoval is a node that allows entities to remove items from their inventory.
+'''
+class InventoryRemoval(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, itemType, numItems):
+      entity.inv.removeItems(itemType, numItems)
+      if itemType == ItemType.SMALL_ROCK:
+         entity.history.small_rocks.decrement(numItems)
+      if itemType == ItemType.SMALL_STICK:
+         entity.history.small_sticks.decrement(numItems)
+      if itemType == ItemType.LARGE_BOULDER:
+         entity.history.large_boulders.decrement(numItems)
+      if itemType == ItemType.LARGE_BRANCH:
+         entity.history.large_branches.decrement(numItems)
+
+      return True
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Lorne Zhang
+InventoryItemType is a node that defines the possible types for inventory items.
+'''
+class InventoryItemType(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [ItemType.SMALL_STICK, ItemType.SMALL_ROCK, ItemType.LARGE_BOULDER, ItemType.LARGE_BRANCH]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
+Gather is a node that allows entities to gather resources that naturally spawn from their current tile.
+'''
+class Gather(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, delta):
+      r, c  = entity.pos
+      entID = entity.entID
+      rDelta, cDelta = delta
+      rNew, cNew = r+rDelta, c+cDelta
+
+      tile = env.map.tiles[rNew, cNew]
+      if env.map.harvest(rNew, cNew):
+         if type(tile.mat) == material.Orerock:
+            entity.inv.insertItems([ItemType.SMALL_ROCK])
+            entity.history.small_rocks.increment()
+         elif type(tile.mat) == material.Forest:
+            entity.resources.food.update(entity.resources.food.max)
+            entity.inv.insertItems([ItemType.SMALL_STICK])
+            entity.history.small_sticks.increment()
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
+PickUpItem is a node that allows entities to pick up items from their current tile. This includes items that have been dropped.
+'''
+class PickUpItem(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity):
+      r, c  = entity.pos
+
+      tile = env.map.tiles[r, c]
+      ssticks, lsticks, sstones, lstones = tile.items
+
+      for i in range(ssticks):
+         tile.removeItem(ItemType.SMALL_STICK)
+         entity.insertItemsIntoInventory([Item(ItemType.SMALL_STICK)])
+         entity.history.small_sticks.increment()
+
+      for i in range(sstones):
+         tile.removeItem(ItemType.SMALL_ROCK)
+         entity.insertItemsIntoInventory([Item(ItemType.SMALL_ROCK)])
+         entity.history.small_rocks.increment()
+
+      shield_status = entity.getShieldStatus()
+      hoe_status = entity.getHoeStatus()
+      if hoe_status:
+         for i in range(lsticks):
+            tile.removeItem(ItemType.LARGE_BRANCH)
+            entity.insertItemsIntoInventory([Item(ItemType.LARGE_BRANCH)])
+            entity.history.large_branches.increment()
+
+      if shield_status:
+         for i in range(lstones):
+            tile.removeItem(ItemType.LARGE_BOULDER)
+            entity.insertItemsIntoInventory([Item(ItemType.LARGE_BOULDER)])
+            entity.history.large_boulders.increment()
+
+'''
+Duke CS390 Fall 2021: AI Sandbox, Maverick Chung
+DropItem is a node that allows entities to drop inventory items onto their current tile.
+'''
+class DropItem(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity):
+      r, c  = entity.pos
+
+      tile = env.map.tiles[r, c]
+      tile.addItem(ItemType.SMALL_STICK)
+      ## entity.inv.removeItems(itemType, 1)
+
+'''
+Duke CS390 Fall 2021: AI Sandbox
+InventoryItem is a node that represents the different types of inventory items an entity can have.
+'''
+class InventoryItem(Node):
+   argType = Fixed
+
+   @staticproperty
+   def edges():
+      return [Item(ItemType.SMALL_STICK), Item(ItemType.SMALL_ROCK), Item(ItemType.LARGE_BOULDER), Item(ItemType.LARGE_BRANCH)]
+
+   def args(stim, entity, config):
+      return Direction.edges
+
 
 #TODO: Add communication
 class Message:
@@ -269,3 +517,38 @@ class BecomeSkynet:
    pass
 
 Action.hook()
+
+'''
+Maverick Chung
+An action designed to allow agents to give any number of items of one type to another agent
+'''
+class GiveItems(Node):
+   priority = 0
+   nodeType = NodeType.SELECTION
+
+   @staticproperty
+   def n():
+      return 0
+
+   @staticproperty
+   def edges(self):
+      return []
+
+   @staticproperty
+   def leaf(self):
+      return True
+
+   def call(env, entity, args):
+      target, itemType, numItems = args
+      numItems = int(numItems)
+      entity.inv.removeItems(itemType, numItems)
+      entity.inv.insertItems([ItemType]*numItems)
+      if itemType == ItemType.SMALL_ROCK:
+         entity.history.small_rocks.increment(numItems)
+      if itemType == ItemType.SMALL_STICK:
+         entity.history.small_sticks.increment(numItems)
+      if itemType == ItemType.LARGE_BOULDER:
+         entity.history.large_boulders.increment(numItems)
+      if itemType == ItemType.LARGE_BRANCH:
+         entity.history.large_branches.increment(numItems)
+      return True

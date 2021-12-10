@@ -16,6 +16,8 @@ from autobahn.twisted.websocket import WebSocketServerFactory, \
     WebSocketServerProtocol
 from autobahn.twisted.resource import WebSocketResource
 
+
+first = 0
 class GodswordServerProtocol(WebSocketServerProtocol):
     def __init__(self):
         super().__init__()
@@ -70,13 +72,16 @@ class GodswordServerProtocol(WebSocketServerProtocol):
         return data
 
     def sendUpdate(self, data):
+        global first
         packet               = {}
-        packet['resource']   = data['resource']
+        packet['resourceTerrain']   = data['resourceTerrain']
         packet['player']     = data['player']
         packet['npc']        = data['npc']
         packet['pos']        = data['pos']
         packet['wilderness'] = data['wilderness']
-        packet['items'] = data['items']
+        for s in ["resourceSmallSticks", "resourceLargeSticks",
+                  "resourceSmallPebbles", "resourceLargePebbles"]:
+            packet[s] = data[s]
 
         config = data['config']
 
@@ -91,7 +96,13 @@ class GodswordServerProtocol(WebSocketServerProtocol):
            print('SENDING OVERLAY: ', len(packet['overlay']))
 
         packet = json.dumps(packet).encode('utf8')
+        
+        
         self.sendMessage(packet, False)
+        # if not first:
+        #     first = 1
+        #     print("pausing after first packet, press enter to continue...")
+        #     input()
 
 class WSServerFactory(WebSocketServerFactory):
     def __init__(self, ip, realm):

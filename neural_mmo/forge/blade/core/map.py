@@ -1,10 +1,15 @@
 from pdb import set_trace as T
 import numpy as np
+from itertools import chain
 
 from neural_mmo.forge.blade import core
 from neural_mmo.forge.blade.lib import material
 
+from random import randint
+
 import os
+
+numsent = 0
 
 class Map:
    '''Map object representing a list of tiles
@@ -26,7 +31,7 @@ class Map:
        '''Packet of degenerate resource states'''
        missingResources = []
        for e in self.updateList:
-           missingResources.append(e.pos)
+           missingResources.append((e.r.val, e.c.val, e.index.val))
        return missingResources
 
    @property
@@ -36,9 +41,23 @@ class Map:
 
    @property
    def items(self):
-      return [[t.items for t in row] for row in self.tiles]
-   
+      global numsent
+      numsent += 1
+      item_types = self.tiles[0,0].items_dict.keys()
+      ret = {itm:[] for itm in item_types}
+      for itm in item_types:
+         temp = []
+         for row in self.tiles:
+            for t in row:
+               if t.mat == material.Grass and t.dirty:
+                  temp.append((t.r.val, t.c.val, t.items_dict[itm].val))
+         ret[itm] = [i for i in temp]
 
+      # ret = {itm:[(t.r.val, t.c.val, t.items_dict[itm].val+2) for t in chain(*self.tiles) if t.mat.index == material.Grass] for itm in item_types}
+      # for t in chain(*self.tiles):
+      #    t.dirty = False
+      return ret
+   
    def reset(self, realm, idx):
       '''Reuse the current tile objects to load a new map'''
       self.updateList = set()
@@ -52,12 +71,15 @@ class Map:
             tile = self.tiles[r, c]
             tile.reset(mat, self.config)
 
+
    def step(self):
       '''Evaluate updatable tiles'''
       for e in self.updateList.copy():
          if e.static:
             self.updateList.remove(e)
          e.step()
+      # for t in chain(*self.tiles):
+      #    t.dirty = False
 
    def harvest(self, r, c):
       '''Called by actions that harvest a resource tile'''
