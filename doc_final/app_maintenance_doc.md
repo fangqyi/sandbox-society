@@ -22,7 +22,7 @@ To run the simulation, first generate maps:
 python3 Forge.py generate --config=Social
 ```
 
-Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/sandbox_society.exe`. For Mac/Linux, this would mean running `client.sh` in the top directory, **but the current frontend is NOT built for Mac or Linux**.
+Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/sandbox_society.exe`. **The current frontend is not yet built for Mac/Linux.** As a workaround, the project can be opened in the Unity Editor and run there, on all systems.
 
 Then render the backend:
 
