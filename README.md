@@ -40,6 +40,7 @@ For remote rendering,
   
  ## Dependencies:
 Our project is based on NeuralMMO 1.5.2. 
+
 Python dependencies:
  ``` 
 ray==1.5.2  
