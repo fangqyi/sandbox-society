@@ -1,22 +1,42 @@
-
 # Maintenance Documentation
 
 ## Installation
 Sandbox Society inherits the infrastructure from NeuralMMO, it also officially supports Ubuntu 20.04, Windows 10 + WSL, and MacOS (with screen death problems in Windows 11). The only difference in infrastructure is that our unity client and backend are in the same repository, which  eliminates the original step of moving the client implementation to ``neural-mmo/forge/embyr`` during setup.
 For a quickstart,
 ```
+conda create --name neural_mmo_env
+conda activate neural_mmo_env
 git clone https://coursework.cs.duke.edu/compsci390_2021fall/project_Playground.git
 cd neural-mmo && bash scripts/setup.sh # --CORE_ONLY to omit RLlib requirements
 ```
 Then, follow these additional required steps:  
 - Edit projekt/config.py as per the instructions therein to match your hardware specs
 - Create a file wandb_api_key in the repo root and paste in your WanDB API key. This new integration is now so important to logging and evaluation that we are requiring it by default. Do not commit this file.
-- Add custom_metrics[k] = filt; continue after line 175 in your RLlib metrics file (usually ~/anaconda3/lib/python3.8/site-packages/ray/rllib/evaluation/metrics.py). This is an RLlib limitation which we hope to resolve in the next version."
+- Add `custom_metrics[k] = filt; continue` after line 175 in your RLlib metrics file (usually ~/anaconda3/lib/python3.8/site-packages/ray/rllib/evaluation/metrics.py). This is an RLlib limitation which we hope to resolve in the next version.
 
 For more technical details and troubleshooting questions, please read the [installation documentation](https://jsuarez5341.github.io/neural-mmo/build/html/rst/userguide.html#installation) of NeuralMMO.
 
+## Running
+To run the simulation, first generate maps:
+
+```
+python3 Forge.py generate --config=Social
+```
+
+Then run the Unity client. For Windows, this will mean running `neural_mmo/forge/embyr/UnityClient/neural_mmo.exe`. For Mac/Linux, this would mean running `client.sh` in the top directory, **but the current frontend is NOT built for Mac or Linux**.
+
+Then render the backend:
+
+```
+python3 Forge.py render --config=Social
+```
+
 ## Configurations
   address ways to update or change key non-programming components of the app, such as database information, data files, resource links, phone numbers, server addresses, etc.
+
+Many of the configurable parameters can be set in `projekt/config.py`. Simply create a new class sublcassing from `core.Config` or one of the existing config classes, and set the desired parameters appropriately. This config can then be called from the command line in the generate and render commands above, as `--config=[new_config_name]`. A comprensive list of parameters can be found in `neural_mmo/forge/blade/core/config.py`.
+
+To run with a different scripted agent, change the AGENT and EVAL_AGENTS lists to be lists of the classes of the desired scripted agents. These scripted agents can be found in `neural_mmo/forge/trinity/scripted` as subclasses of the `baselines.Scripted` class. To make a new type of agent, create a new subclass of Scripted, and define the desired behavior in the `__call__` method.
 
 ## Libraries and Tools 
 ```
