@@ -1,6 +1,11 @@
 # Tech documentation
 
 ## Backend
+![backend_graph](backend.png)
+
+Our backend architecture is as shown above, working backwards from the packet that gets sent to the frontend by the Twisted server. The Realm class contains all of the information about the simulation at any given time, and packets this information, and sends it to the server. It also sends updates to the map, such as when trees are harvested or items are picked up off the ground. This information is sent from the map to the individual tiles, then back to the Realm on the next timestep.
+
+Additionally, the Realm sends information to Players, or agents, in the simulation. This causes them to update their Stimulus, which includes food, water, inventory, light communication, and so on. The scripted agents that are running view this Stimulus, and generate Actions as a result, which are sent back to the Realm. The Realm decides the result of these actions, and sends that to both the Twisted server, and back to the map and players.
 
 ## Frontend 
 
