@@ -20,4 +20,4 @@ In addition, to optimize the performance of the environment rendering, we improv
 
 ### Character.cs
 
-In addition to the major changes in environment, we also added new features, namely light-based communication and tool usage, in Character.cs which is the class that defines the behaviors of player and NPC. Both two features are both structurally and functionally well encapsulated, which has helped the process of debugging and the future introduction of new features.
+In addition to the major changes in environment, we also added new features, namely light-based communication and tool usage, in Character.cs which is the class that defines the behaviors of player and NPC. Both two features are both structurally and functionally well encapsulated, which help the process of debugging and the future introduction of new features.
