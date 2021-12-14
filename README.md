@@ -1,6 +1,6 @@
 # Sandbox Society 🤖⛏️🍎
 
-Sandbox Society is an open-source MARL research environment that encourages learning agents to adopt societal formation as collective strategy to master the environment. It is a major extension to [Neural MMO](https://github.com/jsuarez5341/neural-mmo) which provides simulation of massive agents in procedurally generated virtual worlds, where agents forage for food, compete over resources, and struggle to survive. Sandbox Society builds on the current Neural MMO with features that incentivize the emergence of _complex social structures_. The added features include:
+Sandbox Society is an open-source MARL research environment that encourages learning agents to adopt societal formation as collective strategy to master the environment. It is built on [Neural MMO](https://github.com/jsuarez5341/neural-mmo) which provides simulation of massive agents in procedurally generated virtual worlds, where agents forage for food, compete over resources, and struggle to survive. Sandbox Society builds on the current Neural MMO with features that incentivize the emergence of _complex social structures_. The added features include:
 -   communication light protocol
 -   productive resources (e.g. stick, stone)
 -  resource factories (e.g. trees for active resource generation, tree trunk for the inactive, degenerated status)
